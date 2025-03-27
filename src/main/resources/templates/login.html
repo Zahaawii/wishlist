@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+</head>
+<body>
+<h1>Login</h1>
+<form action="/login" method="post">
+    <p th:if="${forkertLogin}">Forkert username eller password</p>
+    <p><label>UserId:</label>
+        <input name="username" type="text" autofocus></p>
+    <p><label>Password:</label>
+        <input name="password" type="password"></p>
+    <p>
+
+
+        <button type="submit">Login</button>
+        <a th:href="@{'/homepage'}"><button type="button">Fortryd</button></a>
+    </p>
+</form>
+</body>
+</html>

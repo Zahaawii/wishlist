@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>profil</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
+</head>
+<body>
+<h1 th:text="${user.getUsername()}">
+</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>description</th>
+                <th>link</th>
+                <th>Has been reserved</th>
+            </tr>
+        </thead>
+            <tbody>
+                <tr th:each = "wish : ${wishlist.getWishes()}">
+                    <td th:text="${wish.getName()}"></td>
+                    <td th:text="${wish.getDescription()}"></td>
+                    <td th:text="${wish.getLink()}"></td>
+                    <td th:text="${wish.isReserved()}"></td>
+                </tr>
+            </tbody>
+    </table>
+
+
+<a th:href="@{/logout}">Logout of your profile</a>
+</body>
+</html>
