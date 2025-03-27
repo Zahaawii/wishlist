@@ -91,6 +91,31 @@ public class WishlistController {
         return "login";
     }
 
+    @GetMapping("/create/wishlist")
+    public String createWishlist(Model model, HttpSession session) {
+
+        if(!wishlistService.isLoogedIn(session)) {
+            return "login";
+        }
+
+        Wishlist wishlist = new Wishlist();
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("wishlist", wishlist);
+        return "createWishList";
+    }
+
+    @PostMapping("/create/wishlist")
+    public String saveWishList(@ModelAttribute Wishlist wishlist, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if(user == null) {
+            return "redirect:/login";
+        }
+        
+        wishlistService.createWishList(user.getUserId(), wishlist.getWishlistName() );
+        return "redirect:/profil";
+    }
+
 
 
 }

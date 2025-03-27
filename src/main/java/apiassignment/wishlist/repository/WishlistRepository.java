@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+
 import java.util.List;
 
 @Repository
@@ -55,7 +56,6 @@ public class WishlistRepository {
         }
         return temp.getFirst();
     }
-
 
 
     public User login(String username, String password){
@@ -121,6 +121,19 @@ public class WishlistRepository {
 
 
 
+    public void createWishList(int userId, String wishListName) {
+        String sql = "INSERT INTO wishlists (UserID, wishlistName) VALUES (?, ?)";
+
+        KeyHolder keyHolder= new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, userId);
+            ps.setString(2, wishListName);
+            return ps;
+        }, keyHolder);
+
+    }
 
 
 

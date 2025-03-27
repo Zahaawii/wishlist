@@ -43,3 +43,9 @@ public class WishlistService {
 
 
     }
+
+    public void createWishList(int userID, String name) {
+        wishlistRepository.createWishList(userID, name);
+    }
+
+}
