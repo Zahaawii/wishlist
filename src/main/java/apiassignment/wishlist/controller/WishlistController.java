@@ -2,11 +2,13 @@ package apiassignment.wishlist.controller;
 
 import apiassignment.wishlist.model.User;
 import apiassignment.wishlist.model.Wishlist;
-import apiassignment.wishlist.service.WishlistService;
+import apiassignment.wishlist.service.*;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,10 +27,20 @@ public class WishlistController {
         return "homepage";
     }
 
-    @GetMapping("createAccount")
-    public String createAccount(){
+    @GetMapping("/register")
+    public String registerAccount(Model model){
+        model.addAttribute("user", new User());
+        return "register";
+    }
 
-        return "createAccount";
+    @PostMapping("/register")
+    public String checkRegister(@ModelAttribute User user, Model model){
+        if(!wishlistService.isUsernameFree(user.getUsername())){
+            model.addAttribute("notFree", true);
+            return "register";
+        }
+        wishlistService.registerUser(user);
+        return "redirect:/login";
     }
 
 
@@ -63,8 +75,8 @@ public class WishlistController {
     }
 
 
-    /*@GetMapping("/profile")
-    public String profile(HttpSession session, Model model){
+    @GetMapping("/profile")
+    public String profil(HttpSession session, Model model){
 
         if(!wishlistService.isLoogedIn(session)){
             return "homepage";
@@ -81,13 +93,38 @@ public class WishlistController {
         }
 
         return "profile";
-    }*/
+    }
 
 
     @GetMapping("/logout")
     public String logout(HttpSession session){
         session.invalidate();
         return "login";
+    }
+
+    @GetMapping("/create/wishlist")
+    public String createWishlist(Model model, HttpSession session) {
+
+        if(!wishlistService.isLoogedIn(session)) {
+            return "login";
+        }
+
+        Wishlist wishlist = new Wishlist();
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("wishlist", wishlist);
+        return "createWishList";
+    }
+
+    @PostMapping("/create/wishlist")
+    public String saveWishList(@ModelAttribute Wishlist wishlist, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if(user == null) {
+            return "redirect:/login";
+        }
+        
+        wishlistService.createWishList(user.getUserId(), wishlist.getWishlistName() );
+        return "redirect:/profil";
     }
 
 
