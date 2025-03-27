@@ -2,6 +2,7 @@ package apiassignment.wishlist.service;
 
 
 import apiassignment.wishlist.model.User;
+import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.model.Wishlist;
 import apiassignment.wishlist.repository.WishlistRepository;
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +31,10 @@ public class WishlistService {
     }
     public User getUserByUsername(String username){
         return wishlistRepository.getUserByUsername(username);
+    }
+
+    public void addWish(Wish wish) {
+        wishlistRepository.addWish(wish);
     }
 
 }
