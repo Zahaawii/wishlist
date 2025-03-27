@@ -13,15 +13,16 @@
 <div class="loginBox">
     <form action="/login" method="post">
         <h1>Login page</h1>
+        <p th:if ="${wrongLogin}"> Wrong username or password</p>
         <div class="input-box">
             <label for="checkUsername">  </label>
-            <input type="text" id="checkUsername"  name="checkUsername" placeholder="Username" required>
+            <input type="text" id="checkUsername"  name="checkUsername" placeholder="username" required>
             <i class="bx bxs-user"></i>
         </div>
 
         <div class="input-box">
             <label for="checkUserpassword"></label>
-            <input type="password" name="checkUserpassword" id="checkUserpassword" placeholder="Password" required>
+            <input type="password" name="checkUserpassword" id="checkUserpassword" placeholder="password" required>
             <i class="bx bxs-lock-alt"></i>
         </div>
         <div class="remember-forgot">

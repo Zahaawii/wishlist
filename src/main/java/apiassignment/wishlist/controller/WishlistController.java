@@ -52,12 +52,12 @@ public class WishlistController {
 
 
     @PostMapping("login")
-    public String checkLogin(@RequestParam("username") String username, @RequestParam("password") String password,
+    public String checkLogin(@RequestParam("checkUsername") String username, @RequestParam("checkUserpassword") String password,
                              HttpSession session, Model model){
 
         User user = wishlistService.login(username, password);
         if(user == null){
-            model.addAttribute("forkertLogin", true);
+            model.addAttribute("wrongLogin", true);
             return "login";
         }
         session.setAttribute("user", user);
@@ -70,7 +70,7 @@ public class WishlistController {
     public String profil(HttpSession session, Model model){
 
         if(!wishlistService.isLoogedIn(session)){
-            return "homepage";
+            return "profile";
         }
 
         User user = (User) session.getAttribute("user");
