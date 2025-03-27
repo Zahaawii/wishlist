@@ -33,8 +33,19 @@ public class WishlistController {
 
 
     @GetMapping("login")
-    public String getLoginSide(){
+    public String getLogin(){
         return "login";
+    }
+
+    @GetMapping("profile")
+    public String getProfile (Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            model.addAttribute("notLoggedIn", true);
+            return "redirect:/login";
+        }
+        model.addAttribute("name", user.getName());
+        return "profile";
     }
 
 
@@ -43,17 +54,17 @@ public class WishlistController {
                              HttpSession session, Model model){
         User user = wishlistService.login(username, password);
         if(user == null){
-            model.addAttribute("forkertLogin", true);
+            model.addAttribute("wrongLogin", true);
             return "login";
         }
         session.setAttribute("user", user);
         session.setMaxInactiveInterval(3600);
-        return "redirect:/profil";
+        return "redirect:/profile";
     }
 
 
-    @GetMapping("/profil")
-    public String profil(HttpSession session, Model model){
+    /*@GetMapping("/profile")
+    public String profile(HttpSession session, Model model){
 
         if(!wishlistService.isLoogedIn(session)){
             return "homepage";
@@ -70,7 +81,7 @@ public class WishlistController {
         }
 
         return "profile";
-    }
+    }*/
 
 
     @GetMapping("/logout")

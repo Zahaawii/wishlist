@@ -2,13 +2,26 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>profil</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
+    <title>Profile</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
 </head>
 <body>
-<h1 th:text="${user.getUsername()}">
-</h1>
 
+    <nav>
+        <div class="navbar">
+            <a th:href="@{/profile}"><p>PROFILE</p></a>
+            <div class="navbarprofileimg"></div>
+            <button class="button-22">
+                <a>NEW WISHLIST</a>
+            </button>
+        </div>
+    </nav>
+
+    <h1>Hello, <span th:text="${name}"></span></h1>
+
+<!--<h1 th:text="${user.getUsername()}">
+</h1>
     <table border="1">
         <thead>
             <tr>
@@ -26,9 +39,9 @@
                     <td th:text="${wish.isReserved()}"></td>
                 </tr>
             </tbody>
-    </table>
+    </table>-->
 
 
-<a th:href="@{/logout}">Logout of your profile</a>
+<!--<a th:href="@{/logout}">Logout of your profile</a>-->
 </body>
 </html>

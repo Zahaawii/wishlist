@@ -8,7 +8,7 @@
 <body>
 <h1>Login</h1>
 <form action="/login" method="post">
-    <p th:if="${forkertLogin}">Forkert username eller password</p>
+    <p th:if="${wrongLogin}">Wrong username or password</p>
     <p><label>UserId:</label>
         <input name="username" type="text" autofocus></p>
     <p><label>Password:</label>
@@ -17,7 +17,7 @@
 
 
         <button type="submit">Login</button>
-        <a th:href="@{'/homepage'}"><button type="button">Fortryd</button></a>
+        <a th:href="@{'/homepage'}"><button type="button">Cancel</button></a>
     </p>
 </form>
 </body>
