@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -77,6 +78,31 @@ public class WishlistController {
     public String logout(HttpSession session){
         session.invalidate();
         return "login";
+    }
+
+    @GetMapping("/create/wishlist")
+    public String createWishlist(Model model, HttpSession session) {
+
+        if(!wishlistService.isLoogedIn(session)) {
+            return "login";
+        }
+
+        Wishlist wishlist = new Wishlist();
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("wishlist", wishlist);
+        return "createWishList";
+    }
+
+    @PostMapping("/create/wishlist")
+    public String saveWishList(@ModelAttribute Wishlist wishlist, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if(user == null) {
+            return "redirect:/login";
+        }
+        
+        wishlistService.createWishList(user.getUserId(), wishlist.getWishlistName() );
+        return "redirect:/profil";
     }
 
 
