@@ -71,7 +71,7 @@ public class WishlistController {
     public String profil(HttpSession session, Model model){
 
         if(!wishlistService.isLoogedIn(session)){
-            return "profile";
+            return "login";
         }
 
         User user = (User) session.getAttribute("user");
