@@ -51,12 +51,12 @@ public class WishlistController {
 
     @GetMapping("profile")
     public String getProfile (Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        /*User user = (User) session.getAttribute("user");
         if (user == null) {
             model.addAttribute("notLoggedIn", true);
             return "redirect:/login";
         }
-        model.addAttribute("name", user.getName());
+        model.addAttribute("name", user.getName());*/
         return "profile";
     }
 
@@ -75,7 +75,7 @@ public class WishlistController {
     }
 
 
-    @GetMapping("/profile")
+   /* @GetMapping("/profile")
     public String profil(HttpSession session, Model model){
 
         if(!wishlistService.isLoogedIn(session)){
@@ -93,7 +93,7 @@ public class WishlistController {
         }
 
         return "profile";
-    }
+    }*/
 
 
     @GetMapping("/logout")

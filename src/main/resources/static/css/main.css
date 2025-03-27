@@ -14,7 +14,6 @@ a {
     align-items: center;
     gap: 2em;
     overflow: hidden;
-    width: 100%;
     height: 100px;
     background-color: #DEFAFF;
     border-radius: 16px;
@@ -48,6 +47,41 @@ a {
     outline: 2px solid transparent;
     box-shadow: 0 0 5px #A9E5D1;
 }
+
+.profileheader {
+    display: flex;
+    justify-content: center;
+    padding-top: 2em;
+    padding-bottom: 1em;
+    font-size: 4em;
+    color: #F8FAFB;
+}
+.profileheader span {
+    color: #FFDAC1;
+}
+
+h3 {
+    display: flex;
+    color: #6D888E;
+    justify-content: center;
+}
+
+.wishListMainContainer {
+    display: grid;
+    padding: 1em;
+    gap: 1em;
+    width: calc(100% - 2em);
+    height: calc(100% - 2em);
+    background-color: #C2F2FC;
+
+}
+.wishListContainer {
+    height: 100%;
+    background-color: #DEFAFF;
+
+}
+
+
 
 
 .button-22 {
