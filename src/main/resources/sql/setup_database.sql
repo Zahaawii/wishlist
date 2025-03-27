@@ -1,4 +1,4 @@
-
+CREATE DATABASE wishlist;
 DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `roles`;
 DROP TABLE IF EXISTS `wishes`;
@@ -33,7 +33,7 @@ wishID int PRIMARY KEY NOT NULL auto_increment,
 name VARCHAR(50) NOT NULL,
 description VARCHAR(250),
 link VARCHAR(500),
-isReserved tinyint(1),
+isReserved tinyint(1) DEFAULT 0,
 FOREIGN KEY(wishlistID) REFERENCES wishlists(wishlistID)
 );
 

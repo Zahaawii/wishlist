@@ -15,3 +15,4 @@ INSERT INTO wishlist.wishlists(userID, wishlistName) values('1', 'Hannibal jule�
 INSERT INTO wishlist.wishes(name, description, wishlistID) VALUES ('padel bat', 'Et bat til at spille padel tennis', '1');
 INSERT INTO wishlist.wishes(name, description, wishlistID) VALUES ('ferrari', 'En bil der kører suuuuper stærkt', '1');
 
+
