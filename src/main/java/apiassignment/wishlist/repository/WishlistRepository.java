@@ -13,6 +13,11 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+
+
+import java.sql.Statement;
+
+
 import java.util.List;
 
 @Repository
@@ -54,7 +59,6 @@ public class WishlistRepository {
         }
         return temp.getFirst();
     }
-
 
 
     public User login(String username, String password){
@@ -111,7 +115,54 @@ public class WishlistRepository {
     }
 
 
+    public boolean isUsernameFree(String username){
+        String sql = "SELECT * FROM users WHERE username = ?";
+        List<User> users = jdbcTemplate.query(sql, new UserRowmapper(), username);
+        if(users.isEmpty()){
+            return true;
+        }
+        return false;
+    }
 
+    public User registerUser(User user){
+        String sql = "INSERT INTO users (name, username, password, roleID) VALUES(?, ?, ?, ?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getUsername());
+            ps.setString(3, user.getPassword());
+            ps.setInt(4, 1);
+            return ps;
+        }, keyHolder);
+
+        int userId =keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
+
+        if(userId != -1){
+            user.setUserId(userId);
+        }
+
+        return user;
+
+    }
+
+
+
+    public void createWishList(int userId, String wishListName) {
+        String sql = "INSERT INTO wishlists (UserID, wishlistName) VALUES (?, ?)";
+
+        KeyHolder keyHolder= new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, userId);
+            ps.setString(2, wishListName);
+            return ps;
+        }, keyHolder);
+
+    }
 
 
 

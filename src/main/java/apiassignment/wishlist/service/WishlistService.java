@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WishlistService {
+public class WishlistService{
 
     private final WishlistRepository wishlistRepository;
 
@@ -33,8 +33,26 @@ public class WishlistService {
         return wishlistRepository.getUserByUsername(username);
     }
 
+
     public void addWish(Wish wish) {
         wishlistRepository.addWish(wish);
     }
 
-}
+
+
+    public boolean isUsernameFree(String username){
+        return wishlistRepository.isUsernameFree(username);
+    }
+
+    public User registerUser(User user){
+        return wishlistRepository.registerUser(user);
+    }
+    public void createWishList(int userID, String name) {
+        wishlistRepository.createWishList(userID, name);
+    }
+
+
+    }
+
+
+
