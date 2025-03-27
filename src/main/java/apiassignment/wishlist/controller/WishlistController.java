@@ -1,6 +1,7 @@
 package apiassignment.wishlist.controller;
 
 import apiassignment.wishlist.model.User;
+import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.model.Wishlist;
 import apiassignment.wishlist.service.*;
 
@@ -120,14 +121,14 @@ public class WishlistController {
 
     @GetMapping("/wish/add")
     public String addWish(Model model) {
-        model.addAttribute("wish",new Wish());
+        model.addAttribute("wish", new Wish());
         return "createWish";
     }
 
     @PostMapping("/wish/save")
     public String saveWish(@ModelAttribute Wish wish) {
         wishlistService.addWish(wish);
-        return "profile";
+        return "redirect:/profile";
     }
 
 }

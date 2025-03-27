@@ -3,6 +3,7 @@ package apiassignment.wishlist.service;
 
 import apiassignment.wishlist.model.User;
 import apiassignment.wishlist.model.Wishlist;
+import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.repository.WishlistRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
