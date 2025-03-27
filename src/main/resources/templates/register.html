@@ -3,30 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Register account</title>
-    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/css/registeraccount.css}">
 </head>
 <body>
-<header>
-    <h1>Register your account!</h1>
-</header>
 
-<p th:if="${notFree}">This username is already taken! Pls make another</p>
-<form action="/register" th:action="@{/register}" th:object="${user}" method="post">
-    <fieldset>
-        <label for="name">Insert your name</label>
-        <textarea id="name" name="name" required></textarea>
 
-        <label for="username">Insert your username</label>
-        <textarea id="username" name="username" required></textarea>
+<div class ="center">
 
-        <label for="password">Insert your password</label>
-        <textarea id="password" name="password" required></textarea>
+    <div class="addFormular">
+        <h1 class="heading"> Create a new account! </h1>
 
-    </fieldset>
+        <p th:if="${notFree}">This username is already taken! Pls make another</p>
+        <form action="/register" th:action="@{/register}" th:object="${user}" method="post">
 
-    <button th:href="@{login.html}" type="submit">Submit</button>
+                <label for="name">Insert your name</label>
+                <input type="text" id="name" name="name" required>
 
-</form>
+                <label for="username">Insert your username</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Insert your password</label>
+                <input type="password" id="password" name="password" required>
+
+            <button th:href="@{login.html}" type="submit">Submit</button>
+        </form>
+
+
+    </div>
+
+</div>
 
 
 </body>

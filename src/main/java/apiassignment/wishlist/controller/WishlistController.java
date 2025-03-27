@@ -2,7 +2,8 @@ package apiassignment.wishlist.controller;
 
 import apiassignment.wishlist.model.User;
 import apiassignment.wishlist.model.Wishlist;
-import apiassignment.wishlist.service.WishlistService;
+import apiassignment.wishlist.service.*;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +54,7 @@ public class WishlistController {
     @PostMapping("login")
     public String checkLogin(@RequestParam("username") String username, @RequestParam("password") String password,
                              HttpSession session, Model model){
+
         User user = wishlistService.login(username, password);
         if(user == null){
             model.addAttribute("forkertLogin", true);

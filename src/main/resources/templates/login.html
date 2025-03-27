@@ -3,23 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/css/loginpage.css}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-<h1>Login</h1>
-<form action="/login" method="post">
-    <p th:if="${forkertLogin}">Forkert username eller password</p>
-    <p><label>UserId:</label>
-        <input name="username" type="text" autofocus></p>
-    <p><label>Password:</label>
-        <input name="password" type="password"></p>
-    <p>
 
+<h1 class="topName"> Wishlist login </h1>
+<div class="loginBox">
+    <form action="/login" method="post">
+        <h1>Login page</h1>
+        <div class="input-box">
+            <label for="checkUsername">  </label>
+            <input type="text" id="checkUsername"  name="checkUsername" placeholder="Username" required>
+            <i class="bx bxs-user"></i>
+        </div>
 
-        <button type="submit">Login</button>
-        <a th:href="@{'/homepage'}"><button type="button">Fortryd</button></a>
-    </p>
-    <a th:href="@{/register}">If you dont have an account, register here!</a>
+        <div class="input-box">
+            <label for="checkUserpassword"></label>
+            <input type="password" name="checkUserpassword" id="checkUserpassword" placeholder="Password" required>
+            <i class="bx bxs-lock-alt"></i>
+        </div>
+        <div class="remember-forgot">
+            <label>
+                <input type="checkbox" Remember me> Remember me </label>
+
+            <a href="#"> Forgot password?</a>
+        </div>
+        <button type="submit" class="btn">Login</button>
+
+        <div class="register-link">
+            <p> Don't have an account? <a href="/register">Register</a>
+            </p>
+        </div>
+        <div class="icons">
+            <a href="#" class="fa fa-apple"></a>
+            <a href="https://github.com/Zahaawii" target="_blank" class="fa fa-github"></a>
+            <a href="#" class="fa fa-google"></a>
+            <a href="#" class="fa fa-reddit"></a>
+            <a href="#" class="fa fa-facebook"></a>
+        </div>
+    </form>
+</div>
 
 </form>
 </body>
