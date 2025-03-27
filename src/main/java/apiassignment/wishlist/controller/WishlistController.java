@@ -118,6 +118,16 @@ public class WishlistController {
         return "redirect:/profil";
     }
 
+    @GetMapping("/wish/add")
+    public String addWish(Model model) {
+        model.addAttribute("wish",new Wish());
+        return "createWish";
+    }
 
+    @PostMapping("/wish/save")
+    public String saveWish(@ModelAttribute Wish wish) {
+        wishlistService.addWish(wish);
+        return "profile";
+    }
 
 }
