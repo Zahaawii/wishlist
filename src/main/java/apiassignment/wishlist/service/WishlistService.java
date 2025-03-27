@@ -32,6 +32,18 @@ public class WishlistService {
         return wishlistRepository.getUserByUsername(username);
     }
 
+    public boolean isUsernameFree(String username){
+        return wishlistRepository.isUsernameFree(username);
+    }
+
+    public User registerUser(User user){
+        return wishlistRepository.registerUser(user);
+    }
+
+
+
+    }
+
     public void createWishList(int userID, String name) {
         wishlistRepository.createWishList(userID, name);
     }

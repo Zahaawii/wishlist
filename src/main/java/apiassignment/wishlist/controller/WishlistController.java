@@ -26,11 +26,22 @@ public class WishlistController {
         return "homepage";
     }
 
-    @GetMapping("createAccount")
-    public String createAccount(){
-
-        return "createAccount";
+    @GetMapping("/register")
+    public String registerAccount(Model model){
+        model.addAttribute("user", new User());
+        return "register";
     }
+
+    @PostMapping("/register")
+    public String checkRegister(@ModelAttribute User user, Model model){
+        if(!wishlistService.isUsernameFree(user.getUsername())){
+            model.addAttribute("notFree", true);
+            return "register";
+        }
+        wishlistService.registerUser(user);
+        return "redirect:/login";
+    }
+
 
 
     @GetMapping("login")
@@ -49,11 +60,11 @@ public class WishlistController {
         }
         session.setAttribute("user", user);
         session.setMaxInactiveInterval(3600);
-        return "redirect:/profil";
+        return "redirect:/profile";
     }
 
 
-    @GetMapping("/profil")
+    @GetMapping("/profile")
     public String profil(HttpSession session, Model model){
 
         if(!wishlistService.isLoogedIn(session)){
