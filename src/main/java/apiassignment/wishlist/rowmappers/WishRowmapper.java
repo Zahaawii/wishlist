@@ -14,8 +14,10 @@ public class WishRowmapper implements RowMapper<Wish> {
 
         wish.setWishlistId(rs.getInt("wishlistID"));
         wish.setWishId(rs.getInt("wishID"));
-        wish.setName(rs.getString("name"));
+        wish.setName(rs.getString("wishName"));
         wish.setDescription(rs.getString("description"));
+        wish.setPrice(rs.getDouble("price"));
+        wish.setQuantity(rs.getInt("quantity"));
         if(rs.getString("link") == null){
             wish.setLink("intet link");
         } else {
@@ -23,8 +25,11 @@ public class WishRowmapper implements RowMapper<Wish> {
         }
         //lige nu er den null hele tiden, men en boolean kan ikke modtage null, så sætter den bare til false
         //wish.setReserved(rs.getBoolean("isReserved"));
-        wish.setReserved(false);
-
+        if(rs.getInt("isReserved") == 0) {
+            wish.setReserved(false);
+        } else {
+            wish.setReserved(true);
+        }
 
         return wish;
     }

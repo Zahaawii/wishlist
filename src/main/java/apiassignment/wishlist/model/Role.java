@@ -1,6 +1,7 @@
 package apiassignment.wishlist.model;
 
 public class Role {
+
     private int roleId;
     private String roleName;
 

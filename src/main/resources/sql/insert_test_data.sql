@@ -1,5 +1,5 @@
-insert into wishlist.roles(name) values('admin');
-insert into wishlist.roles(name) values('user');
+insert into wishlist.roles(roleName) values('admin');
+insert into wishlist.roles(roleName) values('user');
 
 INSERT INTO wishlist.users(name, username, password, roleID) VALUES ('hannibal','hannibal', '1234', '1');
 INSERT INTO wishlist.users(name, username, password, roleID) VALUES ('Victor','victor', '1234', '1');
@@ -12,7 +12,7 @@ INSERT INTO wishlist.users(name, username, password, roleID) VALUES ('mette','me
 INSERT INTO wishlist.wishlists(userID, wishlistName) values('1', 'Hannibal juleønsker');
 
 
-INSERT INTO wishlist.wishes(name, description, wishlistID) VALUES ('padel bat', 'Et bat til at spille padel tennis', '1');
-INSERT INTO wishlist.wishes(name, description, wishlistID) VALUES ('ferrari', 'En bil der kører suuuuper stærkt', '1');
+INSERT INTO wishlist.wishes(wishName, description, wishlistID, price, quantity) VALUES ('padel bat', 'Et bat til at spille padel tennis', '1', 1000, 1);
+INSERT INTO wishlist.wishes(wishName, description, wishlistID, price, quantity) VALUES ('ferrari', 'En bil der kører suuuuper stærkt', '1', 1000000, 2);
 
 

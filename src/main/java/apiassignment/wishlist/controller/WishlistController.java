@@ -54,17 +54,21 @@ public class WishlistController {
 
     @GetMapping("/profil")
     public String profil(HttpSession session, Model model){
+
         if(!wishlistService.isLoogedIn(session)){
             return "homepage";
         }
+
         User user = (User) session.getAttribute("user");
         Wishlist tempWishlist = wishlistService.getWishlistByuserId(user.getUserId());
         model.addAttribute("user", user);
+
         if(tempWishlist != null) {
             model.addAttribute("wishlist", tempWishlist);
         } else {
             return "profileEmptyWishlist";
         }
+
         return "profile";
     }
 

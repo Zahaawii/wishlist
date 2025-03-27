@@ -13,7 +13,7 @@ wishlistID int PRIMARY KEY NOT NULL auto_increment
 
 CREATE TABLE roles (
 roleID int PRIMARY KEY NOT NULL auto_increment,
-name VARCHAR(25) NOT NULL
+roleName VARCHAR(25) NOT NULL
 );
 
 
@@ -30,8 +30,10 @@ FOREIGN KEY(roleID) REFERENCES roles(roleID)
 CREATE TABLE wishes (
 wishlistID INT NOT NULL,
 wishID int PRIMARY KEY NOT NULL auto_increment,
-name VARCHAR(50) NOT NULL,
+wishName VARCHAR(50) NOT NULL,
 description VARCHAR(250),
+price double,
+quantity int,
 link VARCHAR(500),
 isReserved tinyint(1) DEFAULT 0,
 FOREIGN KEY(wishlistID) REFERENCES wishlists(wishlistID)
