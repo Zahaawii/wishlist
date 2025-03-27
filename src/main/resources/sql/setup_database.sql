@@ -33,7 +33,7 @@ wishID int PRIMARY KEY NOT NULL auto_increment,
 name VARCHAR(50) NOT NULL,
 description VARCHAR(250),
 link VARCHAR(500),
-isReserved boolean,
+isReserved tinyint(1),
 FOREIGN KEY(wishlistID) REFERENCES wishlists(wishlistID)
 );
 
