@@ -10,29 +10,26 @@
 <div class="center">
 
     <div class="addFormular">
-        <h1 class="heading">Create new Wish</h1>
+        <h1 class="heading">Update Wish</h1>
 
         <form th:action="@{/wish/update}" th:object="${wish}" method="post">
 
+            <input type="hidden" th:field="*{wishId}" />
+
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" th:field="*{name}" required>
-            <br><br>
+            <input type="text" id="name" name="name" th:field="*{name}" required th:value="${wish.getName()}">
 
             <label for="description">Despriction:</label>
-            <input type="text" id="description" name="description" th:field="*{description}" required>
-            <br><br>
+            <input type="text" id="description" name="description" th:field="*{description}" required th:value="${wish.getDescription()}">
 
             <label for="price">Price:</label>
-            <input type="text" id="price" name="price" th:field="*{price}">
-            <br><br>
+            <input type="text" id="price" name="price" th:field="*{price}" th:value="${wish.getPrice()}">
 
             <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" th:field="*{quantity}">
-            <br><br>
+            <input type="number" id="quantity" name="quantity" th:field="*{quantity}" th:value="${wish.getQuantity()}">
 
             <label for="link">Link:</label>
-            <input type="url" id="link" name="link" th:field="*{link}">
-            <br><br>
+            <input type="url" id="link" name="link" th:field="*{link}" th:value="${wish.getLink()}">
 
             <button type="submit">Update Wish</button>
         </form>
