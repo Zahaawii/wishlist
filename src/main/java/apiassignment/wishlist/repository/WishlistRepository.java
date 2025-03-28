@@ -199,6 +199,12 @@ public class WishlistRepository {
         String sql = "DELETE FROM wishes WHERE wishID = ?";
         jdbcTemplate.update(sql,id);
     }
+    public User updateUser(User user){
+        String sql = "UPDATE users SET name = ?, username = ?, password = ? WHERE userID = ?";
+        jdbcTemplate.update(sql, user.getName(), user.getUsername(), user.getPassword(), user.getUserId());
+        return user;
+    }
+
 
 
 

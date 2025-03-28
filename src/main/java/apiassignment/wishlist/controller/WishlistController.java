@@ -181,5 +181,24 @@ public class WishlistController {
         wishlistService.deleteWish(id);
         return "redirect:/wishlist";
     }
+    @GetMapping("/profile/edit")
+    public String editProfileSide(HttpSession session, Model model){
+        if(!wishlistService.isLoogedIn(session)) {
+            return "login";
+        }
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("updatedUser", new User());
+        return "updateUser";
+    }
+
+    @PostMapping("/profile/edit")
+    public String editProfile(@ModelAttribute User updatedUser, HttpSession session){
+        if(!wishlistService.isLoogedIn(session)) {
+            return "login";
+        }
+        wishlistService.updateUser(updatedUser);
+        return "redirect:/profile";
+    }
 
 }
