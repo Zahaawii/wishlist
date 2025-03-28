@@ -172,6 +172,7 @@ public class WishlistController {
         wish.setPrice(newWish.getPrice());
         wish.setQuantity(newWish.getQuantity());
         wish.setLink(newWish.getLink());
+
         wishlistService.updateWish(wish);
         return "redirect:/wishlist";
     }
