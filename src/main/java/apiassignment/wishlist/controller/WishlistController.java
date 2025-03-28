@@ -45,17 +45,26 @@ public class WishlistController {
     }
 
 
-
     @GetMapping("login")
-    public String getLoginSide(){
+    public String getLogin(){
         return "login";
+    }
+
+    @GetMapping("profile")
+    public String getProfile (Model model, HttpSession session) {
+        /*User user = (User) session.getAttribute("user");
+        if (user == null) {
+            model.addAttribute("notLoggedIn", true);
+            return "redirect:/login";
+        }
+        model.addAttribute("name", user.getName());*/
+        return "profile";
     }
 
 
     @PostMapping("login")
     public String checkLogin(@RequestParam("checkUsername") String username, @RequestParam("checkUserpassword") String password,
                              HttpSession session, Model model){
-
         User user = wishlistService.login(username, password);
         if(user == null){
             model.addAttribute("wrongLogin", true);
@@ -67,7 +76,7 @@ public class WishlistController {
     }
 
 
-    @GetMapping("/profile")
+   /* @GetMapping("/profile")
     public String profil(HttpSession session, Model model){
 
         if(!wishlistService.isLoogedIn(session)){
@@ -85,7 +94,7 @@ public class WishlistController {
         }
 
         return "profile";
-    }
+    }*/
 
 
     @GetMapping("/logout")
