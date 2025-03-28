@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Create Wish</title>
+    <link rel="stylesheet" th:href="@{/css/createWishList.css}">
 </head>
 <body>
 
+<div class="center">
+
+    <div class="addFormular">
+        <h1 class="heading">Create new Wish</h1>
+
+        <form th:action="@{/wish/update}" th:object="${wish}" method="post">
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" th:field="*{name}" required>
+            <br><br>
+
+            <label for="description">Despriction:</label>
+            <input type="text" id="description" name="description" th:field="*{description}" required>
+            <br><br>
+
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price" th:field="*{price}">
+            <br><br>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" th:field="*{quantity}">
+            <br><br>
+
+            <label for="link">Link:</label>
+            <input type="url" id="link" name="link" th:field="*{link}">
+            <br><br>
+
+            <button type="submit">Update Wish</button>
+        </form>
+        <a th:href="@{/wishlist}" class="delete-button">Cancel</a>
+    </div>
+</div>
 </body>
 </html>

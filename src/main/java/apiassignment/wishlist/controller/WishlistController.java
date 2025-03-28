@@ -116,16 +116,25 @@ public class WishlistController {
         return "redirect:/profil";
     }
 
-    @GetMapping("/wishlist/{id}/add")
-    public String addWish(Model model, @RequestParam int id) {
+    @GetMapping("/wish/add")
+    public String addWish(Model model, HttpSession session) {
+        if(!wishlistService.isLoogedIn(session)) {
+            return "login";
+        }
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user",user);
         model.addAttribute("wish", new Wish());
         return "createWish";
     }
 
     @PostMapping("/wish/save")
-    public String saveWish(@ModelAttribute Wish wish) {
+    public String saveWish(@ModelAttribute Wish wish, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
         wishlistService.addWish(wish);
-        return "redirect:/profile";
+        return "redirect:/wishlist";
     }
 
     @GetMapping("wish/{id}/edit")
@@ -136,6 +145,22 @@ public class WishlistController {
         }
         model.addAttribute("wish",wish);
         return "updateWish";
+    }
+
+    @PostMapping("/wish/update")
+    public String updateWish(@ModelAttribute Wish newWish, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        Wish wish = new Wish();
+        wish.setName(newWish.getName());
+        wish.setDescription(newWish.getDescription());
+        wish.setPrice(newWish.getPrice());
+        wish.setQuantity(newWish.getQuantity());
+        wish.setLink(newWish.getLink());
+        wishlistService.updateWish(wish);
+        return "redirect:/wishlist";
     }
 
 }
