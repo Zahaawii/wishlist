@@ -164,7 +164,41 @@ public class WishlistRepository {
         }
     }
 
+    public Wishlist getWishlistByID(int id) {
+        String sql = "SELECT * FROM wishlists WHERE wishlistID = ?";
+        List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(),id);
+        if (wishlists.isEmpty()) {
+            return null;
+        } else {
+            return wishlists.get(0);
+        }
+    }
 
+    public Wish getWishById(int id) {
+        String sql = "SELECT * FROM wishes WHERE wishID = ?";
+        List<Wish> wish = jdbcTemplate.query(sql, new WishRowmapper(), id);
+
+        if (wish.isEmpty()) {
+            return null;
+        } else {
+            return wish.get(0);
+        }
+    }
+
+    public List<Wish> getAllWishesByWishlistId(int id) {
+        String sql = "SELECT * FROM wishes WHERE wishlistID = ?";
+        return jdbcTemplate.query(sql, new WishRowmapper(), id);
+    }
+
+    public void updateWish(Wish wish) {
+        String sql = "UPDATE wishes SET wishName = ?, description = ?, price = ?, quantity = ?, link = ? WHERE wishID = ?";
+        jdbcTemplate.update(sql,wish.getName(),wish.getDescription(),wish.getPrice(),wish.getQuantity(),wish.getLink(),wish.getWishId());
+    }
+
+    public void deleteWish(int id) {
+        String sql = "DELETE FROM wishes WHERE wishID = ?";
+        jdbcTemplate.update(sql,id);
+    }
 
 
 
