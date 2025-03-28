@@ -3,10 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Create Wish</title>
-  <link rel="stylesheet" th:href="@{/main.css}">
+  <link rel="stylesheet" th:href="@{/css/createWishList.css}">
 </head>
 <body>
-<h1>Create new Wish</h1>
+
+<div class="center">
+
+  <div class="addFormular">
+<h1 class="heading">Create new Wish</h1>
 
 <form th:action="@{/wish/save}" th:object="${wish}" method="post">
 
@@ -33,5 +37,7 @@
   <button type="submit">Add Wish</button>
 </form>
 <a th:href="@{/wishlist}" class="delete-button">Cancel</a>
+</div>
+</div>
 </body>
 </html>
