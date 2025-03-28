@@ -35,6 +35,15 @@ public class WishlistService{
     public List<Wishlist> getAllWishlistsByUserId (int id) {
         return wishlistRepository.getAllWishlistsByUserId(id);
     }
+
+    public Wishlist getWishlistById(int id) {
+        return wishlistRepository.getWishlistById(id);
+    }
+
+    public List<Wish> getAllWishesFromWishlistId(int id) {
+        return wishlistRepository.getAllWishesFromWishlistId(id);
+    }
+
     public User getUserByUsername(String username){
         return wishlistRepository.getUserByUsername(username);
     }

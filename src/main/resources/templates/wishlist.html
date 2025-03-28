@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+</head>
+<body>
+
+<nav>
+  <div class="navbar">
+    <a th:href="@{/profile}"><p>PROFILE</p></a>
+    <img th:src="@{images/wishlist.png}" />
+    <button class="button-22">
+      <a>NEW WISHLIST</a>
+    </button>
+  </div>
+</nav>
+
+<h1 class="profileheader">
+  <span th:text="${wishlistname}">  </span>
+</h1>
+
+<div class="Mainmaincontainer">
+  <h3>YOUR WISHES</h3>
+
+  <div class="wishesMainContainer">
+    <a th:href="@{/wish/add}">
+      <div class="wishListContainer">
+          <button class="plusbutton">+</button>
+      </div>
+    </a>
+    <div th:each="wish : ${wishes}">
+
+        <div class="wishListContainer">
+          <h3 th:text="${wish.name}"></h3>
+        </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!--<h1 th:text="${user.getUsername()}">
+</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>description</th>
+                <th>link</th>
+                <th>Has been reserved</th>
+            </tr>
+        </thead>
+            <tbody>
+                <tr th:each = "wish : ${wishlist.getWishes()}">
+                    <td th:text="${wish.getName()}"></td>
+                    <td th:text="${wish.getDescription()}"></td>
+                    <td th:text="${wish.getLink()}"></td>
+                    <td th:text="${wish.isReserved()}"></td>
+                </tr>
+            </tbody>
+    </table>-->
+
+
+<!--<a th:href="@{/logout}">Logout of your profile</a>-->
+</body>
+</html>

@@ -82,6 +82,22 @@ public class WishlistRepository {
         return new Wishlist(wishlistId, wishlistName, listOfWishes);
     }
 
+    public Wishlist getWishlistById(int id) {
+
+        String sql= "SELECT * from wishlists WHERE wishlists.wishlistID = ?";
+
+        List<Wishlist> templist = jdbcTemplate.query(sql, new WishlistRowmapper(), id);
+        Wishlist wishlist = templist.getFirst();
+
+        return wishlist;
+    }
+    public List<Wish> getAllWishesFromWishlistId(int id) {
+        String sql = "SELECT * FROM wishes WHERE wishlistID = ?";
+        List<Wish> wishes = jdbcTemplate.query(sql, new WishRowmapper(), id);
+
+        return wishes;
+    }
+
     public List<Wishlist> getAllWishlistsByUserId(int id) {
         String sql = "SELECT * FROM wishlists WHERE userID = ?";
         List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(), id);
