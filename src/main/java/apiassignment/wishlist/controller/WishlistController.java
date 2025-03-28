@@ -163,4 +163,10 @@ public class WishlistController {
         return "redirect:/wishlist";
     }
 
+    @PostMapping("/wish/delete/{id}")
+    public String deleteWish(@RequestParam int id, HttpSession session) {
+        wishlistService.deleteWish(id);
+        return "redirect:/wishlist";
+    }
+
 }

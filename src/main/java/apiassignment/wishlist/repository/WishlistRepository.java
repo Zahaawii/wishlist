@@ -193,11 +193,9 @@ public class WishlistRepository {
         jdbcTemplate.update(sql,wish.getName(),wish.getDescription(),wish.getPrice(),wish.getQuantity(),wish.getLink(),wish.getWishId());
     }
 
-    public boolean deleteWish(int id) {
+    public void deleteWish(int id) {
         String sql = "DELETE FROM wishes WHERE wishID = ?";
-        int rowsAffected = jdbcTemplate.update(sql,id);
-
-        return rowsAffected > 0;
+        jdbcTemplate.update(sql,id);
     }
 
 

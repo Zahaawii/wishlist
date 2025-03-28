@@ -61,8 +61,8 @@ public class WishlistService{
     public void updateWish(Wish wish) {
         wishlistRepository.updateWish(wish);
     }
-    public boolean deleteWish(int id) {
-        return wishlistRepository.deleteWish(id);
+    public void deleteWish(int id) {
+        wishlistRepository.deleteWish(id);
     }
 
 
