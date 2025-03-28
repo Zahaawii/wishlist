@@ -26,6 +26,9 @@ a {
     z-index: 100;
     filter: blur(80%);
 }
+.navbar img {
+
+}
 .navbar p {
     color: #6D888E;
 }
@@ -84,8 +87,16 @@ h3 {
     width: calc(100% - 2em);
     background-color: #C2F2FC;
     border-radius: 16px;
-
-
+}
+.wishesMainContainer {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 1fr;
+    padding: 1em;
+    gap: 1em;
+    width: calc(100% - 2em);
+    background-color: #C2F2FC;
+    border-radius: 16px;
 }
 .wishListContainer {
     font-family: Inter;
@@ -96,6 +107,9 @@ h3 {
     height: 240px;
     background-color: #DEFAFF;
     border-radius: 16px;
+}
+.wishListContainer:hover {
+    color: #ecfcff;
 }
 
 .plusbutton {

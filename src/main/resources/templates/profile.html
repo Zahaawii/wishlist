@@ -11,7 +11,7 @@
     <nav>
         <div class="navbar">
             <a th:href="@{/profile}"><p>PROFILE</p></a>
-            <!--<div class="navbarprofileimg"></div>-->
+            <img th:src="@{images/wishlist.png}" />
             <button class="button-22">
                 <a>NEW WISHLIST</a>
             </button>
@@ -29,10 +29,12 @@
                          <button class="plusbutton">+</button>
                      </a>
             </div>
-            <div th:each="Wishlist : ${wishlists}">
-                <div class="wishListContainer">
-                    <h3 th:text="${Wishlist.wishlistName}"></h3>
-                </div>
+            <div th:each="wishlist : ${wishlists}">
+                <a th:href="@{/wishlist/{id}(id=${wishlist.wishlistId})}">
+                    <div class="wishListContainer">
+                        <h3 th:text="${wishlist.wishlistName}"></h3>
+                    </div>
+                </a>
             </div>
 
         </div>

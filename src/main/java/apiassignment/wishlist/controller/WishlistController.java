@@ -8,10 +8,7 @@ import apiassignment.wishlist.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -52,7 +49,7 @@ public class WishlistController {
         return "login";
     }
 
-    @GetMapping("profile")
+    @GetMapping("/profile")
     public String getProfile (Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         List<Wishlist> wishLists = wishlistService.getAllWishlistsByUserId(user.getUserId());
@@ -60,9 +57,27 @@ public class WishlistController {
         //Capitalize first character in name
         String name = user.getName().substring(0, 1).toUpperCase() + user.getName().substring(1);
 
+        String imgpath = "../static.images/wishlist.png";
+
         model.addAttribute("wishlists", wishLists);
         model.addAttribute("name", name);
+        model.addAttribute("imgpath", imgpath);
         return "profile";
+    }
+    @GetMapping("/wishlist/{id}")
+    public String getWishlist (@PathVariable("id") int wishlistId, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        Wishlist wishlist = wishlistService.getWishlistById(wishlistId);
+        List<Wish> wishes = wishlistService.getAllWishesFromWishlistId(wishlistId);
+
+        if (wishlist != null && wishlist.getWishlistName() != null) {
+            String wishlistname = wishlist.getWishlistName();
+            model.addAttribute("wishlistname", wishlistname);
+            System.out.println(wishlistname);
+        }
+        model.addAttribute("wishes", wishes);
+
+        return "wishlist";
     }
 
 
