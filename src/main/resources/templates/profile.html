@@ -18,7 +18,7 @@
         </div>
     </nav>
 
-    <h1 class="profileheader">Hello, &nbsp<span>Name</span> <!--<span th:text="${name}"></span>--></h1>
+    <h1 class="profileheader">Hello,&nbsp<span th:text="${name}"></span> <!--<span th:text="${name}"></span>--></h1>
 
     <div class="Mainmaincontainer">
         <h3>YOUR WISHLISTS</h3>
@@ -29,9 +29,11 @@
                          <button class="plusbutton">+</button>
                      </a>
             </div>
-            <div class="wishListContainer"></div>
-            <div class="wishListContainer"></div>
-            <div class="wishListContainer"></div>
+            <div th:each="Wishlist : ${wishlists}">
+                <div class="wishListContainer">
+                    <h3 th:text="${Wishlist.wishlistName}"></h3>
+                </div>
+            </div>
 
         </div>
     </div>
