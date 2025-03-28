@@ -1,6 +1,6 @@
 * {
     background-color: #D5F8FF;
-    color: black;
+    color: cornflowerblue;
     margin: 0;
     padding: 0;
     font-family: sans-serif;
@@ -11,6 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
     height: 1000px;
 
 }
@@ -38,15 +39,17 @@ form {
 input, textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid gray;
+    border: 1px solid cornflowerblue;
     border-radius: 15px;
     font-size: 15px;
 }
 
 button {
+    align-self: center;
     color: cornflowerblue;
-    border: none;
+    border: 1px solid cornflowerblue;
     border-radius: 10px;
     font-size: 16px;
     padding: 10px 15px;
+    width: 50%
 }

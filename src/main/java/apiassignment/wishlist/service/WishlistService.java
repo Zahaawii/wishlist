@@ -3,6 +3,7 @@ package apiassignment.wishlist.service;
 
 import apiassignment.wishlist.model.User;
 import apiassignment.wishlist.model.Wishlist;
+import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.repository.WishlistRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,9 @@ public class WishlistService{
     }
     public void createWishList(int userID, String name) {
         wishlistRepository.createWishList(userID, name);
+    }
+    public void addWish(Wish wish) {
+        wishlistRepository.addWish(wish);
     }
     public User updateUser(User user){
         return wishlistRepository.updateUser(user);
