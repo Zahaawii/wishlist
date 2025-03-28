@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class WishlistController {
 
@@ -23,7 +25,7 @@ public class WishlistController {
     }
 
 
-    @GetMapping("/homepage")
+    @GetMapping("")
     public String homepage(){
         return "homepage";
     }
@@ -45,17 +47,28 @@ public class WishlistController {
     }
 
 
-
     @GetMapping("login")
-    public String getLoginSide(){
+    public String getLogin(){
         return "login";
+    }
+
+    @GetMapping("profile")
+    public String getProfile (Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        List<Wishlist> wishLists = wishlistService.getAllWishlistsByUserId(user.getUserId());
+
+        //Capitalize first character in name
+        String name = user.getName().substring(0, 1).toUpperCase() + user.getName().substring(1);
+
+        model.addAttribute("wishlists", wishLists);
+        model.addAttribute("name", name);
+        return "profile";
     }
 
 
     @PostMapping("login")
     public String checkLogin(@RequestParam("checkUsername") String username, @RequestParam("checkUserpassword") String password,
                              HttpSession session, Model model){
-
         User user = wishlistService.login(username, password);
         if(user == null){
             model.addAttribute("wrongLogin", true);
@@ -67,7 +80,7 @@ public class WishlistController {
     }
 
 
-    @GetMapping("/profile")
+   /* @GetMapping("/profile")
     public String profil(HttpSession session, Model model){
 
         if(!wishlistService.isLoogedIn(session)){
@@ -85,7 +98,7 @@ public class WishlistController {
         }
 
         return "profile";
-    }
+    }*/
 
 
     @GetMapping("/logout")
@@ -114,9 +127,9 @@ public class WishlistController {
         if(user == null) {
             return "redirect:/login";
         }
-        
+
         wishlistService.createWishList(user.getUserId(), wishlist.getWishlistName() );
-        return "redirect:/profil";
+        return "redirect:/profile";
     }
 
     @GetMapping("/wish/add")
