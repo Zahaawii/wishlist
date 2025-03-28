@@ -71,9 +71,6 @@ public class WishlistService{
         return wishlistRepository.updateUser(user);
     }
 
-    public User updateUser(User user){
-        return wishlistRepository.updateUser(user);
-    }
 
 
 
