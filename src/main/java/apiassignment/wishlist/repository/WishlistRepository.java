@@ -45,6 +45,7 @@ public class WishlistRepository {
         }
         return temp.getFirst();
     }
+
     public User getUserById(int userId){
         String sql = "SELECT * FROM users WHERE userID = ?";
         List<User>temp = jdbcTemplate.query(sql, new UserRowmapper(), userId);
@@ -67,8 +68,6 @@ public class WishlistRepository {
         }
         return user;
     }
-
-
 
     public Wishlist getAllWishesByUserId(int userId ){
 
@@ -164,14 +163,43 @@ public class WishlistRepository {
         }
     }
 
+    public void deleteUser(int id) {
+        String sql = "DELETE FROM USERS WHERE USERID = ?";
+        jdbcTemplate.update(sql, id);
+    }
 
 
 
+    public User adminRegisterUser(User user){
 
+        String checkRoleQuery = "SELECT COUNT(*) FROM roles WHERE roleID = ?";
+        Integer count = jdbcTemplate.queryForObject(checkRoleQuery, Integer.class, user.getRoleId());
 
+        if (count == 0) {
+            throw new IllegalArgumentException("RoleID " + user.getRoleId() + " does not exist.");
+        }
+        String sql = "INSERT INTO users (name, username, password, roleID) VALUES(?, ?, ?, ?)";
 
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getUsername());
+            ps.setString(3, user.getPassword());
+            ps.setInt(4, user.getRoleId());
+            return ps;
+        }, keyHolder);
 
+        int userId =keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
+
+        if(userId != -1){
+            user.setUserId(userId);
+        }
+
+        return user;
+
+    }
 
 
 
