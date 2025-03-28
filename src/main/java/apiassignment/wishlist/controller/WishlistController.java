@@ -8,10 +8,7 @@ import apiassignment.wishlist.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -133,14 +130,75 @@ public class WishlistController {
     }
 
     @GetMapping("/wish/add")
-    public String addWish(Model model) {
+    public String addWish(Model model, HttpSession session) {
+        if(!wishlistService.isLoogedIn(session)) {
+            return "login";
+        }
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user",user);
         model.addAttribute("wish", new Wish());
         return "createWish";
     }
 
     @PostMapping("/wish/save")
-    public String saveWish(@ModelAttribute Wish wish) {
+    public String saveWish(@ModelAttribute Wish wish, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
         wishlistService.addWish(wish);
+        return "redirect:/wishlist";
+    }
+
+    @GetMapping("wish/{id}/edit")
+    public String editWish(Model model, @PathVariable int id) {
+        Wish wish = wishlistService.getWishById(id);
+        if (wish == null) {
+            throw new IllegalArgumentException("Wish doesnt exits");
+        }
+        model.addAttribute("wish",wish);
+        return "updateWish";
+    }
+
+    @PostMapping("/wish/update")
+    public String updateWish(@ModelAttribute Wish newWish, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        Wish wish = new Wish();
+        wish.setName(newWish.getName());
+        wish.setDescription(newWish.getDescription());
+        wish.setPrice(newWish.getPrice());
+        wish.setQuantity(newWish.getQuantity());
+        wish.setLink(newWish.getLink());
+        wishlistService.updateWish(wish);
+        return "redirect:/wishlist";
+    }
+
+    @PostMapping("/wish/delete/{id}")
+    public String deleteWish(@RequestParam int id, HttpSession session) {
+        wishlistService.deleteWish(id);
+        return "redirect:/wishlist";
+    }
+
+    @GetMapping("/profile/edit")
+    public String editProfileSide(HttpSession session, Model model){
+        if(!wishlistService.isLoogedIn(session)) {
+            return "login";
+        }
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("updatedUser", new User());
+        return "updateUser";
+    }
+
+    @PostMapping("/profile/edit")
+    public String editProfile(@ModelAttribute User updatedUser, HttpSession session){
+        if(!wishlistService.isLoogedIn(session)) {
+            return "login";
+        }
+        wishlistService.updateUser(updatedUser);
         return "redirect:/profile";
     }
 

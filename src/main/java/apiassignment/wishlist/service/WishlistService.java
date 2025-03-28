@@ -51,6 +51,7 @@ public class WishlistService{
     public void addWish(Wish wish) {
         wishlistRepository.addWish(wish);
     }
+
     public User updateUser(User user){
         return wishlistRepository.updateUser(user);
     }
