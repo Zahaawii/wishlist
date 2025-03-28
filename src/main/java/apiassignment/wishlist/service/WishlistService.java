@@ -8,6 +8,8 @@ import apiassignment.wishlist.repository.WishlistRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class WishlistService{
 
@@ -26,8 +28,11 @@ public class WishlistService{
         return session.getAttribute("user") != null;
     }
 
-    public Wishlist getWishlistByuserId(int userId ){
-        return wishlistRepository.getWishlistByuserId( userId);
+    public Wishlist getAllWishesByUserId(int userId ){
+        return wishlistRepository.getAllWishesByUserId(userId);
+    }
+    public List<Wishlist> getAllWishlistsByUserId (int id) {
+        return wishlistRepository.getAllWishlistsByUserId(id);
     }
     public User getUserByUsername(String username){
         return wishlistRepository.getUserByUsername(username);

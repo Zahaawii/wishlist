@@ -6,11 +6,14 @@ import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.model.Wishlist;
 import apiassignment.wishlist.rowmappers.UserRowmapper;
 import apiassignment.wishlist.rowmappers.WishRowmapper;
+import apiassignment.wishlist.rowmappers.WishlistRowmapper;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -20,12 +23,6 @@ import java.util.List;
 @Repository
 public class WishlistRepository {
 
-    @Value("${spring.datasource.url}")
-    String url;
-    @Value("${spring.datasource.username}")
-    String username;
-    @Value("${spring.datasource.password}")
-    String password;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -73,7 +70,7 @@ public class WishlistRepository {
 
 
 
-    public Wishlist getWishlistByuserId(int userId ){
+    public Wishlist getAllWishesByUserId(int userId ){
 
         String sql= "SELECT wishes.* FROM wishes join wishlists on wishes.wishlistID = wishlists.wishlistID where wishlists.userID = ?";
         List<Wish>listOfWishes = jdbcTemplate.query(sql, new WishRowmapper(), userId);
@@ -83,6 +80,12 @@ public class WishlistRepository {
         int wishlistId = listOfWishes.getFirst().getWishlistId();
         String wishlistName = listOfWishes.getFirst().getName();
         return new Wishlist(wishlistId, wishlistName, listOfWishes);
+    }
+
+    public List<Wishlist> getAllWishlistsByUserId(int id) {
+        String sql = "SELECT * FROM wishlists WHERE userID = ?";
+        List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(), id);
+        return wishlists;
     }
 
 
