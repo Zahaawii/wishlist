@@ -135,6 +135,32 @@ public class WishlistRepository {
 
     }
 
+    public void addWish(Wish wish) {
+        try {
+            String sql = "INSERT INTO wishes (wishlistID, wishName, description, price, quantity, link) VALUES (?, ?, ?, ?, ?, ?)";
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, 1); //husk at ændre til den specifike wishlist's id
+                ps.setString(2, wish.getName());
+                ps.setString(3, wish.getDescription());
+                ps.setDouble(4, wish.getPrice());
+                ps.setInt(5, wish.getQuantity());
+                ps.setString(6, wish.getLink());
+                return ps;
+            }, keyHolder);
+
+            int wishId = keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
+
+            if (wishId != -1) {
+                wish.setWishId(wishId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 

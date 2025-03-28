@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css">
 </head>
 <body>
-<h1 th:text="${user.getUsername()}">
+<h1 th:text="${user.getName()}">
 </h1>
 
     <table border="1">
@@ -28,7 +28,7 @@
             </tbody>
     </table>
 
-
+<a th:href="@{/profile/edit}">Edit profile</a>
 <a th:href="@{/logout}">Logout of your profile</a>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package apiassignment.wishlist.controller;
 
 import apiassignment.wishlist.model.User;
+import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.model.Wishlist;
 import apiassignment.wishlist.service.*;
 
@@ -52,12 +53,12 @@ public class WishlistController {
 
 
     @PostMapping("login")
-    public String checkLogin(@RequestParam("username") String username, @RequestParam("password") String password,
+    public String checkLogin(@RequestParam("checkUsername") String username, @RequestParam("checkUserpassword") String password,
                              HttpSession session, Model model){
 
         User user = wishlistService.login(username, password);
         if(user == null){
-            model.addAttribute("forkertLogin", true);
+            model.addAttribute("wrongLogin", true);
             return "login";
         }
         session.setAttribute("user", user);
@@ -70,7 +71,7 @@ public class WishlistController {
     public String profil(HttpSession session, Model model){
 
         if(!wishlistService.isLoogedIn(session)){
-            return "homepage";
+            return "login";
         }
 
         User user = (User) session.getAttribute("user");
@@ -118,6 +119,16 @@ public class WishlistController {
         return "redirect:/profil";
     }
 
+    @GetMapping("/wish/add")
+    public String addWish(Model model) {
+        model.addAttribute("wish", new Wish());
+        return "createWish";
+    }
 
+    @PostMapping("/wish/save")
+    public String saveWish(@ModelAttribute Wish wish) {
+        wishlistService.addWish(wish);
+        return "redirect:/profile";
+    }
 
 }

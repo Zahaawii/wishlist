@@ -78,6 +78,8 @@ public class User {
                 "id=" + userId +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", roleID='" + roleId + '\'' +
                 '}';
     }
 }
