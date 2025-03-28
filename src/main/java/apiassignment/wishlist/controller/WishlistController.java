@@ -23,7 +23,7 @@ public class WishlistController {
     }
 
 
-    @GetMapping("/homepage")
+    @GetMapping("")
     public String homepage(){
         return "homepage";
     }
@@ -114,7 +114,7 @@ public class WishlistController {
         if(user == null) {
             return "redirect:/login";
         }
-        
+
         wishlistService.createWishList(user.getUserId(), wishlist.getWishlistName() );
         return "redirect:/profil";
     }
