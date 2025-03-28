@@ -8,10 +8,7 @@ import apiassignment.wishlist.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class WishlistController {
@@ -119,8 +116,8 @@ public class WishlistController {
         return "redirect:/profil";
     }
 
-    @GetMapping("/wish/add")
-    public String addWish(Model model) {
+    @GetMapping("/wishlist/{id}/add")
+    public String addWish(Model model, @RequestParam int id) {
         model.addAttribute("wish", new Wish());
         return "createWish";
     }
@@ -129,6 +126,16 @@ public class WishlistController {
     public String saveWish(@ModelAttribute Wish wish) {
         wishlistService.addWish(wish);
         return "redirect:/profile";
+    }
+
+    @GetMapping("wish/{id}/edit")
+    public String editWish(Model model, @PathVariable int id) {
+        Wish wish = wishlistService.getWishById(id);
+        if (wish == null) {
+            throw new IllegalArgumentException("Wish doesnt exits");
+        }
+        model.addAttribute("wish",wish);
+        return "updateWish";
     }
 
 }

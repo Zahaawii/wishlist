@@ -9,6 +9,8 @@ import apiassignment.wishlist.repository.WishlistRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class WishlistService{
 
@@ -46,6 +48,21 @@ public class WishlistService{
     }
     public void addWish(Wish wish) {
         wishlistRepository.addWish(wish);
+    }
+    public Wishlist getWishlistById(int id) {
+        return wishlistRepository.getWishlistByID(id);
+    }
+    public Wish getWishById(int id) {
+        return wishlistRepository.getWishById(id);
+    }
+    public List<Wish> getAllWishesByWishlistId(int id) {
+        return wishlistRepository.getAllWishesByWishlistId(id);
+    }
+    public void updateWish(Wish wish) {
+        wishlistRepository.updateWish(wish);
+    }
+    public boolean deleteWish(int id) {
+        return wishlistRepository.deleteWish(id);
     }
 
 

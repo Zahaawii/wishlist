@@ -6,6 +6,7 @@ import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.model.Wishlist;
 import apiassignment.wishlist.rowmappers.UserRowmapper;
 import apiassignment.wishlist.rowmappers.WishRowmapper;
+import apiassignment.wishlist.rowmappers.WishlistRowmapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -161,7 +162,43 @@ public class WishlistRepository {
         }
     }
 
+    public Wishlist getWishlistByID(int id) {
+        String sql = "SELECT * FROM wishlists WHERE wishlistID = ?";
+        List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(),id);
+        if (wishlists.isEmpty()) {
+            return null;
+        } else {
+            return wishlists.get(0);
+        }
+    }
 
+    public Wish getWishById(int id) {
+        String sql = "SELECT * FROM wishes WHERE wishID = ?";
+        List<Wish> wish = jdbcTemplate.query(sql, new WishRowmapper(), id);
+
+        if (wish.isEmpty()) {
+            return null;
+        } else {
+            return wish.get(0);
+        }
+    }
+
+    public List<Wish> getAllWishesByWishlistId(int id) {
+        String sql = "SELECT * FROM wishes WHERE wishlistID = ?";
+        return jdbcTemplate.query(sql, new WishRowmapper(), id);
+    }
+
+    public void updateWish(Wish wish) {
+        String sql = "UPDATE wishes SET wishName = ?, description = ?, price = ?, quantity = ?, link = ? WHERE wishID = ?";
+        jdbcTemplate.update(sql,wish.getName(),wish.getDescription(),wish.getPrice(),wish.getQuantity(),wish.getLink(),wish.getWishId());
+    }
+
+    public boolean deleteWish(int id) {
+        String sql = "DELETE FROM wishes WHERE wishID = ?";
+        int rowsAffected = jdbcTemplate.update(sql,id);
+
+        return rowsAffected > 0;
+    }
 
 
 
