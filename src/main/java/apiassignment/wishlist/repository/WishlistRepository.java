@@ -164,6 +164,7 @@ public class WishlistRepository {
         }
     }
 
+
     public Wishlist getWishlistByID(int id) {
         String sql = "SELECT * FROM wishlists WHERE wishlistID = ?";
         List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(),id);
@@ -204,6 +205,7 @@ public class WishlistRepository {
         jdbcTemplate.update(sql, user.getName(), user.getUsername(), user.getPassword(), user.getUserId());
         return user;
     }
+
 
 
 
