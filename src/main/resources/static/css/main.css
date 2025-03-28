@@ -66,22 +66,74 @@ h3 {
     justify-content: center;
 }
 
+.Mainmaincontainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+
+}
+
 .wishListMainContainer {
     display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
     padding: 1em;
     gap: 1em;
     width: calc(100% - 2em);
-    height: calc(100% - 2em);
+    height: 240px;
     background-color: #C2F2FC;
+    border-radius: 16px;
+
 
 }
 .wishListContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100%;
     background-color: #DEFAFF;
+    border-radius: 16px;
+
 
 }
 
+.plusbutton {
+    align-items: center;
+    justify-content: center;
+    background-color: #A9E5D1;
+    border-radius: 16px;
+    border-style: none;
+    box-shadow: rgba(255, 255, 255, 0.26) 0 1px 2px inset;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    font-family: "RM Neue", sans-serif;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+    height: 4em;
+    width: 4em;
+    padding: 10px 20px;
+    text-align: center;
+    text-transform: none;
+    transition: color .13s ease-in-out, background .13s ease-in-out, opacity .13s ease-in-out, box-shadow .13s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
 
+.plusbutton:active {
+    background-color: #A9E5D1;
+}
+
+.plusbutton:hover {
+    background-color: #bfedde;
+}
 
 
 .button-22 {

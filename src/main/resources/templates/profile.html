@@ -11,7 +11,7 @@
     <nav>
         <div class="navbar">
             <a th:href="@{/profile}"><p>PROFILE</p></a>
-            <div class="navbarprofileimg"></div>
+            <!--<div class="navbarprofileimg"></div>-->
             <button class="button-22">
                 <a>NEW WISHLIST</a>
             </button>
@@ -20,14 +20,22 @@
 
     <h1 class="profileheader">Hello, &nbsp<span>Name</span> <!--<span th:text="${name}"></span>--></h1>
 
-    <h3>YOUR WISHLISTS</h3>
+    <div class="Mainmaincontainer">
+        <h3>YOUR WISHLISTS</h3>
 
-    <div class="wishListMainContainer">
-        <div class="wishListContainer"></div>
-        <div class="wishListContainer"></div>
-        <div class="wishListContainer"></div>
+        <div class="wishListMainContainer">
+            <div class="wishListContainer">
+                     <a th:href="@{/create/wishlist}">
+                         <button class="plusbutton">+</button>
+                     </a>
+            </div>
+            <div class="wishListContainer"></div>
+            <div class="wishListContainer"></div>
+            <div class="wishListContainer"></div>
 
+        </div>
     </div>
+
 
 <!--<h1 th:text="${user.getUsername()}">
 </h1>
