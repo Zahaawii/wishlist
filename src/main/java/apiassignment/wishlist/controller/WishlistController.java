@@ -1,6 +1,7 @@
 package apiassignment.wishlist.controller;
 
 import apiassignment.wishlist.model.User;
+import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.model.Wishlist;
 import apiassignment.wishlist.service.*;
 
