@@ -142,7 +142,7 @@ public class WishlistRepository {
 
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, 1);
+                ps.setInt(1, 1); //husk at ændre til den specifike wishlist's id
                 ps.setString(2, wish.getName());
                 ps.setString(3, wish.getDescription());
                 ps.setDouble(4, wish.getPrice());
