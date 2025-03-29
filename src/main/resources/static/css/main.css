@@ -153,6 +153,79 @@ h3 {
 
 }
 
+.wishName {
+    display: flex;
+    justify-content: center;
+    font-size: 4em;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: lightblue;
+    -webkit-animation: changeColor 80s ease-in infinite alternate;
+    animation: changeColor 5s ease-in infinite alternate;
+    text-shadow: 0 0 20px rgba(255, 218, 193, 0.5), 0 0 40px rgba(255, 218, 193, 0.3), 0 0 60px rgba(255, 218, 193, 0.2);
+}
+
+.wishContainerWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+
+}
+
+.wishContainer {
+    display: flex;
+    background-color: transparent;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    min-height: 400px;
+    width: 700px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 0 4em;
+
+}
+
+.wishContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+
+}
+
+.wishContainer p {
+    color: #6D888E;
+    font-size: 1em;
+}
+
+.wishContainer h2 {
+    color: #6D888E;
+    font-size: 2em;
+}
+
+.wishContainer h1 {
+    color: #6D888E;
+    font-size: 3em;
+}
+.wishButtonsContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 2em 1em;
+
+}
+
+
 .plusbutton {
     align-items: center;
     justify-content: center;
@@ -244,6 +317,21 @@ h3 {
 .button-22:hover {
     background-color: #bfedde;
 }
+.button-22.red {
+    background-color: #edbfbf;
+}
+
+.button-22.red:hover {
+    background-color: #f4d7d7;
+}
+
+.button-22.blue {
+    background-color: #bfdfed;
+}
+
+.button-22.blue:hover {
+    background-color: #cee4ed;
+}
 
 #clouds {
     position: fixed;
@@ -253,6 +341,7 @@ h3 {
     height: 100vh;
     z-index: -1;
     pointer-events: none;
+
 }
 
 

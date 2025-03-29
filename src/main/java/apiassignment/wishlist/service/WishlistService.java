@@ -25,7 +25,7 @@ public class WishlistService{
         return wishlistRepository.login(username, password);
     }
 
-    public boolean isLoogedIn(HttpSession session) {
+    public boolean isLoggedIn(HttpSession session) {
         return session.getAttribute("user") != null;
     }
 

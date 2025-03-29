@@ -41,6 +41,12 @@ public class Wish {
         return price;
     }
 
+    public String getPriceRounded() {
+        int roundedPrice = (int) Math.round(price);
+        return "$" + roundedPrice;
+
+    }
+
     public void setPrice(double price) {
         this.price = price;
     }
