@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Wish Details</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+</head>
+<body>
+
+<nav>
+    <div class="navbar">
+        <a th:href="@{/profile}"><p>PROFILE</p></a>
+        <img th:src="@{images/wishlist.png}" />
+        <button class="button-22">
+            <a>NEW WISHLIST</a>
+        </button>
+    </div>
+</nav>
+
+<h1 class="profileheader">
+    <span th:text="${wish.name}">Wish name</span>
+</h1>
+
+<div class="Mainmaincontainer">
+    <div class="wishesMainContainer">
+        <div class="wishListContainer" style="flex-direction: column; padding: 1em; text-align: center;">
+            <p><strong>Description:</strong> <span th:text="${wish.description}"></span></p>
+            <p><strong>Price:</strong> <span th:text="${wish.price}">0</span> kr</p>
+            <p><strong>Quantity:</strong> <span th:text="${wish.quantity}">1</span></p>
+            <p><strong>Link:</strong> <a th:href="${wish.link}" target="_blank" th:text="${wish.link}">Visit</a></p>
+        </div>
+        <div style="display: flex; gap: 1em; justify-content: center; margin-top: 2em;">
+            <a th:href="@{/wishlist/{id}(id=${wish.wishlistId})}">
+                <button class="button-22">Back to wishlist</button>
+            </a>
+            <a th:href="@{/wish/{id}/edit(id=${wish.wishId})}">
+                <button class="button-22">Edit</button>
+            </a>
+            <form th:action="@{/wish/delete/{id}(id=${wish.wishId})}" method="post" onsubmit="return confirm('Er du sikker på du vil slette dette ønske?')">
+                <button class="button-22" type="submit">Delete</button>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

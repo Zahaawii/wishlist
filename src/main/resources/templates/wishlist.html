@@ -32,11 +32,11 @@
       </div>
     </a>
     <div th:each="wish : ${wishes}">
-
+      <a th:href="@{/wish/view/{id}(id=${wish.wishId})}">
         <div class="wishListContainer">
           <h3 th:text="${wish.name}"></h3>
         </div>
-
+      </a>
     </div>
 
   </div>

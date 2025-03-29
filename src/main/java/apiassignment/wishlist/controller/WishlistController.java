@@ -206,12 +206,28 @@ public class WishlistController {
             return "redirect:/login";
         }
         wishlistService.updateWish(wish);
-        return "redirect:/wishlist";
+        return "redirect:/wishlist/" + wish.getWishlistId();
     }
 
     @PostMapping("/wish/delete/{id}")
-    public String deleteWish(@RequestParam int id, HttpSession session) {
+    public String deleteWish(@PathVariable int id, HttpSession session) {
+        Wish wish = wishlistService.getWishById(id);
         wishlistService.deleteWish(id);
-        return "redirect:/wishlist";
+
+        return "redirect:/wishlist/" + wish.getWishlistId();
     }
+
+    @GetMapping("wish/view/{id}")
+    public String viewWish(@PathVariable int id, Model model, HttpSession session) {
+        if(!wishlistService.isLoogedIn(session)) {
+            return "redirect:/login";
+        }
+        Wish wish = wishlistService.getWishById(id);
+        if(wish == null) {
+            return "redirect:/profile";
+        }
+        model.addAttribute("wish", wish);
+        return "wish";
+    }
+
 }
