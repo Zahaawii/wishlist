@@ -3,39 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <title>Wishlist homepage</title>
-  <link rel="stylesheet" th:href="@{/css/homepage.css}">
+  <link rel="stylesheet" th:href="@{/css/main.css}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet"></head>
 
 <body>
 
-<nav class="navBar">
+<div th:replace="fragments/navbarunauth :: navbarunauth"></div>
 
-  <div class="bar-legnth">
-    <div class="photoLogo">
-      <img th:src="@{/images/wishlist.png}" alt ="logo">
+<div class="background-video-container">
+  <video autoplay loop muted>
+    <source th:src="@{/videos/cloudsfootage2.mp4}" type="video/mp4">
+  </video>
+</div>
+
+
+
+<div class="hero">
+  <div class="heroseperator">
+    <h3>Get started with Wishlist</h3>
+
+    <div>
+      <h1>All your wishes,<br> in one place!</h1>
+      <p>Wishlist makes it easy for you to save and share all <br> your wishes with friends and family</p>
     </div>
-
-    <div class="login_register">
-      <span class="login"><a href="#">Login</a></span>
-      <span class="register"><a href="#">Register </a></span>
+    <div class="registerbuttonwrap">
+      <button class="registerbutton">Register now</button>
     </div>
   </div>
+  <img th:src="@{/images/wishlist.png}" alt="logo" class="logo">
 
-</nav>
+  <!--<div class="herorightside">
+
+  </div>-->
 
 
-<div class="centerContainer">
-  <div class="wishlistText">WISH<span class="farve">LIST</span></div>
-  <img th:src="@{/images/wishlist.png}" class="cloudImage" alt="Sky">
 </div>
 
 
-
-<div class="endSection">
-
-</div>
 
 
 </body>

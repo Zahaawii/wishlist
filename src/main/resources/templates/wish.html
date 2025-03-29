@@ -16,22 +16,18 @@
     <div class="cloud x5"></div>
 </div>
 
-<nav>
-    <div class="navbar">
-        <a th:href="@{/profile}"><p>PROFILE</p></a>
-        <img th:src="@{images/wishlist.png}" />
-        <button class="button-22">
-            <a>NEW WISHLIST</a>
-        </button>
-    </div>
-</nav>
+<div th:replace="fragments/navbarauth :: navbar"></div>
+
+
 <div class="wishContainerWrapper">
     <div class="wishContainer">
         <div class="wishContent">
-            <h1 class="wishName">
-                <span th:text="${wish.name}">Wish name</span>
-            </h1>
-            <p th:text="${wish.description}">Description</p>
+            <div class="wishNameAndDescContainer">
+                <h1 class="wishName">
+                    <span th:text="${wish.name}">Wish name</span>
+                </h1>
+                <p th:text="${wish.description}">Description</p>
+            </div>
             <h2 th:text="${wish.getPriceRounded()}">XXX$</h2>
             <div class="wishButtonsContainer">
                 <form th:action="@{/wish/delete/{id}(id=${wish.wishId})}" method="post" onsubmit="return confirm('Er du sikker på du vil slette dette ønske?')">
