@@ -7,6 +7,13 @@
   <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
 </head>
 <body>
+<div id="clouds">
+  <div class="cloud x1"></div>
+  <div class="cloud x2"></div>
+  <div class="cloud x3"></div>
+  <div class="cloud x4"></div>
+  <div class="cloud x5"></div>
+</div>
 
 <nav>
   <div class="navbar">
@@ -19,7 +26,7 @@
 </nav>
 
 <h1 class="profileheader">
-  <span th:text="${wishlistname}">  </span>
+  <span class="wishlistName" th:text="${wishlistname}">  </span>
 </h1>
 
 <div class="Mainmaincontainer">
@@ -28,7 +35,7 @@
   <div class="wishesMainContainer">
     <a th:href="@{/wish/add}">
       <div class="wishListContainer">
-          <button class="plusbutton">+</button>
+          <button class="plusbutton"></button>
       </div>
     </a>
     <div th:each="wish : ${wishes}">
