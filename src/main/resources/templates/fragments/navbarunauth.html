@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="navbarunauth">
+    <nav>
+        <div class="navbar">
+            <div class="navbarleftitems">
+                <a th:href="@{/}"><img th:src="@{/images/wishlist.png}" alt ="logo"></a>
+            </div>
+            <div class="navbarrightitems">
+                <a th:href="@{/register}"><p>REGISTER</p></a>
+
+                <button class="button-22">
+                    <a th:href="@{/login}">LOGIN</a>
+                </button>
+            </div>
+
+        </div>
+    </nav>
+</div>
+</body>
+</html>

@@ -15,15 +15,8 @@
   <div class="cloud x5"></div>
 </div>
 
-<nav>
-  <div class="navbar">
-    <a th:href="@{/profile}"><p>PROFILE</p></a>
-    <img th:src="@{images/wishlist.png}" />
-    <button class="button-22">
-      <a>NEW WISHLIST</a>
-    </button>
-  </div>
-</nav>
+<div th:replace="fragments/navbarauth :: navbar"></div>
+
 
 <h1 class="profileheader">
   <span class="wishlistName" th:text="${wishlistname}">  </span>
