@@ -36,10 +36,6 @@ public class WishlistService{
         return wishlistRepository.getAllWishlistsByUserId(id);
     }
 
-    public Wishlist getWishlistById(int id) {
-        return wishlistRepository.getWishlistById(id);
-    }
-
     public List<Wish> getAllWishesFromWishlistId(int id) {
         return wishlistRepository.getAllWishesFromWishlistId(id);
     }
@@ -76,10 +72,6 @@ public class WishlistService{
     public void deleteWish(int id) {
         wishlistRepository.deleteWish(id);
     }
-    public User updateUser(User user){
-        return wishlistRepository.updateUser(user);
-    }
-
     public User updateUser(User user){
         return wishlistRepository.updateUser(user);
     }

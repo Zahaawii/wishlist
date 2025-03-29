@@ -72,6 +72,7 @@ public class WishlistController {
 
         if (wishlist != null && wishlist.getWishlistName() != null) {
             String wishlistname = wishlist.getWishlistName();
+            model.addAttribute("wishlistId",wishlistId);
             model.addAttribute("wishlistname", wishlistname);
             System.out.println(wishlistname);
         }
@@ -147,60 +148,6 @@ public class WishlistController {
         return "redirect:/profile";
     }
 
-    @GetMapping("/wish/add")
-    public String addWish(Model model, HttpSession session) {
-        if(!wishlistService.isLoogedIn(session)) {
-            return "login";
-        }
-        User user = (User) session.getAttribute("user");
-        model.addAttribute("user",user);
-        model.addAttribute("wish", new Wish());
-        return "createWish";
-    }
-
-    @PostMapping("/wish/save")
-    public String saveWish(@ModelAttribute Wish wish, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/login";
-        }
-        wishlistService.addWish(wish);
-        return "redirect:/wishlist";
-    }
-
-    @GetMapping("wish/{id}/edit")
-    public String editWish(Model model, @PathVariable int id) {
-        Wish wish = wishlistService.getWishById(id);
-        if (wish == null) {
-            throw new IllegalArgumentException("Wish doesnt exits");
-        }
-        model.addAttribute("wish",wish);
-        return "updateWish";
-    }
-
-    @PostMapping("/wish/update")
-    public String updateWish(@ModelAttribute Wish newWish, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/login";
-        }
-        Wish wish = new Wish();
-        wish.setName(newWish.getName());
-        wish.setDescription(newWish.getDescription());
-        wish.setPrice(newWish.getPrice());
-        wish.setQuantity(newWish.getQuantity());
-        wish.setLink(newWish.getLink());
-
-        wishlistService.updateWish(wish);
-        return "redirect:/wishlist";
-    }
-
-    @PostMapping("/wish/delete/{id}")
-    public String deleteWish(@RequestParam int id, HttpSession session) {
-        wishlistService.deleteWish(id);
-        return "redirect:/wishlist";
-    }
-
     @GetMapping("/profile/edit")
     public String editProfileSide(HttpSession session, Model model){
         if(!wishlistService.isLoogedIn(session)) {
@@ -221,4 +168,50 @@ public class WishlistController {
         return "redirect:/profile";
     }
 
+    @GetMapping("/wish/add/{wishlistId}")
+    public String addWish(@PathVariable int wishlistId, Model model, HttpSession session) {
+        if(!wishlistService.isLoogedIn(session)) {
+            return "login";
+        }
+        Wish wish = new Wish();
+        wish.setWishlistId(wishlistId);
+        model.addAttribute("wish", wish);
+        return "createWish";
+    }
+
+    @PostMapping("wish/save")
+    public String saveWish(@ModelAttribute Wish wish, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if(user == null) {
+            return "redirect:/login";
+        }
+        wishlistService.addWish(wish);
+        return "redirect:/wishlist/" + wish.getWishlistId();
+    }
+
+    @GetMapping("wish/{id}/edit")
+    public String editWish(Model model, @PathVariable int id) {
+        Wish wish = wishlistService.getWishById(id);
+        if (wish == null) {
+            throw new IllegalArgumentException("Wish doesnt exits");
+        }
+        model.addAttribute("wish",wish);
+        return "updateWish";
+    }
+
+    @PostMapping("/wish/update")
+    public String updateWish(@ModelAttribute Wish wish, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        wishlistService.updateWish(wish);
+        return "redirect:/wishlist";
+    }
+
+    @PostMapping("/wish/delete/{id}")
+    public String deleteWish(@RequestParam int id, HttpSession session) {
+        wishlistService.deleteWish(id);
+        return "redirect:/wishlist";
+    }
 }
