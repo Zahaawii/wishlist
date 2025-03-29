@@ -74,7 +74,6 @@ public class WishlistController {
             String wishlistname = wishlist.getWishlistName();
             model.addAttribute("wishlistId",wishlistId);
             model.addAttribute("wishlistname", wishlistname);
-            System.out.println(wishlistname);
         }
         model.addAttribute("wishes", wishes);
 
@@ -126,7 +125,7 @@ public class WishlistController {
     @GetMapping("/create/wishlist")
     public String createWishlist(Model model, HttpSession session) {
 
-        if(!wishlistService.isLoogedIn(session)) {
+        if(!wishlistService.isLoggedIn(session)) {
             return "login";
         }
 
@@ -150,7 +149,7 @@ public class WishlistController {
 
     @GetMapping("/profile/edit")
     public String editProfileSide(HttpSession session, Model model){
-        if(!wishlistService.isLoogedIn(session)) {
+        if(!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         User user = (User) session.getAttribute("user");
@@ -161,7 +160,7 @@ public class WishlistController {
 
     @PostMapping("/profile/edit")
     public String editProfile(@ModelAttribute User updatedUser, HttpSession session){
-        if(!wishlistService.isLoogedIn(session)) {
+        if(!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         wishlistService.updateUser(updatedUser);
@@ -170,7 +169,8 @@ public class WishlistController {
 
     @GetMapping("/wish/add/{wishlistId}")
     public String addWish(@PathVariable int wishlistId, Model model, HttpSession session) {
-        if(!wishlistService.isLoogedIn(session)) {
+
+        if(!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         Wish wish = new Wish();
@@ -219,7 +219,7 @@ public class WishlistController {
 
     @GetMapping("wish/view/{id}")
     public String viewWish(@PathVariable int id, Model model, HttpSession session) {
-        if(!wishlistService.isLoogedIn(session)) {
+        if(!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
         Wish wish = wishlistService.getWishById(id);

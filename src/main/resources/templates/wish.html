@@ -8,6 +8,14 @@
 </head>
 <body>
 
+<div id="clouds">
+    <div class="cloud x1"></div>
+    <div class="cloud x2"></div>
+    <div class="cloud x3"></div>
+    <div class="cloud x4"></div>
+    <div class="cloud x5"></div>
+</div>
+
 <nav>
     <div class="navbar">
         <a th:href="@{/profile}"><p>PROFILE</p></a>
@@ -17,12 +25,32 @@
         </button>
     </div>
 </nav>
+<div class="wishContainerWrapper">
+    <div class="wishContainer">
+        <div class="wishContent">
+            <h1 class="wishName">
+                <span th:text="${wish.name}">Wish name</span>
+            </h1>
+            <p th:text="${wish.description}">Description</p>
+            <h2 th:text="${wish.getPriceRounded()}">XXX$</h2>
+            <div class="wishButtonsContainer">
+                <form th:action="@{/wish/delete/{id}(id=${wish.wishId})}" method="post" onsubmit="return confirm('Er du sikker på du vil slette dette ønske?')">
+                    <button class="button-22 red" type="submit">Delete</button>
+                </form>
+                <a th:href="@{/wish/{id}/edit(id=${wish.wishId})}">
+                    <button class="button-22 blue">Edit</button>
+                </a>
 
-<h1 class="profileheader">
-    <span th:text="${wish.name}">Wish name</span>
-</h1>
 
-<div class="Mainmaincontainer">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!--<div class="Mainmaincontainer">
     <div class="wishesMainContainer">
         <div class="wishListContainer" style="flex-direction: column; padding: 1em; text-align: center;">
             <p><strong>Description:</strong> <span th:text="${wish.description}"></span></p>
@@ -30,10 +58,7 @@
             <p><strong>Quantity:</strong> <span th:text="${wish.quantity}">1</span></p>
             <p><strong>Link:</strong> <a th:href="${wish.link}" target="_blank" th:text="${wish.link}">Visit</a></p>
         </div>
-        <div style="display: flex; gap: 1em; justify-content: center; margin-top: 2em;">
-            <a th:href="@{/wishlist/{id}(id=${wish.wishlistId})}">
-                <button class="button-22">Back to wishlist</button>
-            </a>
+        <div>
             <a th:href="@{/wish/{id}/edit(id=${wish.wishId})}">
                 <button class="button-22">Edit</button>
             </a>
@@ -44,7 +69,7 @@
         </div>
 
     </div>
-</div>
+</div>-->
 
 </body>
 </html>
