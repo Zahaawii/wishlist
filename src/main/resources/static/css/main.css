@@ -15,7 +15,7 @@ a {
     gap: 2em;
     overflow: hidden;
     height: 100px;
-    background-color: #DEFAFF;
+    background-color: rgba(222, 250, 255, 0.3);
     border-radius: 16px;
     font-size: 1em;
     position: fixed;
@@ -24,13 +24,20 @@ a {
     left: 1em;
     width: calc(100% - 2em);
     z-index: 100;
-    filter: blur(80%);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .navbar img {
 
 }
 .navbar p {
     color: #6D888E;
+    transition: color 0.3s ease;
+
+}
+.navbar p:hover {
+    color: #95b0b6;
+
 }
 
 
@@ -59,9 +66,33 @@ a {
     font-size: 4em;
     color: #F8FAFB;
 }
-.profileheader span {
+/*.profileName {
     color: #FFDAC1;
+}*/
+
+.profileName {
+    font-weight: bold;
+    color: lightblue;
+    -webkit-animation: changeColor 80s ease-in infinite alternate;
+    animation: changeColor 5s ease-in infinite alternate;
+    text-shadow: 0 0 20px rgba(255, 218, 193, 0.5), 0 0 40px rgba(255, 218, 193, 0.3), 0 0 60px rgba(255, 218, 193, 0.2);
 }
+
+@-webkit-keyframes changeColor {
+    0% {color: #f6d1d1;}
+    50% {color: #ffdac1;}
+    100% {color: #d4c7ff;}
+}
+.profileNameWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 220px - 100px); /* Adjust height to account for the navbar and wishListMainContainer */
+    width: 100%;
+    flex-direction: column;
+    padding-top: 2em; /* Optional for spacing adjustment */
+}
+
 
 h3 {
     display: flex;
@@ -107,9 +138,19 @@ h3 {
     height: 240px;
     background-color: #DEFAFF;
     border-radius: 16px;
+    transition: background-color 0.3s ease, transform 1s ease;
+    position: relative;
+}
+.wishlistName {
+    color: #6D888E;
 }
 .wishListContainer:hover {
-    color: #ecfcff;
+    background-color: #E9F9FF;
+}
+.wishListContainer:hover .plusbutton {
+    background-color: #bfedde;
+    transform: scale(1.1);
+
 }
 
 .plusbutton {
@@ -134,19 +175,41 @@ h3 {
     padding: 10px 20px;
     text-align: center;
     text-transform: none;
-    transition: color .13s ease-in-out, background .13s ease-in-out, opacity .13s ease-in-out, box-shadow .13s ease-in-out;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 1s ease;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+
 }
 
 .plusbutton:active {
     background-color: #A9E5D1;
 }
 
+
 .plusbutton:hover {
     background-color: #bfedde;
+    box-shadow: rgba(255, 255, 255, 0.26) 0 1px 4px inset;
+    transform: scale(1.1);
 }
+
+/* Apply the spinning and scaling effect to the plus sign when the container is hovered */
+.wishListContainer:hover .plusbutton {
+    transform: scale(1.1); /* Scale up the plus button */
+}
+
+/* Apply the spinning and scaling effect to the plus sign */
+.plusbutton::before {
+    content: "+";
+    font-size: 2em; /* Adjust size of the plus sign */
+    transition: transform 0.3s ease; /* Smooth transition for transformation */
+}
+
+/* Spin and scale up the plus sign when the container is hovered */
+.wishListContainer:hover .plusbutton::before {
+    transform: rotate(360deg) scale(1.5); /* Spin 360 degrees and scale up */
+}
+
 
 
 .button-22 {
@@ -168,7 +231,7 @@ h3 {
     padding: 10px 21px;
     text-align: center;
     text-transform: none;
-    transition: color .13s ease-in-out, background .13s ease-in-out, opacity .13s ease-in-out, box-shadow .13s ease-in-out;
+    transition: color .3s ease-in-out, background .3s ease-in-out, opacity .3s ease-in-out, box-shadow .3s ease-in-out;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
@@ -181,3 +244,83 @@ h3 {
 .button-22:hover {
     background-color: #bfedde;
 }
+
+#clouds {
+    position: fixed;
+    top: 220px;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+}
+
+
+.cloud {
+    width: 200px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 200px;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transform: scale(1.2);
+}
+
+
+.cloud:before, .cloud:after {
+    content: '';
+    position: absolute;
+    background: #fff;
+    width: 100px;
+    height: 80px;
+    top: -15px;
+    left: 10px;
+    border-radius: 100px;
+    transform: rotate(30deg);
+}
+
+.cloud:after {
+    width: 120px;
+    height: 120px;
+    top: -55px;
+    left: auto;
+    right: 15px;
+}
+
+
+.x1 {
+    animation: moveclouds 15s linear infinite;
+}
+.x2 {
+    left: 200px;
+    transform: scale(0.6);
+    opacity: 0.6;
+    animation: moveclouds 25s linear infinite;
+}
+.x3 {
+    left: -250px;
+    top: -200px;
+    transform: scale(0.8);
+    opacity: 0.8;
+    animation: moveclouds 20s linear infinite;
+}
+.x4 {
+    left: 470px;
+    top: -250px;
+    transform: scale(0.75);
+    opacity: 0.75;
+    animation: moveclouds 18s linear infinite;
+}
+.x5 {
+    left: -150px;
+    top: -150px;
+    transform: scale(0.8);
+    opacity: 0.8;
+    animation: moveclouds 20s linear infinite;
+}
+
+@keyframes moveclouds {
+    0% { margin-left: 100vw; }
+    100% { margin-left: -100vw; }
+}
+
