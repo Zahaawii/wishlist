@@ -179,18 +179,11 @@ public class WishlistController {
     }
 
     @PostMapping("/wish/update")
-    public String updateWish(@ModelAttribute Wish newWish, HttpSession session) {
+    public String updateWish(@ModelAttribute Wish wish, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
         }
-        Wish wish = new Wish();
-        wish.setName(newWish.getName());
-        wish.setDescription(newWish.getDescription());
-        wish.setPrice(newWish.getPrice());
-        wish.setQuantity(newWish.getQuantity());
-        wish.setLink(newWish.getLink());
-
         wishlistService.updateWish(wish);
         return "redirect:/wishlist";
     }
