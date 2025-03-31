@@ -1,6 +1,7 @@
 package apiassignment.wishlist.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Wishlist {
@@ -34,10 +35,15 @@ public class Wishlist {
     }
 
     public List<Wish> getWishes() {
-        return wishes;
+
+        return (wishes != null) ? wishes : new ArrayList<>();
     }
 
     public void setWishes(List<Wish> wishes) {
         this.wishes = wishes;
+    }
+
+    public int getAmountOfWishes () {
+        return wishes.size();
     }
 }
