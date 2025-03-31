@@ -81,6 +81,13 @@ public class WishlistRepository {
         return new Wishlist(wishlistId, wishlistName, listOfWishes);
     }
 
+    public List<Wish> getAllWishesFromWishlistId(int id) {
+        String sql = "SELECT * FROM wishes WHERE wishlistID = ?";
+        List<Wish> wishes = jdbcTemplate.query(sql, new WishRowmapper(), id);
+
+        return wishes;
+    }
+
     public List<Wishlist> getAllWishlistsByUserId(int id) {
         String sql = "SELECT * FROM wishlists WHERE userID = ?";
         List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(), id);
@@ -144,7 +151,7 @@ public class WishlistRepository {
 
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, 1); //husk at ændre til den specifike wishlist's id
+                ps.setInt(1, wish.getWishlistId());
                 ps.setString(2, wish.getName());
                 ps.setString(3, wish.getDescription());
                 ps.setDouble(4, wish.getPrice());
@@ -167,6 +174,48 @@ public class WishlistRepository {
         String sql = "DELETE FROM USERS WHERE USERID = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    public Wishlist getWishlistByID(int id) {
+        String sql = "SELECT * FROM wishlists WHERE wishlistID = ?";
+        List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(),id);
+        if (wishlists.isEmpty()) {
+            return null;
+        } else {
+            return wishlists.get(0);
+        }
+    }
+
+    public Wish getWishById(int id) {
+        String sql = "SELECT * FROM wishes WHERE wishID = ?";
+        List<Wish> wish = jdbcTemplate.query(sql, new WishRowmapper(), id);
+
+        if (wish.isEmpty()) {
+            return null;
+        } else {
+            return wish.get(0);
+        }
+    }
+
+    public List<Wish> getAllWishesByWishlistId(int id) {
+        String sql = "SELECT * FROM wishes WHERE wishlistID = ?";
+        return jdbcTemplate.query(sql, new WishRowmapper(), id);
+    }
+
+    public void updateWish(Wish wish) {
+        String sql = "UPDATE wishes SET wishName = ?, description = ?, price = ?, quantity = ?, link = ? WHERE wishID = ?";
+        jdbcTemplate.update(sql,wish.getName(),wish.getDescription(),wish.getPrice(),wish.getQuantity(),wish.getLink(),wish.getWishId());
+    }
+
+    public void deleteWish(int id) {
+        String sql = "DELETE FROM wishes WHERE wishID = ?";
+        jdbcTemplate.update(sql,id);
+    }
+    public User updateUser(User user){
+        String sql = "UPDATE users SET name = ?, username = ?, password = ? WHERE userID = ?";
+        jdbcTemplate.update(sql, user.getName(), user.getUsername(), user.getPassword(), user.getUserId());
+        return user;
+    }
+
 
 
 

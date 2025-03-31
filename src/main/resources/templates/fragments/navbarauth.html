@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="navbar">
+  <nav>
+    <div class="navbar">
+      <div class="navbarleftitems">
+        <a th:href="@{/}"><img th:src="@{/images/wishlist.png}"alt ="logo"></a>
+        <a th:href="@{/updateUser}"><p>PROFILE</p></a>
+      </div>
+      <div class="navbarrightitems">
+        <a th:href="@{/profile}"><p>MY WISHLISTS</p></a>
+
+        <button class="button-22">
+          <a th:href="@{/createWishList}">NEW WISHLIST</a>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+</div>
+
+
+</body>
+</html>

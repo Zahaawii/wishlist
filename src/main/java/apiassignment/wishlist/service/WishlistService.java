@@ -2,6 +2,7 @@ package apiassignment.wishlist.service;
 
 
 import apiassignment.wishlist.model.User;
+import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.model.Wishlist;
 import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.repository.WishlistRepository;
@@ -34,7 +35,7 @@ public class WishlistService{
         return wishlistRepository.login(username, password);
     }
 
-    public boolean isLoogedIn(HttpSession session) {
+    public boolean isLoggedIn(HttpSession session) {
         return session.getAttribute("user") != null;
     }
 
@@ -44,6 +45,11 @@ public class WishlistService{
     public List<Wishlist> getAllWishlistsByUserId (int id) {
         return wishlistRepository.getAllWishlistsByUserId(id);
     }
+
+    public List<Wish> getAllWishesFromWishlistId(int id) {
+        return wishlistRepository.getAllWishesFromWishlistId(id);
+    }
+
     public User getUserByUsername(String username){
         return wishlistRepository.getUserByUsername(username);
     }
@@ -61,8 +67,29 @@ public class WishlistService{
     public void addWish(Wish wish) {
         wishlistRepository.addWish(wish);
     }
-
-
+    public Wishlist getWishlistById(int id) {
+        return wishlistRepository.getWishlistByID(id);
     }
+    public Wish getWishById(int id) {
+        return wishlistRepository.getWishById(id);
+    }
+    public List<Wish> getAllWishesByWishlistId(int id) {
+        return wishlistRepository.getAllWishesByWishlistId(id);
+    }
+    public void updateWish(Wish wish) {
+        wishlistRepository.updateWish(wish);
+    }
+    public void deleteWish(int id) {
+        wishlistRepository.deleteWish(id);
+    }
+    public User updateUser(User user){
+        return wishlistRepository.updateUser(user);
+    }
+
+
+
+
+
+}
 
 
