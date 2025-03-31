@@ -230,4 +230,59 @@ public class WishlistController {
         return "wish";
     }
 
+    @GetMapping("/admin")
+    public String adminPanel(HttpSession session, Model model) {
+        User loggedUser = (User) session.getAttribute("user");
+
+        if(!wishlistService.isLoogedIn(session)) {
+            return "redirect:/login";
+        } else if(loggedUser.getRoleId() != 1) {
+            return "redirect:/login";
+        }
+
+        List<User> getAllUsers = wishlistService.getAllUsers();
+        model.addAttribute("getAllUsers", getAllUsers);
+        return "adminPanel";
+    }
+
+    @GetMapping("/admin/addusers")
+    public String adminPanelAddUser(HttpSession session, Model model) {
+        User loggedUser = (User) session.getAttribute("user");
+
+        if(!wishlistService.isLoogedIn(session)) {
+            return "login";
+        } else if(loggedUser.getRoleId() != 1) {
+            return "redirect:/login";
+        }
+
+        User user = new User();
+        model.addAttribute("user", user);
+        return "adminAddUser";
+    }
+
+    @PostMapping("/admin/register")
+    public String AdminCheckRegister(@ModelAttribute User user, Model model){
+        if(!wishlistService.isUsernameFree(user.getUsername())){
+            model.addAttribute("notFree", true);
+            return "redirect:/admin/addusers";
+        }
+        wishlistService.adminRegisterUser(user);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/admin/delete/{id}")
+    public String deleteUser(@PathVariable int id, HttpSession session) {
+        User loggedUser = (User) session.getAttribute("user");
+
+        if(!wishlistService.isLoogedIn(session)) {
+            return "login";
+        } else if(loggedUser.getRoleId() != 1) {
+            return "redirect:/login";
+        }
+
+        wishlistService.deleteUser(id);
+        return "redirect:/admin";
+    }
+
+
 }

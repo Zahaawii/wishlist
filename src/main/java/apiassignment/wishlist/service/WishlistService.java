@@ -20,7 +20,17 @@ public class WishlistService{
         this.wishlistRepository = wishlistRepository;
     }
 
+    public List<User> getAllUsers() {
+        return wishlistRepository.getAllUsers();
+    }
 
+    public User adminRegisterUser(User user) {
+        return wishlistRepository.adminRegisterUser(user);
+    }
+
+    public void deleteUser(int id) {
+        wishlistRepository.deleteUser(id);
+    }
     public User login(String username, String password){
         return wishlistRepository.login(username, password);
     }

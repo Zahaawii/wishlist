@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Wish</title>
+  <link rel="stylesheet" th:href="@{/css/adminpanel.css}">
+</head>
+<body>
+
+
+<h1 class="test"> Welcome User<span th:text="${null}"> </span> </h1>
+
+<div class="user">
+  <table>
+    <tr>
+      <th> User id </th>
+      <th> Username </th>
+      <th> Password</th>
+      <th> Role id</th>
+      <th> Edit panel</th>
+    </tr>
+    <tr th:each="i : ${getAllUsers}">
+      <td th:text="${i.userId}">User id</td>
+      <td th:text="${i.username}">Username</td>
+      <td th:text="${i.password}">User password</td>
+      <td th:text="${i.roleId}">role id</td>
+      <td>
+      <button> Update user</button>
+        <form th:action="@{/admin/delete/{id}(id=${i.userId})}" method="post">
+          <button class="button-87 delete" type="submit">Delete user</button>
+        </form>
+      </td>
+
+    </tr>
+  </table>
+</div>
+  <button class="addUser"><a href="admin/addusers">Click here to add a new user</a> </button>
+
+
+
+</body>
+</html>
