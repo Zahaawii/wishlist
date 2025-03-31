@@ -2,20 +2,24 @@ package apiassignment.wishlist.model;
 
 
 import java.util.List;
+import java.util.UUID;
 
 public class Wishlist {
     private int wishlistId;
     private String wishlistName;
-    private List<Wish>wishes;
+    private String token;
 
-    public Wishlist(int wishlistId, String wishlistName, List<Wish> wishes) {
+    public Wishlist(int wishlistId, String wishlistName) {
         this.wishlistId = wishlistId;
         this.wishlistName = wishlistName;
-        this.wishes = wishes;
+        this.token = generateToken();
     }
     public Wishlist(){
     }
 
+    public String generateToken() {
+        return UUID.randomUUID().toString();
+    }
 
     public int getWishlistId() {
         return wishlistId;
@@ -33,11 +37,11 @@ public class Wishlist {
         this.wishlistName = wishlistName;
     }
 
-    public List<Wish> getWishes() {
-        return wishes;
+    public String getToken() {
+        return token;
     }
 
-    public void setWishes(List<Wish> wishes) {
-        this.wishes = wishes;
+    public void setToken(String token) {
+        this.token = token;
     }
 }

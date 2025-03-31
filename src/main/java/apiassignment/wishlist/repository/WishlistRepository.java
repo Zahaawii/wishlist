@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class WishlistRepository {
@@ -78,7 +79,7 @@ public class WishlistRepository {
         }
         int wishlistId = listOfWishes.getFirst().getWishlistId();
         String wishlistName = listOfWishes.getFirst().getName();
-        return new Wishlist(wishlistId, wishlistName, listOfWishes);
+        return new Wishlist(wishlistId, wishlistName);
     }
 
     public List<Wish> getAllWishesFromWishlistId(int id) {
@@ -128,17 +129,18 @@ public class WishlistRepository {
 
     }
 
-
-
     public void createWishList(int userId, String wishListName) {
-        String sql = "INSERT INTO wishlists (UserID, wishlistName) VALUES (?, ?)";
+        String sql = "INSERT INTO wishlists (UserID, wishlistName, token) VALUES (?, ?, ?)";
 
         KeyHolder keyHolder= new GeneratedKeyHolder();
+
+        Wishlist wishlist = new Wishlist(userId, wishListName);
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setInt(1, userId);
             ps.setString(2, wishListName);
+            ps.setString(3,wishlist.getToken());
             return ps;
         }, keyHolder);
 
@@ -192,7 +194,7 @@ public class WishlistRepository {
         if (wish.isEmpty()) {
             return null;
         } else {
-            return wish.get(0);
+            return wish.getFirst();
         }
     }
 
@@ -248,6 +250,17 @@ public class WishlistRepository {
 
         return user;
 
+    }
+
+    public Wishlist getWishlistByToken(String token) {
+        String sql = "SELECT * FROM wishlists WHERE token = ?";
+        List<Wishlist> wishlists = jdbcTemplate.query(sql,new WishlistRowmapper(),token);
+
+        if(wishlists.isEmpty()) {
+            return null;
+        } else {
+            return wishlists.getFirst();
+        }
     }
 
 

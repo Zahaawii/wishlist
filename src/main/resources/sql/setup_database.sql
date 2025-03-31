@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS `wishlists`;
 CREATE TABLE wishlists (
 userID int NOT NULL,
 wishlistName VARCHAR(250) NOT NULL,
+token VARCHAR(100) UNIQUE,
 wishlistID int PRIMARY KEY NOT NULL auto_increment
 );
 

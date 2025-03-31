@@ -288,7 +288,16 @@ public class WishlistController {
         return "redirect:/admin";
     }
 
-
+    @GetMapping("/share/{token}")
+    public String shareWishlist(@PathVariable String token,Model model, HttpSession session) {
+        Wishlist wishlist = wishlistService.getWishlistByToken(token);
+        List<Wish> wishes = wishlistService.getAllWishesFromWishlistId(wishlist.getWishlistId());
+        model.addAttribute("wishlist",wishlist);
+        model.addAttribute("wishlistname", wishlist.getWishlistName());
+        model.addAttribute("wishlistId", wishlist.getWishlistId());
+        model.addAttribute("wishes", wishes);
+        return "sharedWishlist";
+    }
 
 
 }

@@ -32,12 +32,21 @@
                     <button class="plusbutton"></button>
                 </div>
             </a>
-            <div th:each="wishlist : ${wishlists}">
-                <a th:href="@{/wishlist/{id}(id=${wishlist.wishlistId})}">
+            <div th:each="wishlist : ${wishlists}" class="wishlist-wrapper">
+                <a th:href="@{/wishlist/{id}(id=${wishlist.wishlistId})}" class="wishlist-link">
                     <div class="wishListContainer">
                         <h3 th:text="${wishlist.wishlistName}"></h3>
                     </div>
                 </a>
+                <!-- uden javascript -->
+                <a th:href="@{/share/{token}(token=${wishlist.token})}" target="_blank">Del</a>
+                <!-- med javascript -->
+                <button class="share-button"
+                        th:attr="data-token=${wishlist.token}"
+                        onclick="copyShareLink(this.getAttribute('data-token'))">
+                        Share
+                </button>
+
             </div>
 
         </div>
@@ -68,5 +77,14 @@
 
 
 <!--<a th:href="@{/logout}">Logout of your profile</a>-->
+<script>
+    function copyShareLink(token) {
+        const url = `${window.location.origin}/share/${token}`;
+        navigator.clipboard.writeText(url)
+            .then(() => alert("Link kopieret: " + url))
+            .catch(err => console.error("Fejl ved kopiering: ", err));
+    }
+</script>
+
 </body>
 </html>
