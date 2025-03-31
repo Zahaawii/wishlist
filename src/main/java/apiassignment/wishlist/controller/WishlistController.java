@@ -169,9 +169,9 @@ public class WishlistController {
 
     @GetMapping("/wish/add/{wishlistId}")
     public String addWish(@PathVariable int wishlistId, Model model, HttpSession session) {
-
-        if(!wishlistService.isLoggedIn(session)) {
-            return "login";
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
         }
         Wish wish = new Wish();
         wish.setWishlistId(wishlistId);
@@ -190,7 +190,11 @@ public class WishlistController {
     }
 
     @GetMapping("wish/{id}/edit")
-    public String editWish(Model model, @PathVariable int id) {
+    public String editWish(Model model, @PathVariable int id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
         Wish wish = wishlistService.getWishById(id);
         if (wish == null) {
             throw new IllegalArgumentException("Wish doesnt exits");
@@ -234,7 +238,7 @@ public class WishlistController {
     public String adminPanel(HttpSession session, Model model) {
         User loggedUser = (User) session.getAttribute("user");
 
-        if(!wishlistService.isLoogedIn(session)) {
+        if(!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
@@ -249,7 +253,7 @@ public class WishlistController {
     public String adminPanelAddUser(HttpSession session, Model model) {
         User loggedUser = (User) session.getAttribute("user");
 
-        if(!wishlistService.isLoogedIn(session)) {
+        if(!wishlistService.isLoggedIn(session)) {
             return "login";
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
@@ -274,7 +278,7 @@ public class WishlistController {
     public String deleteUser(@PathVariable int id, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
 
-        if(!wishlistService.isLoogedIn(session)) {
+        if(!wishlistService.isLoggedIn(session)) {
             return "login";
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
@@ -283,6 +287,8 @@ public class WishlistController {
         wishlistService.deleteUser(id);
         return "redirect:/admin";
     }
+
+
 
 
 }
