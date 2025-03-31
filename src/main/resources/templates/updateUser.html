@@ -17,10 +17,10 @@
             <textarea id="username" name="username" th:text="${user.getUsername()}" readonly> </textarea>
 
             <label for="password">password:</label>
-            <input type="password" name="password" id="password"  required>
-
+            <textarea id="password" name="password" th:text="${user.getPassword()}" required> </textarea>
 
             <input type="hidden" id="userId" name="userId" th:value="${user.getUserId()}">
+
             <input type="hidden" id="roleId" name="roleId" th:value="${user.getRoleId()}">
         </fieldset>
 

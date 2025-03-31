@@ -64,6 +64,7 @@ public class WishlistController {
         model.addAttribute("imgpath", imgpath);
         return "profile";
     }
+
     @GetMapping("/wishlist/{id}")
     public String getWishlist (@PathVariable("id") int wishlistId, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -153,6 +154,7 @@ public class WishlistController {
             return "login";
         }
         User user = (User) session.getAttribute("user");
+
         model.addAttribute("user", user);
         model.addAttribute("updatedUser", new User());
         return "updateUser";
@@ -234,7 +236,7 @@ public class WishlistController {
     public String adminPanel(HttpSession session, Model model) {
         User loggedUser = (User) session.getAttribute("user");
 
-        if(!wishlistService.isLoogedIn(session)) {
+        if(!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
@@ -249,8 +251,8 @@ public class WishlistController {
     public String adminPanelAddUser(HttpSession session, Model model) {
         User loggedUser = (User) session.getAttribute("user");
 
-        if(!wishlistService.isLoogedIn(session)) {
-            return "login";
+        if(!wishlistService.isLoggedIn(session)) {
+            return "redirect:/login";
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
         }
@@ -266,6 +268,8 @@ public class WishlistController {
             model.addAttribute("notFree", true);
             return "redirect:/admin/addusers";
         }
+
+        System.out.println(user);
         wishlistService.adminRegisterUser(user);
         return "redirect:/admin";
     }
@@ -274,8 +278,8 @@ public class WishlistController {
     public String deleteUser(@PathVariable int id, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
 
-        if(!wishlistService.isLoogedIn(session)) {
-            return "login";
+        if(!wishlistService.isLoggedIn(session)) {
+            return "redirect:/login";
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
         }
@@ -284,5 +288,30 @@ public class WishlistController {
         return "redirect:/admin";
     }
 
+    @GetMapping("/admin/update/{id}")
+    public String adminUpdateUser(@PathVariable int id, HttpSession session, Model model) {
+        User loggedUser = (User) session.getAttribute("user");
+        User getUser = wishlistService.getUserById(id);
+        if(!wishlistService.isLoggedIn(session)) {
+            return "redirect:/login";
+        } else if (loggedUser.getRoleId() != 1) {
+            return "redirect:/login";
+        }
+        model.addAttribute("user", getUser);
+        model.addAttribute("updatedUser", new User());
+        return "adminUpdateUser";
+    }
+
+    @PostMapping("/admin/update")
+    public String adminUpdateUser(@ModelAttribute User updatedUser, HttpSession session){
+
+        if(!wishlistService.isLoggedIn(session)) {
+            return "login";
+        }
+
+        wishlistService.updateUser(updatedUser);
+
+        return "redirect:/admin";
+    }
 
 }
