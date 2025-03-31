@@ -54,6 +54,10 @@ public class WishlistService{
         return wishlistRepository.getUserByUsername(username);
     }
 
+    public User getUserById(int id) {
+       return wishlistRepository.getUserById(id);
+    }
+
     public boolean isUsernameFree(String username){
         return wishlistRepository.isUsernameFree(username);
     }

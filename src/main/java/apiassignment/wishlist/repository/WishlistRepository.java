@@ -215,23 +215,21 @@ public class WishlistRepository {
         String sql = "DELETE FROM wishes WHERE wishID = ?";
         jdbcTemplate.update(sql,id);
     }
+
+
     public User updateUser(User user){
-        String sql = "UPDATE users SET name = ?, username = ?, password = ? WHERE userID = ?";
-        jdbcTemplate.update(sql, user.getName(), user.getUsername(), user.getPassword(), user.getUserId());
+        String sql = "UPDATE users SET name = ?, username = ?, password = ?, roleID = ? WHERE userID = ?";
+        jdbcTemplate.update(sql, user.getName(), user.getUsername(), user.getPassword(), user.getRoleId(), user.getUserId());
         return user;
     }
 
 
-
-
     public User adminRegisterUser(User user){
 
-        String checkRoleQuery = "SELECT COUNT(*) FROM roles WHERE roleID = ?";
-        Integer count = jdbcTemplate.queryForObject(checkRoleQuery, Integer.class, user.getRoleId());
-
-        if (count == 0) {
-            throw new IllegalArgumentException("RoleID " + user.getRoleId() + " does not exist.");
+        if(user == null) {
+            return null;
         }
+
         String sql = "INSERT INTO users (name, username, password, roleID) VALUES(?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -245,11 +243,6 @@ public class WishlistRepository {
             return ps;
         }, keyHolder);
 
-        int userId =keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
-
-        if(userId != -1){
-            user.setUserId(userId);
-        }
 
         return user;
 

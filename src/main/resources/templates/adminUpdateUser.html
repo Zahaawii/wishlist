@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/updateUser.css?v=0.02}" href="/css/updateUser.css">
+    <title>Edit admin profile</title>
+</head>
+<body>
+<form action="/profile/edit" th:object="${updatedUser}" method="post">
+    <fieldset>
+        <legend>Edit user profile information</legend>
+
+        <input type="hidden" id="userId" name="userId" th:value="${user.getUserId()}">
+
+        <label for="name">name:</label>
+        <textarea id="name" name="name" th:text="${user.getName()}" required> </textarea>
+
+        <label for="username">username:</label>
+        <textarea id="username" name="username" th:text="${user.getUsername()}"> </textarea>
+
+        <label for="password">password:</label>
+        <textarea id="password" name="password" th:text="${user.getPassword()}" required> </textarea>
+
+        <label for="roleId">Role id</label>
+        <input type="number" id="roleId" name="roleId" th:value="${user.getRoleId()}">
+
+    </fieldset>
+
+    <button type="submit">Update information</button>
+    <a class="button-link" href="/profile">Go back to profile</a>
+
+</form>
+</body>
+</html>

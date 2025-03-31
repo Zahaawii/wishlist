@@ -25,12 +25,11 @@
       <td th:text="${i.password}">User password</td>
       <td th:text="${i.roleId}">role id</td>
       <td>
-      <button> Update user</button>
+      <button><a th:href="@{/admin/update/{id}(id=${i.userId})}">Update user</a></button>
         <form th:action="@{/admin/delete/{id}(id=${i.userId})}" method="post">
           <button class="button-87 delete" type="submit">Delete user</button>
         </form>
       </td>
-
     </tr>
   </table>
 </div>
