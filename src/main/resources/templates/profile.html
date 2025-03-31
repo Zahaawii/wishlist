@@ -8,31 +8,36 @@
 </head>
 <body>
 
-    <nav>
-        <div class="navbar">
-            <a th:href="@{/profile}"><p>PROFILE</p></a>
-            <!--<div class="navbarprofileimg"></div>-->
-            <button class="button-22">
-                <a>NEW WISHLIST</a>
-            </button>
-        </div>
-    </nav>
+<div id="clouds">
+    <div class="cloud x1"></div>
+    <div class="cloud x2"></div>
+    <div class="cloud x3"></div>
+    <div class="cloud x4"></div>
+    <div class="cloud x5"></div>
+</div>
 
-    <h1 class="profileheader">Hello,&nbsp<span th:text="${name}"></span> <!--<span th:text="${name}"></span>--></h1>
+<div th:replace="fragments/navbarauth :: navbar"></div>
+
+    <div class="profileNameWrapper">
+        <h1 class="profileheader">Hello,&nbsp<span class="profileName" th:text="${name}"></span> <!--<span th:text="${name}"></span>--></h1>
+
+    </div>
 
     <div class="Mainmaincontainer">
         <h3>YOUR WISHLISTS</h3>
 
         <div class="wishListMainContainer">
-            <div class="wishListContainer">
-                     <a th:href="@{/create/wishlist}">
-                         <button class="plusbutton">+</button>
-                     </a>
-            </div>
-            <div th:each="Wishlist : ${wishlists}">
+            <a th:href="@{/create/wishlist}">
                 <div class="wishListContainer">
-                    <h3 th:text="${Wishlist.wishlistName}"></h3>
+                    <button class="plusbutton"></button>
                 </div>
+            </a>
+            <div th:each="wishlist : ${wishlists}">
+                <a th:href="@{/wishlist/{id}(id=${wishlist.wishlistId})}">
+                    <div class="wishListContainer">
+                        <h3 th:text="${wishlist.wishlistName}"></h3>
+                    </div>
+                </a>
             </div>
 
         </div>

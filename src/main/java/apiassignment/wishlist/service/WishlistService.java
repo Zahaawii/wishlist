@@ -20,12 +20,22 @@ public class WishlistService{
         this.wishlistRepository = wishlistRepository;
     }
 
+    public List<User> getAllUsers() {
+        return wishlistRepository.getAllUsers();
+    }
 
+    public User adminRegisterUser(User user) {
+        return wishlistRepository.adminRegisterUser(user);
+    }
+
+    public void deleteUser(int id) {
+        wishlistRepository.deleteUser(id);
+    }
     public User login(String username, String password){
         return wishlistRepository.login(username, password);
     }
 
-    public boolean isLoogedIn(HttpSession session) {
+    public boolean isLoggedIn(HttpSession session) {
         return session.getAttribute("user") != null;
     }
 
@@ -35,6 +45,11 @@ public class WishlistService{
     public List<Wishlist> getAllWishlistsByUserId (int id) {
         return wishlistRepository.getAllWishlistsByUserId(id);
     }
+
+    public List<Wish> getAllWishesFromWishlistId(int id) {
+        return wishlistRepository.getAllWishesFromWishlistId(id);
+    }
+
     public User getUserByUsername(String username){
         return wishlistRepository.getUserByUsername(username);
     }
@@ -70,7 +85,6 @@ public class WishlistService{
     public User updateUser(User user){
         return wishlistRepository.updateUser(user);
     }
-
 
 
 

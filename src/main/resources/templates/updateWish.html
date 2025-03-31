@@ -15,11 +15,12 @@
         <form th:action="@{/wish/update}" th:object="${wish}" method="post">
 
             <input type="hidden" th:field="*{wishId}" />
+            <input type="hidden" th:field="*{wishlistId}" />
 
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" th:field="*{name}" required th:value="${wish.getName()}">
 
-            <label for="description">Despriction:</label>
+            <label for="description">Description:</label>
             <input type="text" id="description" name="description" th:field="*{description}" required th:value="${wish.getDescription()}">
 
             <label for="price">Price:</label>
