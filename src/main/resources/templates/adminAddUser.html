@@ -14,7 +14,7 @@
     <h1 class="heading"> Create a new account! </h1>
 
     <p th:if="${notFree}">This username is already taken! Pls make another</p>
-    <form action="#" th:action="@{/admin/register}" th:object="${user}" method="post">
+    <form th:action="@{/admin/register}" th:object="${user}" method="post">
 
       <label for="name">Insert your name</label>
       <input type="text" id="name" name="name" required>
