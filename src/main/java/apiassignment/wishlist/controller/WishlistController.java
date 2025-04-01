@@ -54,6 +54,9 @@ public class WishlistController {
     @GetMapping("/profile")
     public String getProfile (Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
+        if(!wishlistService.isLoggedIn(session)) {
+            return "redirect:/login";
+        }
         List<Wishlist> wishLists = wishlistService.getAllWishlistsByUserId(user.getUserId());
 
         //Capitalize first character in name
