@@ -9,6 +9,7 @@ import apiassignment.wishlist.rowmappers.WishRowmapper;
 import apiassignment.wishlist.rowmappers.WishlistRowmapper;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -19,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class WishlistRepository {
@@ -78,7 +80,7 @@ public class WishlistRepository {
         }
         int wishlistId = listOfWishes.getFirst().getWishlistId();
         String wishlistName = listOfWishes.getFirst().getName();
-        return new Wishlist(wishlistId, wishlistName, listOfWishes);
+        return new Wishlist(wishlistId, wishlistName);
     }
 
     public List<Wish> getAllWishesFromWishlistId(int id) {
@@ -133,17 +135,18 @@ public class WishlistRepository {
 
     }
 
-
-
     public void createWishList(int userId, String wishListName) {
-        String sql = "INSERT INTO wishlists (UserID, wishlistName) VALUES (?, ?)";
+        String sql = "INSERT INTO wishlists (UserID, wishlistName, token) VALUES (?, ?, ?)";
 
         KeyHolder keyHolder= new GeneratedKeyHolder();
+
+        Wishlist wishlist = new Wishlist(userId, wishListName);
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setInt(1, userId);
             ps.setString(2, wishListName);
+            ps.setString(3,wishlist.getToken());
             return ps;
         }, keyHolder);
 
@@ -211,6 +214,13 @@ public class WishlistRepository {
         String sql = "SELECT * FROM wishes WHERE wishID = ?";
         Wish wish = jdbcTemplate.query(sql, new WishRowmapper(), id).get(0);
 
+
+        if (wish.isEmpty()) {
+            return null;
+        } else {
+            return wish.getFirst();
+        }
+
         return wish;
 
     }
@@ -219,6 +229,7 @@ public class WishlistRepository {
         String sql = "SELECT isReserved FROM wishes WHERE wishID = ?";
         Wish wish = jdbcTemplate.query(sql, new WishRowmapper(), id).get(0);
         return wish.isReserved();
+
     }
 
     public List<Wish> getAllWishesByWishlistId(int id) {
@@ -266,6 +277,35 @@ public class WishlistRepository {
 
         return user;
 
+    }
+
+    public Wishlist getWishlistByToken(String token) {
+        String sql = "SELECT * FROM wishlists WHERE token = ?";
+        List<Wishlist> wishlists = jdbcTemplate.query(sql,new WishlistRowmapper(),token);
+
+        if(wishlists.isEmpty()) {
+            return null;
+        } else {
+            return wishlists.getFirst();
+        }
+    }
+
+    public int getUserIdByToken(String token) {
+        String sql = "SELECT userID FROM wishlists WHERE token = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql,Integer.class,token);
+        } catch (EmptyResultDataAccessException e) {
+            return -1;
+        }
+    }
+
+    public int getUserIdByWishlistId(int id) {
+        String sql = "SELECT userID FROM wishlists WHERE wishlistID = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql,Integer.class,id);
+        } catch (EmptyResultDataAccessException e) {
+            return -1;
+        }
     }
 
 

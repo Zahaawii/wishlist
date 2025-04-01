@@ -185,9 +185,9 @@ public class WishlistController {
 
     @GetMapping("/wish/add/{wishlistId}")
     public String addWish(@PathVariable int wishlistId, Model model, HttpSession session) {
-
-        if(!wishlistService.isLoggedIn(session)) {
-            return "login";
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
         }
         Wish wish = new Wish();
         wish.setWishlistId(wishlistId);
@@ -206,7 +206,11 @@ public class WishlistController {
     }
 
     @GetMapping("wish/{id}/edit")
-    public String editWish(Model model, @PathVariable int id) {
+    public String editWish(Model model, @PathVariable int id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
         Wish wish = wishlistService.getWishById(id);
         if (wish == null) {
             throw new IllegalArgumentException("Wish doesnt exits");
@@ -270,7 +274,9 @@ public class WishlistController {
 
         if(!wishlistService.isLoggedIn(session)) {
 
+
             return "redirect:/login";
+
 
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
@@ -299,7 +305,9 @@ public class WishlistController {
 
         if(!wishlistService.isLoggedIn(session)) {
 
+
             return "redirect:/login";
+
 
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
@@ -308,6 +316,48 @@ public class WishlistController {
         wishlistService.deleteUser(id);
         return "redirect:/admin";
     }
+
+
+    @GetMapping("/share/{token}")
+    public String shareWishlist(@PathVariable String token, Model model, HttpSession session) {
+        User loggedUser = (User) session.getAttribute("user");
+        boolean notLoggedIn;
+
+        if(loggedUser == null || loggedUser.getUserId() != wishlistService.getUserIdByToken(token)) {
+            Wishlist wishlist = wishlistService.getWishlistByToken(token);
+            List<Wish> wishes = wishlistService.getAllWishesFromWishlistId(wishlist.getWishlistId());
+            model.addAttribute("wishlist", wishlist);
+            model.addAttribute("wishlistname", wishlist.getWishlistName());
+            model.addAttribute("wishlistId", wishlist.getWishlistId());
+            model.addAttribute("wishes", wishes);
+            if(loggedUser == null) {
+                notLoggedIn = true;
+            } else {
+                notLoggedIn = false;
+            }
+            model.addAttribute("notLoggedIn",notLoggedIn);
+            return "sharedWishlist";
+        } else {
+            return "ownWishlist";
+        }
+    }
+
+    @GetMapping("/shared/wish/{id}")
+    public String sharedWishes(@PathVariable int id, Model model, HttpSession session) {
+        User loggedUser = (User) session.getAttribute("user");
+        boolean notLoggedIn = false;
+
+        if(loggedUser == null) {
+            notLoggedIn = true;
+        }
+
+        model.addAttribute("notLoggedIn",notLoggedIn);
+        Wish wish = wishlistService.getWishById(id);
+
+        model.addAttribute("wish", wish);
+        return "sharedWish";
+    }
+
 
     @GetMapping("/admin/update/{id}")
     public String adminUpdateUser(@PathVariable int id, HttpSession session, Model model) {
@@ -334,5 +384,6 @@ public class WishlistController {
 
         return "redirect:/admin";
     }
+
 
 }

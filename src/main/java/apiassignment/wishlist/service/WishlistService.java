@@ -93,6 +93,15 @@ public class WishlistService{
     public User updateUser(User user){
         return wishlistRepository.updateUser(user);
     }
+    public Wishlist getWishlistByToken(String token) {
+        return wishlistRepository.getWishlistByToken(token);
+    }
+    public int getUserIdByToken(String token) {
+        return wishlistRepository.getUserIdByToken(token);
+    }
+    public int getUserIdByWishlistId(int id) {
+        return wishlistRepository.getUserIdByWishlistId(id);
+    }
 
 
 

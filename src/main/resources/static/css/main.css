@@ -630,3 +630,8 @@ h3 {
     100% { margin-left: -100vw; }
 }
 
+.wishlist-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+}

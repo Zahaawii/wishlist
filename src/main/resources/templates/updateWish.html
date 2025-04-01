@@ -34,7 +34,7 @@
 
             <button type="submit">Update Wish</button>
         </form>
-        <a th:href="@{/wishlist}" class="delete-button">Cancel</a>
+        <a th:href="@{/wishlist/{id}(id=${wish.wishlistId})}" class="delete-button">Cancel</a>
     </div>
 </div>
 </body>

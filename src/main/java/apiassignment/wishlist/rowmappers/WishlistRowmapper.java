@@ -13,6 +13,7 @@ public class WishlistRowmapper implements RowMapper<Wishlist> {
 
         wishlist.setWishlistId(rs.getInt("wishlistID"));
         wishlist.setWishlistName(rs.getString("wishlistName"));
+        wishlist.setToken(rs.getString("token"));
 
 
         return wishlist;
