@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Wish Details</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+</head>
+<body>
+
+<div id="clouds">
+  <div class="cloud x1"></div>
+  <div class="cloud x2"></div>
+  <div class="cloud x3"></div>
+  <div class="cloud x4"></div>
+  <div class="cloud x5"></div>
+</div>
+
+<div th:if="notLoggedIn" th:replace="fragments/navbarunauth :: navbarunauth"></div>
+<div th:if="notLoggedIn == false" th:replace="fragments/navbarauth :: navbar"></div>
+
+
+<div class="wishContainerWrapper">
+  <div class="wishContainer">
+    <div class="wishContent">
+      <div class="wishNameAndDescContainer">
+        <h1 class="wishName">
+          <span th:text="${wish.name}">Wish name</span>
+        </h1>
+        <p th:text="${wish.description}">Description</p>
+      </div>
+      <h2 th:text="${wish.getPriceRounded()}">XXX$</h2>
+      <div class="wishButtonsContainer">
+        <!-- Skal laves til en reserve button -->
+        <a th:if="loggedIn" th:href="@{/wish/{id}/edit(id=${wish.wishId})}">
+          <button class="button-22 blue">Reserve</button>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -9,6 +9,7 @@ import apiassignment.wishlist.rowmappers.WishRowmapper;
 import apiassignment.wishlist.rowmappers.WishlistRowmapper;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -260,6 +261,24 @@ public class WishlistRepository {
             return null;
         } else {
             return wishlists.getFirst();
+        }
+    }
+
+    public int getUserIdByToken(String token) {
+        String sql = "SELECT userID FROM wishlists WHERE token = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql,Integer.class,token);
+        } catch (EmptyResultDataAccessException e) {
+            return -1;
+        }
+    }
+
+    public int getUserIdByWishlistId(int id) {
+        String sql = "SELECT userID FROM wishlists WHERE wishlistID = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql,Integer.class,id);
+        } catch (EmptyResultDataAccessException e) {
+            return -1;
         }
     }
 

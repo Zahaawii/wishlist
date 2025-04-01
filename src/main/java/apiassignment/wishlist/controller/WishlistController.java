@@ -289,14 +289,43 @@ public class WishlistController {
     }
 
     @GetMapping("/share/{token}")
-    public String shareWishlist(@PathVariable String token,Model model, HttpSession session) {
-        Wishlist wishlist = wishlistService.getWishlistByToken(token);
-        List<Wish> wishes = wishlistService.getAllWishesFromWishlistId(wishlist.getWishlistId());
-        model.addAttribute("wishlist",wishlist);
-        model.addAttribute("wishlistname", wishlist.getWishlistName());
-        model.addAttribute("wishlistId", wishlist.getWishlistId());
-        model.addAttribute("wishes", wishes);
-        return "sharedWishlist";
+    public String shareWishlist(@PathVariable String token, Model model, HttpSession session) {
+        User loggedUser = (User) session.getAttribute("user");
+        boolean notLoggedIn;
+
+        if(loggedUser == null || loggedUser.getUserId() != wishlistService.getUserIdByToken(token)) {
+            Wishlist wishlist = wishlistService.getWishlistByToken(token);
+            List<Wish> wishes = wishlistService.getAllWishesFromWishlistId(wishlist.getWishlistId());
+            model.addAttribute("wishlist", wishlist);
+            model.addAttribute("wishlistname", wishlist.getWishlistName());
+            model.addAttribute("wishlistId", wishlist.getWishlistId());
+            model.addAttribute("wishes", wishes);
+            if(loggedUser == null) {
+                notLoggedIn = true;
+            } else {
+                notLoggedIn = false;
+            }
+            model.addAttribute("notLoggedIn",notLoggedIn);
+            return "sharedWishlist";
+        } else {
+            return "ownWishlist";
+        }
+    }
+
+    @GetMapping("/shared/wish/{id}")
+    public String sharedWishes(@PathVariable int id, Model model, HttpSession session) {
+        User loggedUser = (User) session.getAttribute("user");
+        boolean notLoggedIn = false;
+
+        if(loggedUser == null) {
+            notLoggedIn = true;
+        }
+
+        model.addAttribute("notLoggedIn",notLoggedIn);
+        Wish wish = wishlistService.getWishById(id);
+
+        model.addAttribute("wish", wish);
+        return "sharedWish";
     }
 
 

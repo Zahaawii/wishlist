@@ -32,21 +32,17 @@
                     <button class="plusbutton"></button>
                 </div>
             </a>
-            <div th:each="wishlist : ${wishlists}" class="wishlist-wrapper">
+            <div th:each="wishlist : ${wishlists}">
                 <a th:href="@{/wishlist/{id}(id=${wishlist.wishlistId})}" class="wishlist-link">
                     <div class="wishListContainer">
                         <h3 th:text="${wishlist.wishlistName}"></h3>
+                        <button class="share-button"
+                                th:attr="data-token=${wishlist.token}"
+                                onclick="copyShareLink(this.getAttribute('data-token'))">
+                            Share
+                        </button>
                     </div>
                 </a>
-                <!-- uden javascript -->
-                <a th:href="@{/share/{token}(token=${wishlist.token})}" target="_blank">Del</a>
-                <!-- med javascript -->
-                <button class="share-button"
-                        th:attr="data-token=${wishlist.token}"
-                        onclick="copyShareLink(this.getAttribute('data-token'))">
-                        Share
-                </button>
-
             </div>
 
         </div>

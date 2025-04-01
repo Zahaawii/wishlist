@@ -1,45 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Profile</title>
-  <link rel="stylesheet" th:href="@{/css/main.css}">
-  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
 </head>
 <body>
 <div id="clouds">
-  <div class="cloud x1"></div>
-  <div class="cloud x2"></div>
-  <div class="cloud x3"></div>
-  <div class="cloud x4"></div>
-  <div class="cloud x5"></div>
+    <div class="cloud x1"></div>
+    <div class="cloud x2"></div>
+    <div class="cloud x3"></div>
+    <div class="cloud x4"></div>
+    <div class="cloud x5"></div>
 </div>
 
-<div th:if="${notLoggedIn}">
-  <div th:replace="fragments/navbarunauth :: navbarunauth"></div>
-</div>
-<div th:if="${!notLoggedIn}">
-  <div th:replace="fragments/navbarauth :: navbar"></div>
-</div>
+<div th:replace="fragments/navbarauth :: navbar"></div>
 
 
 <h1 class="profileheader">
-  <span class="wishlistName" th:text="${wishlistname}">  </span>
+    <span class="wishlistName" th:text="${wishlistname}">  </span>
 </h1>
 
 <div class="Mainmaincontainer">
-  <h3>YOUR WISHES</h3>
-
-  <div class="wishesMainContainer">
-    <div th:each="wish : ${wishes}">
-      <a th:href="@{/shared/wish/{id}(id=${wish.wishId})}">
-        <div class="wishListContainer">
-          <h3 th:text="${wish.name}"></h3>
-        </div>
-      </a>
-    </div>
-
-  </div>
+    <h3>THIS IS YOUR OWN WISHLIST. YOU ARE NOT ALLOWED HERE</h3>
 </div>
 
 
