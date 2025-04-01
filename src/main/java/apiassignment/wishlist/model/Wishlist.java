@@ -46,4 +46,5 @@ public class Wishlist {
     public int getAmountOfWishes () {
         return wishes.size();
     }
+
 }
