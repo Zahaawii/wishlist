@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search For Friends</title>
+    <link rel="stylesheet" th:href="@{/css/friends.css?v=0.02}">
+</head>
+<body>
+
+    <h1>Your friends:</h1>
+    <div class="friendlistMainContainer">
+        <div  th:each="friend : ${friends}" class="friendlistFriendContent">
+            <h1 th:if="${noFriends}">You don't have any friends</h1>
+            <h1 th:text="${friend.getName()}"></h1>
+            <h1 th:text="${friend.getUsername()}"></h1>
+            <form th:action="@{'remove/friend/' + ${friend.getFriendship()}}" th:method="post">
+                <button  th:type="submit">Remove friend</button>
+            </form>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <h1>Your friend requests:</h1>
+    <div  class="friendlistMainContainer">
+        <div th:each="request : ${friendRequests}" class="friendlistFriendContent">
+            <h2 th:if="${noFriendRequest}">You don't have any friends></h2>
+            <h2  th:text="${request.getName()}"></h2>
+            <h2  th:text="${request.getUsername()}"></h2>
+            <form th:action="@{'accept/friend/' + ${request.getFriendship()}}" th:method="post">
+                <button type="submit">Accept friend request</button>
+            </form>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <h1>Your send friend requests:</h1>
+    <div  class="friendlistMainContainer">
+        <div th:each="send : ${sendRequests}" class="friendlistFriendContent">
+            <h2 th:if="${noSendRequests}">You don't have any friends></h2>
+            <h2  th:text="${send.getName()}"></h2>
+            <h2 th:text="${send.getUsername()}"></h2>
+            <form th:action="@{'remove/friend/' + ${send.getFriendship()}}" th:method="post">
+                <button th:type="submit">Cancel friend request</button>
+            </form>
+            </div>
+    </div>
+
+    <br>
+    <br>
+
+
+
+        <form th:action="@{/searchResultFriends}" th:object="${name}" method="get">
+
+            <label for="name"></label>
+            <input type="text" id="name" name="name" required placeholder="Find user">
+            <button th:href="@{searchResultFriends}" type="submit">Search</button>
+        </form>
+
+
+</body>
+</html>
