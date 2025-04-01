@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class WishlistController {
@@ -57,11 +59,10 @@ public class WishlistController {
         //Capitalize first character in name
         String name = user.getName().substring(0, 1).toUpperCase() + user.getName().substring(1);
 
-        String imgpath = "../static.images/wishlist.png";
+
 
         model.addAttribute("wishlists", wishLists);
         model.addAttribute("name", name);
-        model.addAttribute("imgpath", imgpath);
         return "profile";
     }
 
@@ -265,7 +266,9 @@ public class WishlistController {
         User loggedUser = (User) session.getAttribute("user");
 
         if(!wishlistService.isLoggedIn(session)) {
+
             return "redirect:/login";
+
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
         }
@@ -292,7 +295,9 @@ public class WishlistController {
         User loggedUser = (User) session.getAttribute("user");
 
         if(!wishlistService.isLoggedIn(session)) {
+
             return "redirect:/login";
+
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
         }

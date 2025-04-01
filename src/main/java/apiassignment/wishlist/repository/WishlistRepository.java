@@ -91,6 +91,11 @@ public class WishlistRepository {
     public List<Wishlist> getAllWishlistsByUserId(int id) {
         String sql = "SELECT * FROM wishlists WHERE userID = ?";
         List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(), id);
+
+        //Assigns all wishes to their respective wishlist
+        for (Wishlist wishlist : wishlists) {
+            wishlist.setWishes(getAllWishesByWishlistId(wishlist.getWishlistId()));
+        }
         return wishlists;
     }
 

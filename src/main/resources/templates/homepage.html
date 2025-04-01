@@ -29,7 +29,9 @@
       <p>Wishlist makes it easy for you to save and share all <br> your wishes with friends and family</p>
     </div>
     <div class="registerbuttonwrap">
-      <button class="registerbutton">Register now</button>
+      <a th:href="@{/register}">
+        <button class="registerbutton">Register now</button>
+      </a>
     </div>
   </div>
   <img th:src="@{/images/wishlist.png}" alt="logo" class="logo">
