@@ -40,4 +40,5 @@ public class Wishlist {
     public void setWishes(List<Wish> wishes) {
         this.wishes = wishes;
     }
+
 }

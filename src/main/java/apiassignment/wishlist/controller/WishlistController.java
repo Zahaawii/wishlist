@@ -169,6 +169,19 @@ public class WishlistController {
         return "redirect:/profile";
     }
 
+    @PostMapping("/delete/{id}")
+    public String deleteUser(@PathVariable int id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        if(!wishlistService.isLoggedIn(session)) {
+            return "redirect:/login";
+        }
+        System.out.println("Deleting user with ID: " + id);
+
+        wishlistService.deleteUser(id);
+        return "redirect:/login";
+    }
+
     @GetMapping("/wish/add/{wishlistId}")
     public String addWish(@PathVariable int wishlistId, Model model, HttpSession session) {
 
@@ -275,7 +288,7 @@ public class WishlistController {
     }
 
     @PostMapping("/admin/delete/{id}")
-    public String deleteUser(@PathVariable int id, HttpSession session) {
+    public String adminDeleteUser(@PathVariable int id, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
 
         if(!wishlistService.isLoggedIn(session)) {

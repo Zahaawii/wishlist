@@ -6,29 +6,34 @@
     <title>Edit admin profile</title>
 </head>
 <body>
-<form action="/profile/edit" th:object="${updatedUser}" method="post">
-    <fieldset>
-        <legend>Edit user profile information</legend>
+
+<div class ="center">
+
+    <div class="addFormular">
+        <h1 class="heading"> Edit user profile information</h1>
+
+        <form action="/admin/update" th:object="${updatedUser}" method="post">
 
         <input type="hidden" id="userId" name="userId" th:value="${user.getUserId()}">
 
         <label for="name">name:</label>
-        <textarea id="name" name="name" th:text="${user.getName()}" required> </textarea>
+        <input type="text" id="name" name="name" placeholder="Enter your name" th:value="${user.getName()}" required> </input>
 
         <label for="username">username:</label>
-        <textarea id="username" name="username" th:text="${user.getUsername()}"> </textarea>
+        <input type="text" id="username" name="username" placeholder="Enter your username" th:value="${user.getUsername()}" readonly> </input>
 
         <label for="password">password:</label>
-        <textarea id="password" name="password" th:text="${user.getPassword()}" required> </textarea>
+        <input type="text" id="password" name="password" placeholder="Enter your password" th:value="${user.getPassword()}" required> </input>
 
         <label for="roleId">Role id</label>
-        <input type="number" id="roleId" name="roleId" th:value="${user.getRoleId()}">
-
-    </fieldset>
+        <input type="number" id="roleId" name="roleId" placeholder="Enter role id" th:value="${user.getRoleId()}">
 
     <button type="submit">Update information</button>
     <a class="button-link" href="/profile">Go back to profile</a>
 
 </form>
+    </div>
+</div>
+
 </body>
 </html>

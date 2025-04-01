@@ -1,81 +1,56 @@
-body {
-    background-color: #d1f2ff;
+* {
+    background-color: #D5F8FF;
+    color: cornflowerblue;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    height: auto;
+}
+
+.center {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    height: 1000px;
+
+}
+
+.addFormular {
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    box-shadow: 0px 4px 9px rgb(74, 70, 70);
+    text-align: center;
+    width: 500px;
+}
+
+.addFormular h1 {
+    margin-bottom: 50px;
 }
 
 form {
-    background-color: rgba(255, 255, 255, 0.5);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    text-align: center;
-}
-
-fieldset {
-    border: none;
-}
-
-legend {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #4d8af0;
-}
-
-label {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
-    color: #4d8af0;
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    gap: 15px;
 }
 
 input, textarea {
     width: 100%;
     padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #4d8af0;
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.8);
-    font-size: 1em;
-}
-
-textarea {
-    resize: none;
+    border: 1px solid cornflowerblue;
+    border-radius: 15px;
+    font-size: 15px;
 }
 
 button {
-    background-color: #4d8af0;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-top: 15px;
-    border-radius: 5px;
+    align-self: center;
+    color: cornflowerblue;
+    border: 1px solid cornflowerblue;
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 10px 15px;
+    width: 50%;
     cursor: pointer;
-    font-size: 1em;
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-}
-
-button:hover {
-    background-color: #3a6fcf;
-}
-
-.button-link {
-    display: inline-block;
-    background-color: #4d8af0;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 1em;
-    margin-top: 10px;
-}
-
-.button-link:hover {
-    background-color: #3a6fcf;
 }

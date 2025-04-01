@@ -173,6 +173,23 @@ public class WishlistRepository {
     public void deleteUser(int id) {
         String sql = "DELETE FROM USERS WHERE USERID = ?";
         jdbcTemplate.update(sql, id);
+        if(getAllWishesByUserId(id) != null) {
+            String deleteSQL = "DELETE wishes.* FROM wishes join wishlists on wishes.wishlistID = wishlists.wishlistID where wishlists.userID = ?";
+            jdbcTemplate.update(deleteSQL, id);
+        }
+        if(getAllWishListFromUserID(id) != null) {
+            String deleteSQLList = "DELETE FROM wishlist.wishlists WHERE userID = ?";
+            jdbcTemplate.update(deleteSQLList, id);
+        }
+    }
+
+    public List<Wishlist> getAllWishListFromUserID(int id) {
+        String sql = "SELECT * FROM wishlists WHERE userID = ?";
+        List<Wishlist> getWishList = jdbcTemplate.query(sql, new WishlistRowmapper(), id);
+            if(getWishList.isEmpty()) {
+                return null;
+            }
+        return  getWishList;
     }
 
     public Wishlist getWishlistByID(int id) {
