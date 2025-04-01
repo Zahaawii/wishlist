@@ -242,7 +242,10 @@ public class WishlistController {
         if(wish == null) {
             return "redirect:/profile";
         }
+
         model.addAttribute("wish", wish);
+
+
         return "wish";
     }
 

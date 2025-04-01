@@ -209,13 +209,16 @@ public class WishlistRepository {
 
     public Wish getWishById(int id) {
         String sql = "SELECT * FROM wishes WHERE wishID = ?";
-        List<Wish> wish = jdbcTemplate.query(sql, new WishRowmapper(), id);
+        Wish wish = jdbcTemplate.query(sql, new WishRowmapper(), id).get(0);
 
-        if (wish.isEmpty()) {
-            return null;
-        } else {
-            return wish.get(0);
-        }
+        return wish;
+
+    }
+
+    public boolean isWishReservedById (int id) {
+        String sql = "SELECT isReserved FROM wishes WHERE wishID = ?";
+        Wish wish = jdbcTemplate.query(sql, new WishRowmapper(), id).get(0);
+        return wish.isReserved();
     }
 
     public List<Wish> getAllWishesByWishlistId(int id) {
