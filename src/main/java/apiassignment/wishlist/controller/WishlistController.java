@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class WishlistController {
@@ -57,13 +59,13 @@ public class WishlistController {
         //Capitalize first character in name
         String name = user.getName().substring(0, 1).toUpperCase() + user.getName().substring(1);
 
-        String imgpath = "../static.images/wishlist.png";
+
 
         model.addAttribute("wishlists", wishLists);
         model.addAttribute("name", name);
-        model.addAttribute("imgpath", imgpath);
         return "profile";
     }
+
     @GetMapping("/wishlist/{id}")
     public String getWishlist (@PathVariable("id") int wishlistId, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -153,6 +155,7 @@ public class WishlistController {
             return "login";
         }
         User user = (User) session.getAttribute("user");
+
         model.addAttribute("user", user);
         model.addAttribute("updatedUser", new User());
         return "updateUser";
@@ -165,6 +168,19 @@ public class WishlistController {
         }
         wishlistService.updateUser(updatedUser);
         return "redirect:/profile";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteUser(@PathVariable int id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        if(!wishlistService.isLoggedIn(session)) {
+            return "redirect:/login";
+        }
+        System.out.println("Deleting user with ID: " + id);
+
+        wishlistService.deleteUser(id);
+        return "redirect:/login";
     }
 
     @GetMapping("/wish/add/{wishlistId}")
@@ -230,7 +246,10 @@ public class WishlistController {
         if(wish == null) {
             return "redirect:/profile";
         }
+
         model.addAttribute("wish", wish);
+
+
         return "wish";
     }
 
@@ -254,7 +273,11 @@ public class WishlistController {
         User loggedUser = (User) session.getAttribute("user");
 
         if(!wishlistService.isLoggedIn(session)) {
-            return "login";
+
+
+            return "redirect:/login";
+
+
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
         }
@@ -270,16 +293,22 @@ public class WishlistController {
             model.addAttribute("notFree", true);
             return "redirect:/admin/addusers";
         }
+
+        System.out.println(user);
         wishlistService.adminRegisterUser(user);
         return "redirect:/admin";
     }
 
     @PostMapping("/admin/delete/{id}")
-    public String deleteUser(@PathVariable int id, HttpSession session) {
+    public String adminDeleteUser(@PathVariable int id, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
 
         if(!wishlistService.isLoggedIn(session)) {
-            return "login";
+
+
+            return "redirect:/login";
+
+
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
         }
@@ -287,6 +316,7 @@ public class WishlistController {
         wishlistService.deleteUser(id);
         return "redirect:/admin";
     }
+
 
     @GetMapping("/share/{token}")
     public String shareWishlist(@PathVariable String token, Model model, HttpSession session) {
@@ -326,6 +356,33 @@ public class WishlistController {
 
         model.addAttribute("wish", wish);
         return "sharedWish";
+    }
+
+
+    @GetMapping("/admin/update/{id}")
+    public String adminUpdateUser(@PathVariable int id, HttpSession session, Model model) {
+        User loggedUser = (User) session.getAttribute("user");
+        User getUser = wishlistService.getUserById(id);
+        if(!wishlistService.isLoggedIn(session)) {
+            return "redirect:/login";
+        } else if (loggedUser.getRoleId() != 1) {
+            return "redirect:/login";
+        }
+        model.addAttribute("user", getUser);
+        model.addAttribute("updatedUser", new User());
+        return "adminUpdateUser";
+    }
+
+    @PostMapping("/admin/update")
+    public String adminUpdateUser(@ModelAttribute User updatedUser, HttpSession session){
+
+        if(!wishlistService.isLoggedIn(session)) {
+            return "login";
+        }
+
+        wishlistService.updateUser(updatedUser);
+
+        return "redirect:/admin";
     }
 
 

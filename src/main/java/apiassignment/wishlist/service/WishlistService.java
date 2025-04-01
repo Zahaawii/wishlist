@@ -50,8 +50,16 @@ public class WishlistService{
         return wishlistRepository.getAllWishesFromWishlistId(id);
     }
 
+    public boolean isWishReservedById (int id) {
+        return wishlistRepository.isWishReservedById(id);
+    }
+
     public User getUserByUsername(String username){
         return wishlistRepository.getUserByUsername(username);
+    }
+
+    public User getUserById(int id) {
+       return wishlistRepository.getUserById(id);
     }
 
     public boolean isUsernameFree(String username){

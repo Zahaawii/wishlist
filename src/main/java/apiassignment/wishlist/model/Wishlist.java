@@ -1,6 +1,7 @@
 package apiassignment.wishlist.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,11 +38,22 @@ public class Wishlist {
         this.wishlistName = wishlistName;
     }
 
+
     public String getToken() {
         return token;
+
+    public List<Wish> getWishes() {
+
+        return (wishes != null) ? wishes : new ArrayList<>();
+
     }
 
     public void setToken(String token) {
         this.token = token;
     }
+
+    public int getAmountOfWishes () {
+        return wishes.size();
+    }
+
 }

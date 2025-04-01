@@ -93,6 +93,11 @@ public class WishlistRepository {
     public List<Wishlist> getAllWishlistsByUserId(int id) {
         String sql = "SELECT * FROM wishlists WHERE userID = ?";
         List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(), id);
+
+        //Assigns all wishes to their respective wishlist
+        for (Wishlist wishlist : wishlists) {
+            wishlist.setWishes(getAllWishesByWishlistId(wishlist.getWishlistId()));
+        }
         return wishlists;
     }
 
@@ -176,6 +181,23 @@ public class WishlistRepository {
     public void deleteUser(int id) {
         String sql = "DELETE FROM USERS WHERE USERID = ?";
         jdbcTemplate.update(sql, id);
+        if(getAllWishesByUserId(id) != null) {
+            String deleteSQL = "DELETE wishes.* FROM wishes join wishlists on wishes.wishlistID = wishlists.wishlistID where wishlists.userID = ?";
+            jdbcTemplate.update(deleteSQL, id);
+        }
+        if(getAllWishListFromUserID(id) != null) {
+            String deleteSQLList = "DELETE FROM wishlist.wishlists WHERE userID = ?";
+            jdbcTemplate.update(deleteSQLList, id);
+        }
+    }
+
+    public List<Wishlist> getAllWishListFromUserID(int id) {
+        String sql = "SELECT * FROM wishlists WHERE userID = ?";
+        List<Wishlist> getWishList = jdbcTemplate.query(sql, new WishlistRowmapper(), id);
+            if(getWishList.isEmpty()) {
+                return null;
+            }
+        return  getWishList;
     }
 
     public Wishlist getWishlistByID(int id) {
@@ -190,13 +212,24 @@ public class WishlistRepository {
 
     public Wish getWishById(int id) {
         String sql = "SELECT * FROM wishes WHERE wishID = ?";
-        List<Wish> wish = jdbcTemplate.query(sql, new WishRowmapper(), id);
+        Wish wish = jdbcTemplate.query(sql, new WishRowmapper(), id).get(0);
+
 
         if (wish.isEmpty()) {
             return null;
         } else {
             return wish.getFirst();
         }
+
+        return wish;
+
+    }
+
+    public boolean isWishReservedById (int id) {
+        String sql = "SELECT isReserved FROM wishes WHERE wishID = ?";
+        Wish wish = jdbcTemplate.query(sql, new WishRowmapper(), id).get(0);
+        return wish.isReserved();
+
     }
 
     public List<Wish> getAllWishesByWishlistId(int id) {
@@ -213,23 +246,21 @@ public class WishlistRepository {
         String sql = "DELETE FROM wishes WHERE wishID = ?";
         jdbcTemplate.update(sql,id);
     }
+
+
     public User updateUser(User user){
-        String sql = "UPDATE users SET name = ?, username = ?, password = ? WHERE userID = ?";
-        jdbcTemplate.update(sql, user.getName(), user.getUsername(), user.getPassword(), user.getUserId());
+        String sql = "UPDATE users SET name = ?, username = ?, password = ?, roleID = ? WHERE userID = ?";
+        jdbcTemplate.update(sql, user.getName(), user.getUsername(), user.getPassword(), user.getRoleId(), user.getUserId());
         return user;
     }
 
 
-
-
     public User adminRegisterUser(User user){
 
-        String checkRoleQuery = "SELECT COUNT(*) FROM roles WHERE roleID = ?";
-        Integer count = jdbcTemplate.queryForObject(checkRoleQuery, Integer.class, user.getRoleId());
-
-        if (count == 0) {
-            throw new IllegalArgumentException("RoleID " + user.getRoleId() + " does not exist.");
+        if(user == null) {
+            return null;
         }
+
         String sql = "INSERT INTO users (name, username, password, roleID) VALUES(?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -243,11 +274,6 @@ public class WishlistRepository {
             return ps;
         }, keyHolder);
 
-        int userId =keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
-
-        if(userId != -1){
-            user.setUserId(userId);
-        }
 
         return user;
 
