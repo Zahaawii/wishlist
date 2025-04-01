@@ -2,6 +2,7 @@ package apiassignment.wishlist.controller;
 
 
 import apiassignment.wishlist.model.User;
+import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.service.WishlistService;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.AfterEach;
@@ -33,9 +34,13 @@ public class WishlistControllerTest {
 
     @MockitoBean
     private WishlistService wishlistService;
+    @Autowired
+    private HttpSession httpSession;
 
     @BeforeEach
     void setUp() {
+        //User testUser = new User(1, "test", "test", "test", 1, null);
+        //MockHttpSession session = new MockHttpSession();
 
     }
 
@@ -106,6 +111,7 @@ public class WishlistControllerTest {
                 .andExpect(view().name("login"));
     }
 
+    //Unit test for GET createwishlist
     @Test
     void testCreateWishList() throws Exception {
 
@@ -119,17 +125,101 @@ public class WishlistControllerTest {
                 .andExpect(view().name("createWishList"));
     }
 
+    //Unit test for GET profile side
     @Test
     void testProfileSide() throws Exception {
 
         session.setAttribute("user", testUser);
         when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
-        when(wishlistService.getAllWishlistsByUserId(anyInt())).thenReturn(new ArrayList<>());
 
         mockMvc.perform(get("/profile/edit").session(session))
                 .andExpect(status().isOk())
                 .andExpect(view().name("updateUser"));
     }
+
+    //Unit test for GET addWish site
+    @Test
+    void testAddWish() throws Exception {
+        session.setAttribute("user", testUser);
+
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+
+        mockMvc.perform(get("/wish/add/1").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("createWish"));
+    }
+
+    //Unit test for GET edit wish site
+    @Test
+    void testEditWish() throws Exception {
+        session.setAttribute("user", testUser);
+        Wish wish = new Wish(1, 1, "test", "test", "test", true, 1, 1);
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+        when(wishlistService.getWishById(1)).thenReturn(wish);
+
+        mockMvc.perform(get("/wish/1/edit").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("updateWish"));
+    }
+
+    @Test
+    void testViewWish() throws Exception {
+        session.setAttribute("user", testUser);
+        Wish wish = new Wish(1, 1, "test", "test", "test", true, 1, 1);
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+        when(wishlistService.getWishById(1)).thenReturn(wish);
+
+        mockMvc.perform(get("/wish/view/1").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("wish"));
+    }
+
+    @Test
+    void testAdminPanel() throws Exception {
+        session.setAttribute("user", testUser);
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+
+        mockMvc.perform(get("/admin").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("adminPanel"));
+    }
+
+    @Test
+    void testAdminPanelAddUser() throws Exception {
+        session.setAttribute("user", testUser);
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+
+        mockMvc.perform(get("/admin/addusers").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("adminAddUser"));
+    }
+
+    @Test
+    void testAdminUpdateUser() throws Exception {
+        session.setAttribute("user", testUser);
+
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+        when(wishlistService.getUserById(1)).thenReturn(testUser);
+        mockMvc.perform(get("/admin/update/1").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("adminUpdateUser"));
+    }
+
+    @Test
+    void testSharedWishes () throws Exception {
+        session.setAttribute("user", testUser);
+        Wish wish = new Wish(1, 1, "test", "test", "test", true, 1, 1);
+
+        when(wishlistService.getWishById(1)).thenReturn(wish);3
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+
+        mockMvc.perform(get("/shared/wish/1").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("sharedWish"));
+    }
+
+
+
 
     //Virker ikke, afvent.
     @Test
