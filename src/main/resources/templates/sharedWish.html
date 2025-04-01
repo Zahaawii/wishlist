@@ -16,9 +16,12 @@
   <div class="cloud x5"></div>
 </div>
 
-<div th:if="notLoggedIn" th:replace="fragments/navbarunauth :: navbarunauth"></div>
-<div th:if="notLoggedIn == false" th:replace="fragments/navbarauth :: navbar"></div>
-
+<div th:if="${notLoggedIn}">
+  <div th:replace="fragments/navbarunauth :: navbarunauth"></div>
+</div>
+<div th:if="${!notLoggedIn}">
+  <div th:replace="fragments/navbarauth :: navbar"></div>
+</div>
 
 <div class="wishContainerWrapper">
   <div class="wishContainer">
@@ -32,7 +35,7 @@
       <h2 th:text="${wish.getPriceRounded()}">XXX$</h2>
       <div class="wishButtonsContainer">
         <!-- Skal laves til en reserve button -->
-        <a th:if="loggedIn" th:href="@{/wish/{id}/edit(id=${wish.wishId})}">
+        <a th:if="${!notLoggedIn}" th:href="@{/wish/{id}/edit(id=${wish.wishId})}">
           <button class="button-22 blue">Reserve</button>
         </a>
       </div>

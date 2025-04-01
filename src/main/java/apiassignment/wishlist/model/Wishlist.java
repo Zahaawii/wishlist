@@ -9,11 +9,13 @@ public class Wishlist {
     private int wishlistId;
     private String wishlistName;
     private String token;
+    private List<Wish> wishes;
 
     public Wishlist(int wishlistId, String wishlistName) {
         this.wishlistId = wishlistId;
         this.wishlistName = wishlistName;
         this.token = generateToken();
+
     }
     public Wishlist(){
     }
@@ -41,11 +43,16 @@ public class Wishlist {
 
     public String getToken() {
         return token;
+    }
 
     public List<Wish> getWishes() {
 
         return (wishes != null) ? wishes : new ArrayList<>();
 
+    }
+
+    public void setWishes(List<Wish> wishes) {
+        this.wishes = wishes;
     }
 
     public void setToken(String token) {

@@ -214,13 +214,6 @@ public class WishlistRepository {
         String sql = "SELECT * FROM wishes WHERE wishID = ?";
         Wish wish = jdbcTemplate.query(sql, new WishRowmapper(), id).get(0);
 
-
-        if (wish.isEmpty()) {
-            return null;
-        } else {
-            return wish.getFirst();
-        }
-
         return wish;
 
     }
