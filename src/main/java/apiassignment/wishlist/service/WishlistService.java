@@ -85,8 +85,8 @@ public class WishlistService{
     public User updateUser(User user){
         return wishlistRepository.updateUser(user);
     }
-    public List<User>searchFriends(String name){
-        return wishlistRepository.searchFriends(name);
+    public List<User>searchFriends(String name, int id){
+        return wishlistRepository.searchFriends(name, id);
     }
     public void addFriend(int friendOneId, int friendTwoId, String status){
         wishlistRepository.addFriend(friendOneId, friendTwoId, status);

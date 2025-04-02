@@ -617,3 +617,6 @@ h3 {
     100% { margin-left: -100vw; }
 }
 
+.searchResult{
+    align-items: center;
+}

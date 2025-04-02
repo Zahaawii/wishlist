@@ -330,11 +330,13 @@ public class WishlistController {
         if(!wishlistService.isLoggedIn(session)) {
             return "login";
         }
-        if(wishlistService.searchFriends(name) == null){
+        User user = (User) session.getAttribute("user");
+        if(wishlistService.searchFriends(name, user.getUserId()) == null){
             model.addAttribute("noPersonFound", true);
             return "searchResultFriends";
         }
-        model.addAttribute("searchResult", wishlistService.searchFriends(name));
+        model.addAttribute("searchResult", wishlistService.searchFriends(name, user.getUserId()));
+        model.addAttribute("found", true);
         return "searchResultFriends";
     }
 

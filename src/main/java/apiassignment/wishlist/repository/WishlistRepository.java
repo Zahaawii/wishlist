@@ -36,18 +36,40 @@ public class WishlistRepository {
         return jdbcTemplate.query(sql, new UserRowmapper());
     }
 
-    public List<User>searchFriends(String name){
+    //Man søger efter et navn, og så kommer der en liste op af brugere, der indeholder det navn
+    // hvis man ikke allerede har en relation til dem
+    public List<User>searchFriends(String name, int id){
         List<User> allUsers = getAllUsers();
         List<User> usersWithSpecifikName = new ArrayList<>();
         for(User i: allUsers) {
             if (i.getName().toLowerCase().contains(name.toLowerCase())) {
-                usersWithSpecifikName.add(i);
+                if(i.getUserId() != id) {
+                    if(isThereAlreadyARelation(id, i.getUserId())){
+                        //tjekker om der allerede er en relation, fx ven eller venanmodning
+                        usersWithSpecifikName.add(i);
+                    }
+                }
             }
         }
         if(usersWithSpecifikName.isEmpty()){
             return null;
         }
         return usersWithSpecifikName;
+    }
+
+    //tjekker om der allerede er en relation, fx ven eller venanmodning
+    public boolean isThereAlreadyARelation(int userId, int friendId){
+        String sql = "SELECT * FROM friends WHERE friendOne = ? and friendTwo = ?";
+        List<Friend> friendList = jdbcTemplate.query(sql, new FriendRowmapper(), userId, friendId);
+        if(!friendList.isEmpty()){
+            return false;
+        }
+        String sqlSecond = "SELECT * FROM friends WHERE friendTwo = ? and friendOne = ?";
+        List<Friend> friendListSecond = jdbcTemplate.query(sqlSecond, new FriendRowmapper(), userId, friendId);
+        if(!friendListSecond.isEmpty()){
+            return false;
+        }
+        return true;
     }
 
 
