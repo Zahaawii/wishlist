@@ -112,7 +112,12 @@ public class WishlistService{
     public String getUsernameByToken(String token) {
         return wishlistRepository.getUsernameByToken(token);
     }
-
+    public void deleteWishlist(int id) {
+        wishlistRepository.deleteWishlist(id);
+    }
+    public void deleteAllWishesWithWishlistId(int id) {
+        wishlistRepository.deleteAllWishesWithWishlistId(id);
+    }
 
 
 

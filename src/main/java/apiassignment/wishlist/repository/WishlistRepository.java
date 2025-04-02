@@ -323,6 +323,16 @@ public class WishlistRepository {
         }
     }
 
+    public void deleteWishlist(int id) {
+        String sql = "DELETE FROM wishlists WHERE wishlistID = ?";
+        jdbcTemplate.update(sql,id);
+    }
+
+    public void deleteAllWishesWithWishlistId(int id) {
+        String sql = "DELETE FROM wishes WHERE wishlistID = ?";
+        jdbcTemplate.update(sql,id);
+    }
+
 
 
 }

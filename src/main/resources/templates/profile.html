@@ -42,6 +42,9 @@
                                 onclick="copyShareLink(this.getAttribute('data-token'))">
                             Share
                         </button>
+                        <form th:action="@{/wishlist/delete/{id}(id=${wishlist.wishlistId})}" method="post" onsubmit="return confirm('Are you sure you want to delete this wish?')">
+                            <button class="button-22 red" type="submit">Delete</button>
+                        </form>
                     </div>
                 </a>
             </div>
