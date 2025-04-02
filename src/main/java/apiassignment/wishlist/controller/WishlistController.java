@@ -152,6 +152,13 @@ public class WishlistController {
         return "redirect:/profile";
     }
 
+    @PostMapping("/wishlist/delete/{id}")
+    public String deleteWishlist(@PathVariable int id) {
+        wishlistService.deleteAllWishesWithWishlistId(id);
+        wishlistService.deleteWishlist(id);
+        return "redirect:/profile";
+    }
+
     @GetMapping("/profile/edit")
     public String editProfileSide(HttpSession session, Model model){
         if(!wishlistService.isLoggedIn(session)) {
