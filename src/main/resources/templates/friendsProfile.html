@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Friends profile</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+</head>
+<body>
+
+<div id="clouds">
+  <div class="cloud x1"></div>
+  <div class="cloud x2"></div>
+  <div class="cloud x3"></div>
+  <div class="cloud x4"></div>
+  <div class="cloud x5"></div>
+</div>
+
+<div th:replace="fragments/navbarauth :: navbar"></div>
+
+<div class="profileNameWrapper">
+  <h1 class="profileheader">Profile for,&nbsp<span class="profileName" th:text="${name}"></span> <!--<span th:text="${name}"></span>--></h1>
+
+</div>
+
+<div class="Mainmaincontainer">
+  <h3>YOUR WISHLISTS</h3>
+
+  <div class="wishListMainContainer">
+
+    <div th:each="wishlist : ${wishlists}">
+      <a th:href="@{/wishlist/{id}(id=${wishlist.wishlistId})}">
+        <div class="wishListContainer">
+          <h3 th:text="${wishlist.wishlistName}"></h3>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+
+</body>
+</html>

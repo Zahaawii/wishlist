@@ -375,6 +375,25 @@ public class WishlistRepository {
         return friends;
     }
 
+    public List<Friend>checkIfFriends(int myId, String username){
+        int friendsId = getUserByUsername(username).getUserId(); //Vennen hvis profil vi vil se, her modtager vi deres username
+        //Når vi har deres username, så kan vi finde deres id
+        //vi kan ved hjælp af vores id og vennensId, tjekke om vi er venner.
+        String friendStatus = "friends";
+        String sql = "SELECT * FROM friends WHERE friendOne = ? and friendTwo =? and friendStatus =?";
+        List<Friend> firstFriendList= jdbcTemplate.query(sql, new FriendRowmapper(), myId, friendsId, friendStatus);
+        if(!firstFriendList.isEmpty()){
+            return firstFriendList;
+        }
+        //vi skal køre metoden to forskellige gange, da vores navn fx kan være i friendOne eller friendTwo, alt efter hvem der sendte venandmodningen
+        String sqlSecondCombination = "SELECT * FROM friends WHERE friendTwo = ? and friendOne = ? and friendStatus = ?";
+        List<Friend> seccondFriendList = jdbcTemplate.query(sqlSecondCombination, new FriendRowmapper(), myId, friendsId, friendStatus);
+        if(!seccondFriendList.isEmpty()){
+            return seccondFriendList;
+        }
+        return null;
+    }
+
 
 
 

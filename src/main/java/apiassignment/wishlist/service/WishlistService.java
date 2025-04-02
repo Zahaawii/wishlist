@@ -164,6 +164,9 @@ public class WishlistService{
         return combineFriendAndUserLists(combinedFriend, userInfo, friendInfo);
     }
 
+    public List<Friend>checkIfFriends(int myId, String username){
+        return wishlistRepository.checkIfFriends(myId, username);
+    }
 
 
 

@@ -53,6 +53,9 @@ public class WishlistController {
 
     @GetMapping("/profile")
     public String getProfile (Model model, HttpSession session) {
+        if(!wishlistService.isLoggedIn(session)) {
+            return "login";
+        }
         User user = (User) session.getAttribute("user");
         List<Wishlist> wishLists = wishlistService.getAllWishlistsByUserId(user.getUserId());
 
@@ -301,9 +304,6 @@ public class WishlistController {
         List<DTOFriend>listOfFriendRequest = wishlistService.receivedFriendRequestCombined(user.getUserId());
         List<DTOFriend>listOfSendFriendRequests = wishlistService.sendFriendRequestCombined(user.getUserId());
 
-        System.out.println(listOfFriends);
-        System.out.println(listOfFriendRequest);
-        System.out.println(listOfSendFriendRequests);
         if(listOfFriends != null){
             model.addAttribute("friends", listOfFriends);
         } else {
@@ -377,34 +377,30 @@ public class WishlistController {
         return "redirect:/searchFriends";
     }
 
-
-
-
-    /*
-    @GetMapping("/profile/friends")
-    public String friendsPage(HttpSession session, Model model){
+    @GetMapping("/profile/friends/{username}")
+    public String myFriendsProfile(@PathVariable String username, HttpSession session, Model model){
         if(!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         User user = (User) session.getAttribute("user");
-
-        List<Friend>listOfFriends = wishlistService.getFriends(user.getUserId());
-        List<Friend>listOfFriendRequest = wishlistService.getFriendRequest(user.getUserId());
-        if(listOfFriends != null){
-            model.addAttribute("friends", listOfFriends);
-        } else {
-            model.addAttribute("noFriends", true);
+        if(wishlistService.checkIfFriends(user.getUserId(), username) == null){
+            model.addAttribute("You are not friends", true);
+            return "homepage";
         }
-        if(listOfFriendRequest != null){
-            model.addAttribute("friendRequests", listOfFriendRequest);
-        } else {
-            model.addAttribute("noFriendRequest", true);
-        }
+        User friendUser = wishlistService.getUserByUsername(username);
+        List<Wishlist> wishLists = wishlistService.getAllWishlistsByUserId(friendUser.getUserId());
+        //Capitalize first character in name
+        String name = friendUser.getName().substring(0, 1).toUpperCase() + friendUser.getName().substring(1);
+
+        String imgpath = "../static.images/wishlist.png";
+
+        model.addAttribute("wishlists", wishLists);
+        model.addAttribute("name", name);
+        model.addAttribute("imgpath", imgpath);
 
 
-        return "friends";
-    } */
-
+        return "friendsProfile";
+    }
 
 
 

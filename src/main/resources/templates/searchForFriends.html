@@ -16,6 +16,9 @@
             <form th:action="@{'remove/friend/' + ${friend.getFriendship()}}" th:method="post">
                 <button  th:type="submit">Remove friend</button>
             </form>
+            <form th:action="@{'/profile/friends/' + ${friend.getUsername()}}" th:method="get">
+                <button th:type="submit">See friends profile</button>
+            </form>
         </div>
     </div>
 
