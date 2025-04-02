@@ -36,7 +36,7 @@
                 <a th:href="@{/wishlist/{id}(id=${wishlist.wishlistId})}" class="wishlist-link">
                     <div class="wishListContainer">
                         <h3 th:text="${wishlist.wishlistName}"></h3>
-
+                        <h2 th:text="${wishlist.wishes.size() == 1 ? '1 WISH' : wishlist.wishes.size() + ' WISHES'}"></h2>
                         <button class="share-button"
                                 th:attr="data-token=${wishlist.token}"
                                 onclick="copyShareLink(this.getAttribute('data-token'))">
