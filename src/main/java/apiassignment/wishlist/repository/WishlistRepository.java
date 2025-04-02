@@ -154,7 +154,7 @@ public class WishlistRepository {
 
     public void addWish(Wish wish) {
         try {
-            String sql = "INSERT INTO wishes (wishlistID, wishName, description, price, quantity, link) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO wishes (wishlistID, wishName, description, price, link) VALUES (?, ?, ?, ?, ?)";
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
             jdbcTemplate.update(connection -> {
@@ -163,7 +163,6 @@ public class WishlistRepository {
                 ps.setString(2, wish.getName());
                 ps.setString(3, wish.getDescription());
                 ps.setDouble(4, wish.getPrice());
-                ps.setInt(5, wish.getQuantity());
                 ps.setString(6, wish.getLink());
                 return ps;
             }, keyHolder);
@@ -231,8 +230,8 @@ public class WishlistRepository {
     }
 
     public void updateWish(Wish wish) {
-        String sql = "UPDATE wishes SET wishName = ?, description = ?, price = ?, quantity = ?, link = ? WHERE wishID = ?";
-        jdbcTemplate.update(sql,wish.getName(),wish.getDescription(),wish.getPrice(),wish.getQuantity(),wish.getLink(),wish.getWishId());
+        String sql = "UPDATE wishes SET wishName = ?, description = ?, price = ?, link = ? WHERE wishID = ?";
+        jdbcTemplate.update(sql,wish.getName(),wish.getDescription(),wish.getPrice(),wish.getLink(),wish.getWishId());
     }
 
     public void deleteWish(int id) {

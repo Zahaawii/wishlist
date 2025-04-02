@@ -153,7 +153,7 @@ public class WishlistControllerTest {
     @Test
     void testEditWish() throws Exception {
         session.setAttribute("user", testUser);
-        Wish wish = new Wish(1, 1, "test", "test", "test", true, 1, 1);
+        Wish wish = new Wish(1, 1, "test", "test", "test", true, 1);
         when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
         when(wishlistService.getWishById(1)).thenReturn(wish);
 
@@ -165,7 +165,7 @@ public class WishlistControllerTest {
     @Test
     void testViewWish() throws Exception {
         session.setAttribute("user", testUser);
-        Wish wish = new Wish(1, 1, "test", "test", "test", true, 1, 1);
+        Wish wish = new Wish(1, 1, "test", "test", "test", true, 1);
         when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
         when(wishlistService.getWishById(1)).thenReturn(wish);
 
@@ -208,7 +208,7 @@ public class WishlistControllerTest {
     @Test
     void testSharedWishes () throws Exception {
         session.setAttribute("user", testUser);
-        Wish wish = new Wish(1, 1, "test", "test", "test", true, 1, 1);
+        Wish wish = new Wish(1, 1, "test", "test", "test", true, 1);
 
         when(wishlistService.getWishById(1)).thenReturn(wish);
         when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
