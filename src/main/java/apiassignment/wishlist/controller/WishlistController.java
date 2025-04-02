@@ -297,7 +297,6 @@ public class WishlistController {
             return "redirect:/admin/addusers";
         }
 
-        System.out.println(user);
         wishlistService.adminRegisterUser(user);
         return "redirect:/admin";
     }
@@ -345,8 +344,8 @@ public class WishlistController {
         }
     }
 
-    @GetMapping("/shared/wish/{id}")
-    public String sharedWishes(@PathVariable int id, Model model, HttpSession session) {
+    @GetMapping("/shared/wish/{token}/{id}")
+    public String sharedWishes(@PathVariable int id, @PathVariable String token, Model model, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
         boolean notLoggedIn = false;
 
@@ -354,11 +353,31 @@ public class WishlistController {
             notLoggedIn = true;
         }
 
+        model.addAttribute("token", token);
         model.addAttribute("notLoggedIn",notLoggedIn);
-        Wish wish = wishlistService.getWishById(id);
 
+        Wish wish = wishlistService.getWishById(id);
         model.addAttribute("wish", wish);
+        model.addAttribute("isReserved", wishlistService.isWishReservedById(id));
+
         return "sharedWish";
+    }
+
+
+
+    @PostMapping("/shared/wish/{token}/{id}")
+    public String updateIsReserved (@PathVariable int id, @PathVariable String token, HttpSession session) {
+        System.out.println("Updating wish with ID: " + id);
+
+        if (wishlistService.isLoggedIn(session)) {
+            wishlistService.updateIsReservedByWishId(id);
+            System.out.println("Wish updated successfully.");
+            return "redirect:/shared/wish/" + token +"/" + id;
+        } else {
+            System.out.println("User not logged in, redirecting to login.");
+            return "redirect:/login";
+        }
+
     }
 
 

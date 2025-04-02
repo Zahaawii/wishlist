@@ -219,15 +219,27 @@ public class WishlistRepository {
     }
 
     public boolean isWishReservedById (int id) {
-        String sql = "SELECT isReserved FROM wishes WHERE wishID = ?";
+        String sql = "SELECT * FROM wishes WHERE wishID = ?";
         Wish wish = jdbcTemplate.query(sql, new WishRowmapper(), id).get(0);
         return wish.isReserved();
+    }
 
+    public void updateIsReservedByWishId (int wishId) {
+        String sql = "UPDATE wishes SET isReserved = ? WHERE wishID = ?";
+        jdbcTemplate.update(sql, 1, wishId);
     }
 
     public List<Wish> getAllWishesByWishlistId(int id) {
         String sql = "SELECT * FROM wishes WHERE wishlistID = ?";
         return jdbcTemplate.query(sql, new WishRowmapper(), id);
+    }
+
+    public String getWishlistTokenByWishId (int id) {
+        String sql = "SELECT * FROM wishlists where wishlistID = ?";
+        Wishlist wishlist = jdbcTemplate.query(sql, new WishlistRowmapper(), id).get(0);
+
+        return wishlist.getToken();
+
     }
 
     public void updateWish(Wish wish) {

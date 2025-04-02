@@ -319,6 +319,12 @@ h3 {
     overflow: hidden;
 
 }
+.reservebuttoncontainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 2em 1em;
+}
 .wishListContainer h2 {
     font-weight: lighter;
     font-size: 1em;
@@ -344,6 +350,15 @@ h3 {
     padding: 2em 1em;
 
 }
+#backbutton {
+    font-size: 2em;
+    font-weight: bolder;
+    padding-top: 1em;
+    align-self: start;
+    cursor: pointer;
+
+}
+
 
 
 .plusbutton {
@@ -372,6 +387,7 @@ h3 {
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+
 
 }
 
@@ -637,4 +653,28 @@ h3 {
     position: relative;
     display: inline-block;
     margin: 10px;
+}
+
+.fa-arrow-left {
+    background: var(--secondary-color);
+    padding: 13px;
+    border-radius: 100%;
+    font-size: 2rem;
+    color: #9bd5ed;
+    box-shadow: 0 4px 4px #bfdfed;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.fa-arrow-left:hover {
+    transform: scale(1.05);
+    color:rgb(127, 203, 236);
+}
+
+@keyframes moveLeft {
+    from {
+        transform: translate(10px);
+    }
+    to {
+        transform: translate(0);
+    }
 }
