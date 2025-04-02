@@ -102,6 +102,9 @@ public class WishlistService{
     public int getUserIdByWishlistId(int id) {
         return wishlistRepository.getUserIdByWishlistId(id);
     }
+    public String getUsernameByToken(String token) {
+        return wishlistRepository.getUsernameByToken(token);
+    }
 
 
 

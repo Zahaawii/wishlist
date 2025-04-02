@@ -16,7 +16,7 @@
     <div class="cloud x5"></div>
 </div>
 
-<div th:replace="fragments/navbarauth :: navbar"></div>
+<div th:replace="~{fragments/navbarauth :: navbar}"></div>
 
     <div class="profileNameWrapper">
         <h1 class="profileheader">Hello,&nbsp<span class="profileName" th:text="${name}"></span> <!--<span th:text="${name}"></span>--></h1>

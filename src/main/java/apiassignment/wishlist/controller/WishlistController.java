@@ -333,6 +333,8 @@ public class WishlistController {
             model.addAttribute("wishlistname", wishlist.getWishlistName());
             model.addAttribute("wishlistId", wishlist.getWishlistId());
             model.addAttribute("wishes", wishes);
+            model.addAttribute("userName",wishlistService.getUsernameByToken(token));
+
             if(loggedUser == null) {
                 notLoggedIn = true;
             } else {

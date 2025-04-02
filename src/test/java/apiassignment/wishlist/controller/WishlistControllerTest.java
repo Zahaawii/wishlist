@@ -210,7 +210,7 @@ public class WishlistControllerTest {
         session.setAttribute("user", testUser);
         Wish wish = new Wish(1, 1, "test", "test", "test", true, 1, 1);
 
-        when(wishlistService.getWishById(1)).thenReturn(wish);3
+        when(wishlistService.getWishById(1)).thenReturn(wish);
         when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
 
         mockMvc.perform(get("/shared/wish/1").session(session))

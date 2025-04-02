@@ -17,10 +17,10 @@
 </div>
 
 <div th:if="${notLoggedIn}">
-  <div th:replace="fragments/navbarunauth :: navbarunauth"></div>
+  <div th:replace="~{fragments/navbarunauth :: navbarunauth}"></div>
 </div>
 <div th:if="${!notLoggedIn}">
-  <div th:replace="fragments/navbarauth :: navbar"></div>
+  <div th:replace="~{fragments/navbarauth :: navbar}"></div>
 </div>
 
 <div class="wishContainerWrapper">
