@@ -617,6 +617,7 @@ h3 {
     100% { margin-left: -100vw; }
 }
 
-.searchResult{
-    align-items: center;
+.searchResult {
+    margin-top: 160px;
+    padding: 20px;
 }
