@@ -301,6 +301,17 @@ public class WishlistRepository {
         }
     }
 
+    public String getUsernameByToken(String token) {
+        String sql = "SELECT users.* FROM users JOIN wishlists ON users.userID = wishlists.userID WHERE wishlists.token = ?";
+        List<User> usernames = jdbcTemplate.query(sql,new UserRowmapper(),token);
+
+        if(usernames.isEmpty()) {
+            return null;
+        } else {
+            return usernames.getFirst().getName();
+        }
+    }
+
 
 
 }

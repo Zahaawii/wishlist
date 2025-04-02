@@ -16,10 +16,10 @@
 </div>
 
 <div th:if="${notLoggedIn}">
-  <div th:replace="fragments/navbarunauth :: navbarunauth"></div>
+  <div th:replace="~{fragments/navbarunauth :: navbarunauth}"></div>
 </div>
 <div th:if="${!notLoggedIn}">
-  <div th:replace="fragments/navbarauth :: navbar"></div>
+  <div th:replace="~{fragments/navbarauth :: navbar}"></div>
 </div>
 
 
@@ -28,7 +28,7 @@
 </h1>
 
 <div class="Mainmaincontainer">
-  <h3>YOUR WISHES</h3>
+  <h3 th:text="${userName} + 's WISHES'"></h3>
 
   <div class="wishesMainContainer">
     <div th:each="wish : ${wishes}">
