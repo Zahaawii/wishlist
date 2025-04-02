@@ -53,6 +53,13 @@ public class WishlistService{
     public boolean isWishReservedById (int id) {
         return wishlistRepository.isWishReservedById(id);
     }
+    public void updateIsReservedByWishId (int wishId) {
+        wishlistRepository.updateIsReservedByWishId(wishId);
+    }
+
+    public String getWishlistTokenByWishId (int id) {
+        return wishlistRepository.getWishlistTokenByWishId(id);
+    }
 
     public User getUserByUsername(String username){
         return wishlistRepository.getUserByUsername(username);

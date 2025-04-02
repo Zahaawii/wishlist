@@ -5,6 +5,8 @@
   <title>Wish Details</title>
   <link rel="stylesheet" th:href="@{/css/main.css}">
   <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
 </head>
 <body>
 
@@ -26,6 +28,9 @@
 <div class="wishContainerWrapper">
   <div class="wishContainer">
     <div class="wishContent">
+      <a id="backbutton" onclick="history.back();">
+        <i class="fas fa-arrow-left"></i>
+      </a>
       <div class="wishNameAndDescContainer">
         <h1 class="wishName">
           <span th:text="${wish.name}">Wish name</span>
@@ -33,11 +38,16 @@
         <p th:text="${wish.description}">Description</p>
       </div>
       <h2 th:text="${wish.getPriceRounded()}">XXX$</h2>
-      <div class="wishButtonsContainer">
-        <!-- Skal laves til en reserve button -->
-        <a th:if="${!notLoggedIn}" th:href="@{/wish/{id}/edit(id=${wish.wishId})}">
-          <button class="button-22 blue">Reserve</button>
-        </a>
+      <div class="reservebuttoncontainer">
+          <div th:if="${!isReserved}">
+            <form th:href="@{/shared/wish/{token}/{id}(token=${token}, id=${wish.wishId})}" method="POST">
+              <button class="button-22 blue" type="submit">Reserve</button>
+            </form>
+          </div>
+
+          <div class="" th:if="${isReserved}">
+            <h3>This wish has been reserved.</h3>
+          </div>
       </div>
     </div>
 

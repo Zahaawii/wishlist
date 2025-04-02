@@ -37,20 +37,11 @@
                     <div class="wishListContainer">
                         <h3 th:text="${wishlist.wishlistName}"></h3>
                         <h2 th:text="${wishlist.wishes.size() == 1 ? '1 WISH' : wishlist.wishes.size() + ' WISHES'}"></h2>
-                        <button class="share-button"
+                        <button class="button-22 blue"
                                 th:attr="data-token=${wishlist.token}"
                                 onclick="copyShareLink(this.getAttribute('data-token'))">
                             Share
                         </button>
-
-                        <!--
-                        <h2 th:utext="${wishlist.getWishes().size() == 1
-                            ? wishlist.getWishes().size() + '<br> WISH'
-                            : wishlist.getWishes().size() + '<br> WISHES'}">
-                        </h2>
-                        -->
-
-
                     </div>
                 </a>
             </div>
