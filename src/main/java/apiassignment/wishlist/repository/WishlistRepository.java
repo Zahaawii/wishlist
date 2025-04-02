@@ -163,7 +163,7 @@ public class WishlistRepository {
                 ps.setString(2, wish.getName());
                 ps.setString(3, wish.getDescription());
                 ps.setDouble(4, wish.getPrice());
-                ps.setString(6, wish.getLink());
+                ps.setString(5, wish.getLink());
                 return ps;
             }, keyHolder);
 
