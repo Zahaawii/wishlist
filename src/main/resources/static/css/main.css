@@ -319,7 +319,10 @@ h3 {
     overflow: hidden;
 
 }
-
+.wishListContainer h2 {
+    font-weight: lighter;
+    font-size: 1em;
+}
 .wishContainer p {
     color: #6D888E;
     font-size: 1em;
