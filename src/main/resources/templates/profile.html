@@ -5,6 +5,8 @@
     <title>Profile</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
 <body>
 
@@ -35,16 +37,21 @@
             <div th:each="wishlist : ${wishlists}">
                 <a th:href="@{/wishlist/{id}(id=${wishlist.wishlistId})}" class="wishlist-link">
                     <div class="wishListContainer">
+                        <div class="backgroundoverlay"></div>
                         <h3 th:text="${wishlist.wishlistName}"></h3>
                         <h2 th:text="${wishlist.wishes.size() == 1 ? '1 WISH' : wishlist.wishes.size() + ' WISHES'}"></h2>
-                        <button class="button-22 blue"
-                                th:attr="data-token=${wishlist.token}"
-                                onclick="copyShareLink(this.getAttribute('data-token'))">
-                            Share
-                        </button>
-                        <form th:action="@{/wishlist/delete/{id}(id=${wishlist.wishlistId})}" method="post" onsubmit="return confirm('Are you sure you want to delete this wish?')">
-                            <button class="button-22 red" type="submit">Delete</button>
-                        </form>
+                        <div class="wishlistButtons">
+                            <form th:action="@{/wishlist/delete/{id}(id=${wishlist.wishlistId})}" method="post" onsubmit="return confirm('Are you sure you want to delete this wish?')">
+                                <button class="button-22 red" type="submit"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+                            <button class="button-22 blue"
+                                    th:attr="data-token=${wishlist.token}"
+                                    onclick="copyShareLink(this.getAttribute('data-token'))">
+                                <i class="fa-solid fa-share"></i>
+                            </button>
+
+                        </div>
+
                     </div>
                 </a>
             </div>
