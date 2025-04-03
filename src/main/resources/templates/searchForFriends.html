@@ -3,68 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <title>Search For Friends</title>
-    <link rel="stylesheet" th:href="@{/css/friends.css?v=0.01}">
+    <link rel="stylesheet" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+
 </head>
 <body>
-<div th:replace="fragments/navbarauth :: navbar"></div>
 
+<div id="clouds">
+    <div class="cloud x1"></div>
+    <div class="cloud x2"></div>
+    <div class="cloud x3"></div>
+    <div class="cloud x4"></div>
+    <div class="cloud x5"></div>
+</div>
 
-    <h1>Your friends:</h1>
-    <div class="friendlistMainContainer">
-        <div  th:each="friend : ${friends}" class="friendlistFriendContent">
-            <h1 th:if="${noFriends}">You don't have any friends</h1>
-            <h1 th:text="${friend.getName()}"></h1>
-            <h1 th:text="${friend.getUsername()}"></h1>
-            <form th:action="@{'remove/friend/' + ${friend.getFriendship()}}" th:method="post">
-                <button  th:type="submit">Remove friend</button>
-            </form>
-            <form th:action="@{'/profile/friends/' + ${friend.getUsername()}}" th:method="get">
-                <button th:type="submit">See friends profile</button>
-            </form>
+<nav>
+    <div class="navbar">
+        <div class="navbarleftitems">
+            <a th:href="@{/}"><img th:src="@{/images/wishlist.png}"alt ="logo"></a>
+            <a th:href="@{/profile/edit}"><p>EDIT PROFILE</p></a>
         </div>
-    </div>
+        <div class="navbarrightitems">
+            <a th:href="@{/profile}"><p>MY WISHLISTS</p></a>
 
-    <br>
-    <br>
+            <a th:href="@{/searchFriends}"><p>Friends</p></a>
 
-    <h1>Your friend requests:</h1>
-    <div  class="friendlistMainContainer">
-        <div th:each="request : ${friendRequests}" class="friendlistFriendContent">
-            <h2 th:if="${noFriendRequest}">You don't have any friends></h2>
-            <h2  th:text="${request.getName()}"></h2>
-            <h2  th:text="${request.getUsername()}"></h2>
-            <form th:action="@{'accept/friend/' + ${request.getFriendship()}}" th:method="post">
-                <button type="submit">Accept friend request</button>
-            </form>
+            <button class="button-22">
+                <a th:href="@{/createWishList}">NEW WISHLIST</a>
+            </button>
         </div>
+
     </div>
+</nav>
 
-    <br>
-    <br>
 
-    <h1>Your send friend requests:</h1>
-    <div  class="friendlistMainContainer">
-        <div th:each="send : ${sendRequests}" class="friendlistFriendContent">
-            <h2 th:if="${noSendRequests}">You don't have any friends></h2>
-            <h2  th:text="${send.getName()}"></h2>
-            <h2 th:text="${send.getUsername()}"></h2>
-            <form th:action="@{'remove/friend/' + ${send.getFriendship()}}" th:method="post">
-                <button th:type="submit">Cancel friend request</button>
+
+
+
+<div class="friendlistandrequestContainer">
+    <div class="friendlistWrapper">
+        <div class="friendlistContainer">
+            <!-- <form th:action="@{/searchResultFriends}" th:object="${name}" method="get" class="search-box">
+                <label for="name"></label>
+                <input type="text" id="name" name="name" required placeholder="Add new friends">
+                <button th:href="@{searchResultFriends}" class="button-22 blue" type="submit">Search</button>
+            </form> -->
+            <form class="search-box">
+                <input type="text" id="name" name="name" required placeholder="Add new friends...">
             </form>
+            <h1>Your friends</h1>
+
+            <div  th:each="friend : ${friends}" class="friendlistFriendContent">
+                <div class="friendinformation">
+                    <!-- <h1 th:if="${noFriends}">You don't have any friends</h1> -->
+                    <h2 th:text="${friend.getName()}" class="friend-name">Victor</h2>
+                    <h3 th:text="${friend.getUsername()}" class="friend-username" >viictatorrrrrrrrr</h3>
+                </div>
+
+                <div class="friendbuttons">
+                    <form th:action="@{'/profile/friends/' + ${friend.getUsername()}}" th:method="get">
+                        <button th:type="submit" class="button-22 blue">Profile</button>
+                    </form>
+                    <form th:action="@{'remove/friend/' + ${friend.getFriendship()}}" th:method="post">
+                        <button  th:type="submit" class="button-22 blue">Remove friend</button>
+                    </form>
+                </div>
             </div>
+
+            <div  th:each="friend : ${friends}" class="friendlistFriendContent">
+                <div class="friendinformation">
+                    <!-- <h1 th:if="${noFriends}">You don't have any friends</h1> -->
+                    <h2 th:text="${friend.getName()}" class="friend-name">Victor</h2>
+                    <h3 th:text="${friend.getUsername()}" class="friend-username" >viictatorrrrrrrrr</h3>
+                </div>
+
+                <div class="friendbuttons">
+                    <form th:action="@{'/profile/friends/' + ${friend.getUsername()}}" th:method="get">
+                        <button th:type="submit" class="button-22 blue">Profile</button>
+                    </form>
+                    <form th:action="@{'remove/friend/' + ${friend.getFriendship()}}" th:method="post">
+                        <button  th:type="submit" class="button-22 blue">Remove friend</button>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
     </div>
 
-    <br>
-    <br>
+
+    <div class="friendlistWrapper">
+        <div class="friendlistContainer">
+
+            <h1>Requests</h1>
+
+            <div  th:each="request : ${friendRequests}" class="friendlistFriendContent">
+                <div class="friendinformation">
+                    <!-- <h1 th:if="${noFriends}">You don't have any friends</h1> -->
+                    <h2 th:text="${request.getName()}" class="friend-name">Simon</h2>
+                    <h3 th:text="${request.getUsername()}" class="friend-username" >Frygtløs</h3>
+                </div>
+
+                <div class="friendbuttons">
+                    <form th:action="@{'/profile/friends/' + ${friend.getUsername()}}" th:method="get">
+                        <button th:type="submit" class="button-22 blue">Accept</button>
+                    </form>
+                    <form th:action="@{'remove/friend/' + ${friend.getFriendship()}}" th:method="post">
+                        <button  th:type="submit" class="button-22 blue">Decline</button>
+                    </form>
+                </div>
+            </div>
 
 
 
-        <form th:action="@{/searchResultFriends}" th:object="${name}" method="get">
+            <div  th:each="request : ${friendRequests}" class="friendlistFriendContent">
+                <div class="friendinformation">
+                    <h2 th:text="${request.getName()}" class="friend-name">Zahaa</h2>
+                    <h3 th:text="${request.getUsername()}" class="friend-username" >zahaawii</h3>
+                </div>
 
-            <label for="name"></label>
-            <input type="text" id="name" name="name" required placeholder="Find user">
-            <button th:href="@{searchResultFriends}" type="submit">Search</button>
-        </form>
+                <div class="friendbuttons">
+                    <h3>Pending</h3>
+                    <form th:action="@{'accept/friend/' + ${request.getFriendship()}}" th:method="post">
+                        <button th:type="submit" class="button-22 blue">Cancel</button>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+
 
 
 </body>
