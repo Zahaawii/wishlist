@@ -1,24 +1,28 @@
 package apiassignment.wishlist.repository;
 
 
+import apiassignment.wishlist.model.Friend;
 import apiassignment.wishlist.model.User;
 import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.model.Wishlist;
+import apiassignment.wishlist.rowmappers.FriendRowmapper;
 import apiassignment.wishlist.rowmappers.UserRowmapper;
 import apiassignment.wishlist.rowmappers.WishRowmapper;
 import apiassignment.wishlist.rowmappers.WishlistRowmapper;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +40,42 @@ public class WishlistRepository {
     public List<User>getAllUsers(){
         String sql = "SELECT * FROM users";
         return jdbcTemplate.query(sql, new UserRowmapper());
+    }
+
+    //Man søger efter et navn, og så kommer der en liste op af brugere, der indeholder det navn
+    // hvis man ikke allerede har en relation til dem
+    public List<User>searchFriends(String name, int id){
+        List<User> allUsers = getAllUsers();
+        List<User> usersWithSpecifikName = new ArrayList<>();
+        for(User i: allUsers) {
+            if (i.getName().toLowerCase().contains(name.toLowerCase())) {
+                if(i.getUserId() != id) {
+                    if(isThereAlreadyARelation(id, i.getUserId())){
+                        //tjekker om der allerede er en relation, fx ven eller venanmodning
+                        usersWithSpecifikName.add(i);
+                    }
+                }
+            }
+        }
+        if(usersWithSpecifikName.isEmpty()){
+            return null;
+        }
+        return usersWithSpecifikName;
+    }
+
+    //tjekker om der allerede er en relation, fx ven eller venanmodning
+    public boolean isThereAlreadyARelation(int userId, int friendId){
+        String sql = "SELECT * FROM friends WHERE friendOne = ? and friendTwo = ?";
+        List<Friend> friendList = jdbcTemplate.query(sql, new FriendRowmapper(), userId, friendId);
+        if(!friendList.isEmpty()){
+            return false;
+        }
+        String sqlSecond = "SELECT * FROM friends WHERE friendTwo = ? and friendOne = ?";
+        List<Friend> friendListSecond = jdbcTemplate.query(sqlSecond, new FriendRowmapper(), userId, friendId);
+        if(!friendListSecond.isEmpty()){
+            return false;
+        }
+        return true;
     }
 
 
@@ -121,7 +161,7 @@ public class WishlistRepository {
             ps.setString(1, user.getName());
             ps.setString(2, user.getUsername());
             ps.setString(3, user.getPassword());
-            ps.setInt(4, 1);
+            ps.setInt(4, 2);
             return ps;
         }, keyHolder);
 
@@ -332,6 +372,139 @@ public class WishlistRepository {
         String sql = "DELETE FROM wishes WHERE wishlistID = ?";
         jdbcTemplate.update(sql,id);
     }
+
+
+    public void addFriend(int friendOneId, int friendTwoId, String status){
+        String sql = "INSERT INTO friends (friendOne, FriendTwo, friendStatus) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, friendOneId, friendTwoId, status);
+    }
+
+    public void acceptFriend(int friendshipId, String status){
+        String sql = "UPDATE friends SET friendStatus = ? WHERE friendshipId = ?";
+        jdbcTemplate.update(sql, status, friendshipId);
+    }
+
+    public void removeFriend(int friendshipId){
+        String sql ="DELETE FROM friends WHERE friendshipId = ?";
+        jdbcTemplate.update(sql, friendshipId);
+    }
+
+
+    public List<Friend> getFriendRequestId(int userId){
+        String sql = "SELECT * FROM friends WHERE friendTwo = ? and friendStatus = ?";
+        List<Friend>friendList = jdbcTemplate.query(sql, new FriendRowmapper(), userId, "requested");
+        if(friendList.isEmpty()){
+            return null;
+        }
+        return friendList;
+    }
+
+    public List<User> getFriendRequestName(int userId){
+        List<User> friendRequest = new ArrayList<>();
+        List<Friend> friendListId= getFriendRequestId(userId);
+        if(friendListId == null){
+            return null;
+        }
+        List<Integer> ids = new ArrayList<>();
+        for(Friend i: friendListId){
+            ids.add(i.getFriendOne());
+        }
+        for(Integer nums: ids){
+            friendRequest.add(getUserById(nums));
+        }
+        return friendRequest;
+
+    }
+
+    public List<Friend>sendFriendRequestId(int userId){
+        String sql ="SELECT * FROM friends WHERE friendOne = ? and friendStatus = ?";
+        List<Friend>friendList = jdbcTemplate.query(sql, new FriendRowmapper(), userId, "requested");
+        if(friendList.isEmpty()){
+            return null;
+        }
+        return friendList;
+    }
+
+    public List<User>sendFriendRequestName(int userId){
+        List<User> friendRequest = new ArrayList<>();
+        List<Friend> friendListId= sendFriendRequestId(userId);
+        if(friendListId == null){
+            return null;
+        }
+        List<Integer> ids = new ArrayList<>();
+        for(Friend i: friendListId){
+            ids.add(i.getFriendTwo());
+        }
+        for(Integer nums: ids){
+            friendRequest.add(getUserById(nums));
+        }
+        return friendRequest;
+    }
+
+
+    public List<Friend> getFriendsId(int userId){
+        String sql = "SELECT * FROM friends WHERE friendOne = ? and friendStatus = ?";
+        List<Friend>friendList = jdbcTemplate.query(sql, new FriendRowmapper(), userId, "friends");
+        String sqlSecondColumn = "SELECT * FROM friends WHERE friendTwo = ? and friendStatus = ?";
+        List<Friend>secondFriendList = jdbcTemplate.query(sqlSecondColumn, new FriendRowmapper(), userId, "friends");
+
+        if(!friendList.isEmpty() && !secondFriendList.isEmpty() ){
+            friendList.addAll(secondFriendList);
+            return friendList;
+        }
+        if(!friendList.isEmpty()){
+            return friendList;
+        }
+        if(!secondFriendList.isEmpty()){
+            return secondFriendList;
+        }
+        return null;
+    }
+
+    public List<User>getFriendsName(int userId){
+        List<User>friends = new ArrayList<>();
+        List<Integer> ids = new ArrayList<>();
+
+        List<Friend> friendsId = getFriendsId(userId);
+        if(friendsId == null){
+            return null;
+        }
+
+        for(Friend i: friendsId){
+            if(i.getFriendOne() != userId){
+                ids.add(i.getFriendOne());
+            } else if(i.getFriendTwo() != userId){
+                ids.add(i.getFriendTwo());
+            }
+        }
+        for(Integer nums: ids){
+            friends.add(getUserById(nums));
+        }
+
+        return friends;
+    }
+
+    public List<Friend>checkIfFriends(int myId, String username){
+        int friendsId = getUserByUsername(username).getUserId(); //Vennen hvis profil vi vil se, her modtager vi deres username
+        //Når vi har deres username, så kan vi finde deres id
+        //vi kan ved hjælp af vores id og vennensId, tjekke om vi er venner.
+        String friendStatus = "friends";
+        String sql = "SELECT * FROM friends WHERE friendOne = ? and friendTwo =? and friendStatus =?";
+        List<Friend> firstFriendList= jdbcTemplate.query(sql, new FriendRowmapper(), myId, friendsId, friendStatus);
+        if(!firstFriendList.isEmpty()){
+            return firstFriendList;
+        }
+        //vi skal køre metoden to forskellige gange, da vores navn fx kan være i friendOne eller friendTwo, alt efter hvem der sendte venandmodningen
+        String sqlSecondCombination = "SELECT * FROM friends WHERE friendTwo = ? and friendOne = ? and friendStatus = ?";
+        List<Friend> seccondFriendList = jdbcTemplate.query(sqlSecondCombination, new FriendRowmapper(), myId, friendsId, friendStatus);
+        if(!seccondFriendList.isEmpty()){
+            return seccondFriendList;
+        }
+        return null;
+    }
+
+
+
 
 
 

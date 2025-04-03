@@ -40,3 +40,9 @@ isReserved tinyint(1) DEFAULT 0,
 FOREIGN KEY(wishlistID) REFERENCES wishlists(wishlistID)
 );
 
+CREATE TABLE friends(
+friendshipId int PRIMARY KEY NOT NULL auto_increment,
+friendOne int NOT NULL,
+friendTwo int NOT NULL,
+friendStatus VARCHAR(100) NOT NULL);
+

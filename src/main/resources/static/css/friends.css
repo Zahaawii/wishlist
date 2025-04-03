@@ -1,0 +1,79 @@
+/* Generel styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #cceeff, #99ddff);
+    color: #444;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Container til indhold */
+.friendlistMainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.friendlistFriendContent {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 10px;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.friend-info {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.friendlistFriendContent form {
+    flex-shrink: 0;
+    order: -1;
+}
+
+/* Overskrifter */
+h1, h2 {
+    color: #005580;
+    margin: 0;
+}
+
+/* Knapper */
+button {
+    background-color: #66ccff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #0099cc;
+}
+
+/* Input-felt til søgning */
+input[type="text"] {
+    padding: 10px;
+    border: 2px solid #66ccff;
+    border-radius: 10px;
+    font-size: 16px;
+    width: 80%;
+    max-width: 300px;
+}
+
+/* Formular styling */
+form {
+    display: flex;
+    align-items: center;
+}
