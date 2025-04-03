@@ -5,6 +5,7 @@
   <title>Profile</title>
   <link rel="stylesheet" th:href="@{/css/main.css}">
   <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 <div id="clouds">
@@ -18,12 +19,13 @@
 <div th:replace="~{fragments/navbarauth :: navbar}"></div>
 
 
+
 <h1 class="profileheader">
   <span class="wishlistName" th:text="${wishlistname}">  </span>
 </h1>
 
 <div class="Mainmaincontainer">
-  <h3>YOUR WISHES</h3>
+  <h3 class="yourwishlists">YOUR WISHES</h3>
 
   <div class="wishesMainContainer">
     <a th:href="@{/wish/add/{wishlistId}(wishlistId=${wishlistId})}">
@@ -34,6 +36,7 @@
     <div th:each="wish : ${wishes}">
       <a th:href="@{/wish/view/{id}(id=${wish.wishId})}">
         <div class="wishListContainer">
+          <div class="backgroundoverlay"></div>
           <h3 th:text="${wish.name}"></h3>
         </div>
       </a>
