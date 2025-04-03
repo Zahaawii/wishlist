@@ -263,6 +263,8 @@ public class WishlistController {
         }
         model.addAttribute("wish", wish);
 
+
+
         return "wish";
     }
 

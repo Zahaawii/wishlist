@@ -649,39 +649,96 @@ h3 {
     100% { margin-left: -100vw; }
 }
 
-.searchResult {
-    margin-top: 160px;
-    padding: 20px;
+.friendlistandrequestContainer {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
 }
-.friendlistMainContainer {
+
+.searchFriendsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 2em;
+    padding: 2em 0;
+}
+
+
+.friendlistWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #6D888E;
+}
+
+.friendlistContainer {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    margin: auto;
+    height: 50vh;
+    width: auto;
+    overflow: auto;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #6D888E transparent;
+    scroll-behavior: smooth;
+}
+
+
+
+.friendlistContainer h1 {
+    text-align: center;
+}
+.friendlistContainer h2 {
+    font-size: 2em;
+    font-weight: 500;
+}
+
+.username {
+    font-size: .5em;
+    font-weight: 300;
 }
 
 .friendlistFriendContent {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    margin: 10px;
-    max-width: 600px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    width: 100%;
+    gap: 8em;
+    padding: 0 2em;
+}
+
+.friendinformation {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: flex-start;
+    padding: 1em;
 }
 
-.friend-info {
-    flex-grow: 1;
-    text-align: left;
+.friend-name {
+    font-size: 1.5em;
+    margin: 0;
+}
+.friend-username {
+    font-size: 1em;
+    margin: 0;
+    color: #6D888E;
 }
 
-.friendlistFriendContent form {
-    flex-shrink: 0;
-    order: -1;
+
+.friendbuttons {
+    display: flex;
+    gap: 2em;
+    align-items: center;
+}
+
+.friendbuttons h3 {
+    font-weight: 300;
 }
 
 
@@ -691,6 +748,75 @@ h3 {
     display: inline-block;
     margin: 10px;
 }
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    font-size: 2em;
+    padding: 0 1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    background-color: #F8FAFB;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    border-radius: 10px;
+    transition: .2s;
+}
+
+.search-box:hover {
+    border-color: #6D888E;
+    background-color: #F8FAFB;
+
+}
+
+
+
+.search-box input {
+    text-align: center;
+    letter-spacing: -0.2px;
+    font-size: 0.75em;
+    border: none;
+    background-color: #F8FAFB;
+}
+
+.search-box input::placeholder {
+    color: #6D888E;
+    opacity: 30%;
+
+}
+
+.search-box button:hover {
+    cursor: pointer;
+}
+
+.search-box input:focus {
+    outline: none;
+}
+
+.search-box input[type='search']::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+}
+
+.clear:not(:valid) ~ .search-clear {
+    display: none;
+}
+
+.search-box:focus-within {
+    border-color: #6D888E;
+    box-shadow: 0 0 0 5px #6D888E;
+}
+
+.search-box input:focus, .search-box input:autofill {
+    background-color: #F8FAFB !important;  /* Keeps the same background color */
+}
+.search-box input:-webkit-autofill {
+    background-color: #F8FAFB !important;  /* Override for Webkit browsers (Chrome, Safari, etc.) */
+    transition: background-color 5000s ease-in-out 0s; /* Optional: to make it a smooth transition */
+}
+
+
 
 .fa-arrow-left {
     background: var(--secondary-color);
