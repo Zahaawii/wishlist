@@ -3,6 +3,7 @@ package apiassignment.wishlist.controller;
 
 import apiassignment.wishlist.model.User;
 import apiassignment.wishlist.model.Wish;
+import apiassignment.wishlist.model.Wishlist;
 import apiassignment.wishlist.service.WishlistService;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.AfterEach;
@@ -221,16 +222,186 @@ public class WishlistControllerTest {
 
 
 
-    //Virker ikke, afvent.
+    //Post mapping test til register user
     @Test
-    void testRegister() throws Exception {
-        mockMvc.perform(post("/register")
-                .param("name","zahaa")
-                .param("username", "zahaa")
-                .param("password","1234"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("login"));
+    void testRegisterWithFreeUsername() throws Exception {
 
-        verify(wishlistService, times(1)).registerUser(any(User.class));
+        when(wishlistService.registerUser(any())).thenReturn(new User());
+        when(wishlistService.isUsernameFree(any())).thenReturn(true);
+
+        mockMvc.perform(post("/register")
+                        .param("id", "100")
+                .param("name","moeh")
+                .param("username", "abdi")
+                .param("password","1234")
+                        .param("roleID", "1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
     }
+
+    //Post mapping test til register user uden free username
+    @Test
+    void testRegisterWithoutFreeUsername() throws Exception {
+
+        mockMvc.perform(post("/register")
+                .param("id","100")
+                .param("name","tester")
+                .param("username","123")
+                .param("password","1234")
+                .param("roleID", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("register"));
+    }
+
+    //Post mapping test til login
+    @Test
+    void testLoginUser() throws Exception {
+
+        when(wishlistService.login(any(), any())).thenReturn(testUser);
+
+        mockMvc.perform(post("/login")
+                .param("checkUsername", "test")
+                .param("checkUserpassword", "test"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/profile"));
+
+    }
+
+    //Post mapping test til create wishlist
+    @Test
+    void testCreateWishlist() throws Exception {
+
+        User user = new User(1, "test", "test", "test", 1, null);
+
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", user);
+
+        mockMvc.perform(post("/create/wishlist").session(session)
+                .param("wishlistName", "test"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/profile"));
+    }
+
+    //Post mapping test til create wishlist without login
+    @Test
+    void testCreateWithlistWithoutLogin() throws Exception {
+
+        mockMvc.perform(post("/create/wishlist").session(session)
+                        .param("wishlistName", "test"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
+
+    }
+
+    //Post mapping test til edit user
+    @Test
+    void testEditProfile() throws Exception {
+
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+
+        mockMvc.perform(post("/profile/edit")
+                .param("name", testUser.getName())
+                .param("username", testUser.getUsername())
+                .param("password", testUser.getPassword())
+                .param("userId", "1")
+                .param("roleId", "1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/profile"));
+
+    }
+
+    //Post mapping test til edit user uden login
+    @Test
+    void testEditProfileWithoutLogin() throws Exception {
+
+        mockMvc.perform(post("/profile/edit")
+                        .param("name", testUser.getName())
+                        .param("username", testUser.getUsername())
+                        .param("password", testUser.getPassword())
+                        .param("userId", "1")
+                        .param("roleId", "1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
+
+    }
+
+    @Test
+    void testDeleteUser() throws Exception {
+
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+
+        mockMvc.perform(post("/delete/1")).
+                andExpect(status().is3xxRedirection()).
+                andExpect(redirectedUrl("/login"));
+
+    }
+
+    @Test
+    void testSaveWish() throws Exception {
+
+        User user = new User(1, "test", "test", "test", 1, null);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", user);
+
+        mockMvc.perform(post("/wish/save").session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/wishlist/0"));
+    }
+
+    @Test
+    void testUpdateWish() throws Exception {
+        User user = new User(1, "test", "test", "test", 1, null);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", user);
+
+        mockMvc.perform(post("/wish/update").session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/wishlist/0"));
+    }
+
+    @Test
+    void testDeleteWish() throws Exception {
+
+        when(wishlistService.getWishById(anyInt())).thenReturn(new Wish());
+
+        mockMvc.perform(post("/wish/delete/1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/wishlist/0"));
+    }
+
+    @Test
+    void testAdminRegister() throws Exception {
+
+        when(wishlistService.adminRegisterUser(any())).thenReturn(new User());
+        when(wishlistService.isUsernameFree(any())).thenReturn(true);
+
+        mockMvc.perform(post("/admin/register"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin"));
+    }
+
+    @Test
+    void testAdminDeleteUser() throws Exception {
+
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", testUser);
+
+        mockMvc.perform(post("/admin/delete/1").session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin"));
+    }
+
+    @Test
+    void testAdminUpdateUserPost() throws Exception {
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", testUser);
+        mockMvc.perform(post("/admin/update").session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin"));
+
+    }
+
 }
