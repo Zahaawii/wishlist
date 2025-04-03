@@ -262,9 +262,7 @@ public class WishlistController {
         if(wish == null) {
             return "redirect:/profile";
         }
-
         model.addAttribute("wish", wish);
-
 
         return "wish";
     }
@@ -289,12 +287,7 @@ public class WishlistController {
         User loggedUser = (User) session.getAttribute("user");
 
         if(!wishlistService.isLoggedIn(session)) {
-
-
-
             return "redirect:/login";
-
-
 
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
@@ -321,12 +314,7 @@ public class WishlistController {
         User loggedUser = (User) session.getAttribute("user");
 
         if(!wishlistService.isLoggedIn(session)) {
-
-
-
             return "redirect:/login";
-
-
 
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
@@ -401,7 +389,6 @@ public class WishlistController {
         String status = "requested";
 
         wishlistService.addFriend(user.getUserId(), addedFriend.getUserId(), status);
-
 
         return "redirect:/searchFriends";
     }
