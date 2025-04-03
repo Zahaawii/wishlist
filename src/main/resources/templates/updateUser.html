@@ -6,27 +6,36 @@
     <title>Edit profile</title>
 </head>
 <body>
-    <form action="/profile/edit" th:object="${updatedUser}" method="post">
-        <fieldset>
-            <legend>Edit your profile information</legend>
 
-            <label for="name">name:</label>
-            <textarea id="name" name="name" th:text="${user.getName()}" required> </textarea>
+<div class="center">
 
-            <label for="username">username:</label>
-            <textarea id="username" name="username" th:text="${user.getUsername()}" readonly> </textarea>
+    <div class="addFormular">
+        <h1 class="heading"> Edit your profile information</h1>
+        <form action="/profile/edit" th:object="${updatedUser}" method="post">
 
-            <label for="password">password:</label>
-            <input type="password" name="password" id="password"  required>
+                <label for="name">name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" th:value="${user.getName()}" required> </input>
 
+                <label for="username">username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" th:value="${user.getUsername()}" readonly> </input>
 
-            <input type="hidden" id="userId" name="userId" th:value="${user.getUserId()}">
-            <input type="hidden" id="roleId" name="roleId" th:value="${user.getRoleId()}">
-        </fieldset>
+                <label for="password">password:</label>
+                <input type="text" id="password" name="password" placeholder="Enter your password" th:value="${user.getPassword()}" required> </input>
 
-        <button type="submit">Update information</button>
-        <a class="button-link" href="/profile">Go back to profile</a>
+                <input type="hidden" id="userId" name="userId" th:value="${user.getUserId()}">
 
-    </form>
+                <input type="hidden" id="roleId" name="roleId" th:value="${user.getRoleId()}">
+
+            <button type="submit">Update information</button>
+            <button type="button"><a class="button-link" href="/profile">Go back to profile</a></button>
+        </form>
+        <form th:action="@{/delete/{id}(id=${user.userId})}" method="post">
+            <button class="button-87 delete" type="submit">Delete account</button>
+        </form>
+
+    </div>
+
+</div>
+
 </body>
 </html>

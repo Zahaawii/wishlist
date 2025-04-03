@@ -50,8 +50,23 @@ public class WishlistService{
         return wishlistRepository.getAllWishesFromWishlistId(id);
     }
 
+    public boolean isWishReservedById (int id) {
+        return wishlistRepository.isWishReservedById(id);
+    }
+    public void updateIsReservedByWishId (int wishId) {
+        wishlistRepository.updateIsReservedByWishId(wishId);
+    }
+
+    public String getWishlistTokenByWishId (int id) {
+        return wishlistRepository.getWishlistTokenByWishId(id);
+    }
+
     public User getUserByUsername(String username){
         return wishlistRepository.getUserByUsername(username);
+    }
+
+    public User getUserById(int id) {
+       return wishlistRepository.getUserById(id);
     }
 
     public boolean isUsernameFree(String username){
@@ -85,6 +100,7 @@ public class WishlistService{
     public User updateUser(User user){
         return wishlistRepository.updateUser(user);
     }
+
     public List<User>searchFriends(String name, int id){
         return wishlistRepository.searchFriends(name, id);
     }
@@ -122,6 +138,24 @@ public class WishlistService{
 
     public List<User> getFriendRequest(int userId){
         return wishlistRepository.getFriendRequestName(userId);
+
+    public Wishlist getWishlistByToken(String token) {
+        return wishlistRepository.getWishlistByToken(token);
+    }
+    public int getUserIdByToken(String token) {
+        return wishlistRepository.getUserIdByToken(token);
+    }
+    public int getUserIdByWishlistId(int id) {
+        return wishlistRepository.getUserIdByWishlistId(id);
+    }
+    public String getUsernameByToken(String token) {
+        return wishlistRepository.getUsernameByToken(token);
+    }
+    public void deleteWishlist(int id) {
+        wishlistRepository.deleteWishlist(id);
+    }
+    public void deleteAllWishesWithWishlistId(int id) {
+        wishlistRepository.deleteAllWishesWithWishlistId(id);
     }
 
     public List<Friend> getFriendRequestId(int userId){

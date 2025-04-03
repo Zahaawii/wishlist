@@ -25,15 +25,12 @@
   <label for="price">Price:</label>
   <input type="text" id="price" name="price" th:field="*{price}">
 
-  <label for="quantity">Quantity:</label>
-  <input type="number" id="quantity" name="quantity" th:field="*{quantity}">
-
   <label for="link">Link:</label>
   <input type="url" id="link" name="link" th:field="*{link}">
 
   <button type="submit">Add Wish</button>
 </form>
-<a th:href="@{/wishlist}" class="delete-button">Cancel</a>
+    <a th:href="@{/wishlist/{id}(id=${wish.wishlistId})}" class="delete-button">Cancel</a>
 </div>
 </div>
 </body>

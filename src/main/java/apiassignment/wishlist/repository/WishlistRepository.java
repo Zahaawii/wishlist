@@ -9,6 +9,11 @@ import apiassignment.wishlist.rowmappers.FriendRowmapper;
 import apiassignment.wishlist.rowmappers.UserRowmapper;
 import apiassignment.wishlist.rowmappers.WishRowmapper;
 import apiassignment.wishlist.rowmappers.WishlistRowmapper;
+
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -19,6 +24,7 @@ import java.sql.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class WishlistRepository {
@@ -114,7 +120,7 @@ public class WishlistRepository {
         }
         int wishlistId = listOfWishes.getFirst().getWishlistId();
         String wishlistName = listOfWishes.getFirst().getName();
-        return new Wishlist(wishlistId, wishlistName, listOfWishes);
+        return new Wishlist(wishlistId, wishlistName);
     }
 
     public List<Wish> getAllWishesFromWishlistId(int id) {
@@ -127,6 +133,11 @@ public class WishlistRepository {
     public List<Wishlist> getAllWishlistsByUserId(int id) {
         String sql = "SELECT * FROM wishlists WHERE userID = ?";
         List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(), id);
+
+        //Assigns all wishes to their respective wishlist
+        for (Wishlist wishlist : wishlists) {
+            wishlist.setWishes(getAllWishesByWishlistId(wishlist.getWishlistId()));
+        }
         return wishlists;
     }
 
@@ -164,17 +175,18 @@ public class WishlistRepository {
 
     }
 
-
-
     public void createWishList(int userId, String wishListName) {
-        String sql = "INSERT INTO wishlists (UserID, wishlistName) VALUES (?, ?)";
+        String sql = "INSERT INTO wishlists (UserID, wishlistName, token) VALUES (?, ?, ?)";
 
         KeyHolder keyHolder= new GeneratedKeyHolder();
+
+        Wishlist wishlist = new Wishlist(userId, wishListName);
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setInt(1, userId);
             ps.setString(2, wishListName);
+            ps.setString(3,wishlist.getToken());
             return ps;
         }, keyHolder);
 
@@ -182,7 +194,7 @@ public class WishlistRepository {
 
     public void addWish(Wish wish) {
         try {
-            String sql = "INSERT INTO wishes (wishlistID, wishName, description, price, quantity, link) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO wishes (wishlistID, wishName, description, price, link) VALUES (?, ?, ?, ?, ?)";
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
             jdbcTemplate.update(connection -> {
@@ -191,8 +203,7 @@ public class WishlistRepository {
                 ps.setString(2, wish.getName());
                 ps.setString(3, wish.getDescription());
                 ps.setDouble(4, wish.getPrice());
-                ps.setInt(5, wish.getQuantity());
-                ps.setString(6, wish.getLink());
+                ps.setString(5, wish.getLink());
                 return ps;
             }, keyHolder);
 
@@ -209,6 +220,23 @@ public class WishlistRepository {
     public void deleteUser(int id) {
         String sql = "DELETE FROM USERS WHERE USERID = ?";
         jdbcTemplate.update(sql, id);
+        if(getAllWishesByUserId(id) != null) {
+            String deleteSQL = "DELETE wishes.* FROM wishes join wishlists on wishes.wishlistID = wishlists.wishlistID where wishlists.userID = ?";
+            jdbcTemplate.update(deleteSQL, id);
+        }
+        if(getAllWishListFromUserID(id) != null) {
+            String deleteSQLList = "DELETE FROM wishlist.wishlists WHERE userID = ?";
+            jdbcTemplate.update(deleteSQLList, id);
+        }
+    }
+
+    public List<Wishlist> getAllWishListFromUserID(int id) {
+        String sql = "SELECT * FROM wishlists WHERE userID = ?";
+        List<Wishlist> getWishList = jdbcTemplate.query(sql, new WishlistRowmapper(), id);
+            if(getWishList.isEmpty()) {
+                return null;
+            }
+        return  getWishList;
     }
 
     public Wishlist getWishlistByID(int id) {
@@ -223,13 +251,21 @@ public class WishlistRepository {
 
     public Wish getWishById(int id) {
         String sql = "SELECT * FROM wishes WHERE wishID = ?";
-        List<Wish> wish = jdbcTemplate.query(sql, new WishRowmapper(), id);
+        Wish wish = jdbcTemplate.query(sql, new WishRowmapper(), id).get(0);
 
-        if (wish.isEmpty()) {
-            return null;
-        } else {
-            return wish.get(0);
-        }
+        return wish;
+
+    }
+
+    public boolean isWishReservedById (int id) {
+        String sql = "SELECT * FROM wishes WHERE wishID = ?";
+        Wish wish = jdbcTemplate.query(sql, new WishRowmapper(), id).get(0);
+        return wish.isReserved();
+    }
+
+    public void updateIsReservedByWishId (int wishId) {
+        String sql = "UPDATE wishes SET isReserved = ? WHERE wishID = ?";
+        jdbcTemplate.update(sql, 1, wishId);
     }
 
     public List<Wish> getAllWishesByWishlistId(int id) {
@@ -237,32 +273,38 @@ public class WishlistRepository {
         return jdbcTemplate.query(sql, new WishRowmapper(), id);
     }
 
+    public String getWishlistTokenByWishId (int id) {
+        String sql = "SELECT * FROM wishlists where wishlistID = ?";
+        Wishlist wishlist = jdbcTemplate.query(sql, new WishlistRowmapper(), id).get(0);
+
+        return wishlist.getToken();
+
+    }
+
     public void updateWish(Wish wish) {
-        String sql = "UPDATE wishes SET wishName = ?, description = ?, price = ?, quantity = ?, link = ? WHERE wishID = ?";
-        jdbcTemplate.update(sql,wish.getName(),wish.getDescription(),wish.getPrice(),wish.getQuantity(),wish.getLink(),wish.getWishId());
+        String sql = "UPDATE wishes SET wishName = ?, description = ?, price = ?, link = ? WHERE wishID = ?";
+        jdbcTemplate.update(sql,wish.getName(),wish.getDescription(),wish.getPrice(),wish.getLink(),wish.getWishId());
     }
 
     public void deleteWish(int id) {
         String sql = "DELETE FROM wishes WHERE wishID = ?";
         jdbcTemplate.update(sql,id);
     }
+
+
     public User updateUser(User user){
-        String sql = "UPDATE users SET name = ?, username = ?, password = ? WHERE userID = ?";
-        jdbcTemplate.update(sql, user.getName(), user.getUsername(), user.getPassword(), user.getUserId());
+        String sql = "UPDATE users SET name = ?, username = ?, password = ?, roleID = ? WHERE userID = ?";
+        jdbcTemplate.update(sql, user.getName(), user.getUsername(), user.getPassword(), user.getRoleId(), user.getUserId());
         return user;
     }
 
 
-
-
     public User adminRegisterUser(User user){
 
-        String checkRoleQuery = "SELECT COUNT(*) FROM roles WHERE roleID = ?";
-        Integer count = jdbcTemplate.queryForObject(checkRoleQuery, Integer.class, user.getRoleId());
-
-        if (count == 0) {
-            throw new IllegalArgumentException("RoleID " + user.getRoleId() + " does not exist.");
+        if(user == null) {
+            return null;
         }
+
         String sql = "INSERT INTO users (name, username, password, roleID) VALUES(?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -276,14 +318,59 @@ public class WishlistRepository {
             return ps;
         }, keyHolder);
 
-        int userId =keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
-
-        if(userId != -1){
-            user.setUserId(userId);
-        }
 
         return user;
 
+    }
+
+    public Wishlist getWishlistByToken(String token) {
+        String sql = "SELECT * FROM wishlists WHERE token = ?";
+        List<Wishlist> wishlists = jdbcTemplate.query(sql,new WishlistRowmapper(),token);
+
+        if(wishlists.isEmpty()) {
+            return null;
+        } else {
+            return wishlists.getFirst();
+        }
+    }
+
+    public int getUserIdByToken(String token) {
+        String sql = "SELECT userID FROM wishlists WHERE token = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql,Integer.class,token);
+        } catch (EmptyResultDataAccessException e) {
+            return -1;
+        }
+    }
+
+    public int getUserIdByWishlistId(int id) {
+        String sql = "SELECT userID FROM wishlists WHERE wishlistID = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql,Integer.class,id);
+        } catch (EmptyResultDataAccessException e) {
+            return -1;
+        }
+    }
+
+    public String getUsernameByToken(String token) {
+        String sql = "SELECT users.* FROM users JOIN wishlists ON users.userID = wishlists.userID WHERE wishlists.token = ?";
+        List<User> usernames = jdbcTemplate.query(sql,new UserRowmapper(),token);
+
+        if(usernames.isEmpty()) {
+            return null;
+        } else {
+            return usernames.getFirst().getName();
+        }
+    }
+
+    public void deleteWishlist(int id) {
+        String sql = "DELETE FROM wishlists WHERE wishlistID = ?";
+        jdbcTemplate.update(sql,id);
+    }
+
+    public void deleteAllWishesWithWishlistId(int id) {
+        String sql = "DELETE FROM wishes WHERE wishlistID = ?";
+        jdbcTemplate.update(sql,id);
     }
 
 
