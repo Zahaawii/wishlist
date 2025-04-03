@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search for Friends</title>
+    <link rel="stylesheet" th:href="@{/css/main.css?v=0.01}">
+</head>
+<body >
+<div th:replace="fragments/navbarauth :: navbar"></div>
+
+    <div class="searchResult">
+    <h2 th:if="${noPersonFound}">There was no user with this name</h2>
+    <h3 th:if="${noPersonFound}">Maybe they are already your friend or a request have been sent?</h3>
+    <div th:if="${found}">
+    <table th:border="1">
+        <thead>
+            <tr>
+                <td>Name:</td>
+                <td>username:</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="users : ${searchResult}">
+                <td th:text="${users.getName()}"></td>
+                <td th:text="${users.getUsername()}"></td>
+
+                <td><form th:action="@{'add/friend/' + ${users.getUsername()}}" th:method="post">
+                    <button th:type="submit">Add friend</button>
+                </form></td>
+
+            </tr>
+
+        </tbody>
+    </table>
+    </div>
+    </div>
+</body>
+</html>

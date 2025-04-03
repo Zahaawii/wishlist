@@ -1,5 +1,6 @@
 package apiassignment.wishlist.controller;
 
+import apiassignment.wishlist.dto.DTOFriend;
 import apiassignment.wishlist.model.User;
 import apiassignment.wishlist.model.Wish;
 import apiassignment.wishlist.model.Wishlist;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+
+import java.util.LinkedList;
+
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +56,9 @@ public class WishlistController {
 
     @GetMapping("/profile")
     public String getProfile (Model model, HttpSession session) {
+        if(!wishlistService.isLoggedIn(session)) {
+            return "login";
+        }
         User user = (User) session.getAttribute("user");
         if(!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
@@ -285,7 +291,9 @@ public class WishlistController {
         if(!wishlistService.isLoggedIn(session)) {
 
 
+
             return "redirect:/login";
+
 
 
         } else if(loggedUser.getRoleId() != 1) {
@@ -315,7 +323,9 @@ public class WishlistController {
         if(!wishlistService.isLoggedIn(session)) {
 
 
+
             return "redirect:/login";
+
 
 
         } else if(loggedUser.getRoleId() != 1) {
@@ -325,6 +335,125 @@ public class WishlistController {
         wishlistService.deleteUser(id);
         return "redirect:/admin";
     }
+
+
+
+    @GetMapping("/searchFriends")
+    public String searchFriends(HttpSession session, Model model){
+        if(!wishlistService.isLoggedIn(session)) {
+            return "login";
+        }
+        String name = "";
+        model.addAttribute("name", name);
+
+        User user = (User) session.getAttribute("user");
+
+        List<DTOFriend> listOfFriends = wishlistService.getFriendsCombined(user.getUserId());
+        List<DTOFriend>listOfFriendRequest = wishlistService.receivedFriendRequestCombined(user.getUserId());
+        List<DTOFriend>listOfSendFriendRequests = wishlistService.sendFriendRequestCombined(user.getUserId());
+
+        if(listOfFriends != null){
+            model.addAttribute("friends", listOfFriends);
+        } else {
+            model.addAttribute("noFriends", true);
+        }
+        if(listOfFriendRequest != null){
+            model.addAttribute("friendRequests", listOfFriendRequest);
+        } else {
+            model.addAttribute("noFriendRequest", true);
+        }
+        if(listOfSendFriendRequests != null){
+            model.addAttribute("sendRequests", listOfSendFriendRequests);
+        } else {
+            model.addAttribute("noSendRequests", true);
+        }
+
+        return "searchForFriends";
+    }
+
+
+
+    @GetMapping("/searchResultFriends")
+    public String searchFriendsResult(HttpSession session, Model model, String name){
+        if(!wishlistService.isLoggedIn(session)) {
+            return "login";
+        }
+        User user = (User) session.getAttribute("user");
+        if(wishlistService.searchFriends(name, user.getUserId()) == null){
+            model.addAttribute("noPersonFound", true);
+            return "searchResultFriends";
+        }
+        model.addAttribute("searchResult", wishlistService.searchFriends(name, user.getUserId()));
+        model.addAttribute("found", true);
+        return "searchResultFriends";
+    }
+
+
+    @PostMapping("/add/friend/{username}")
+    public String addFriend(@PathVariable String username, Model model, HttpSession session){
+        if(!wishlistService.isLoggedIn(session)) {
+            return "login";
+        }
+        User user = (User) session.getAttribute("user");
+
+        User addedFriend = wishlistService.getUserByUsername(username);
+
+        String status = "requested";
+
+        wishlistService.addFriend(user.getUserId(), addedFriend.getUserId(), status);
+
+
+        return "redirect:/searchFriends";
+    }
+
+
+    @PostMapping("/accept/friend/{friendshipId}")
+    public String acceptFriendRequest(@PathVariable int friendshipId, HttpSession session){
+        if(!wishlistService.isLoggedIn(session)) {
+            return "login";
+        }
+        String status = "friends";
+        wishlistService.acceptFriend(friendshipId, status);
+        return "redirect:/searchFriends";
+    }
+
+
+    @PostMapping("/remove/friend/{friendshipId}")
+    public String removeFriend(@PathVariable int friendshipId, HttpSession session){
+        if(!wishlistService.isLoggedIn(session)) {
+            return "login";
+        }
+        wishlistService.removeFriend(friendshipId);
+        return "redirect:/searchFriends";
+    }
+
+    @GetMapping("/profile/friends/{username}")
+    public String myFriendsProfile(@PathVariable String username, HttpSession session, Model model){
+        if(!wishlistService.isLoggedIn(session)) {
+            return "login";
+        }
+        User user = (User) session.getAttribute("user");
+        if(wishlistService.checkIfFriends(user.getUserId(), username) == null){
+            model.addAttribute("You are not friends", true);
+            return "homepage";
+        }
+        User friendUser = wishlistService.getUserByUsername(username);
+        List<Wishlist> wishLists = wishlistService.getAllWishlistsByUserId(friendUser.getUserId());
+        //Capitalize first character in name
+        String name = friendUser.getName().substring(0, 1).toUpperCase() + friendUser.getName().substring(1);
+
+        String imgpath = "../static.images/wishlist.png";
+
+        model.addAttribute("wishlists", wishLists);
+        model.addAttribute("name", name);
+        model.addAttribute("imgpath", imgpath);
+
+
+        return "friendsProfile";
+    }
+
+
+
 
 
     @GetMapping("/share/{token}")
@@ -415,6 +544,7 @@ public class WishlistController {
 
         return "redirect:/admin";
     }
+
 
 
 }
