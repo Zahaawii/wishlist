@@ -174,7 +174,7 @@ public class WishlistController {
     @PostMapping("/profile/edit")
     public String editProfile(@ModelAttribute User updatedUser, HttpSession session){
         if(!wishlistService.isLoggedIn(session)) {
-            return "login";
+            return "redirect:/login";
         }
         wishlistService.updateUser(updatedUser);
         return "redirect:/profile";
@@ -187,7 +187,6 @@ public class WishlistController {
         if(!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
-        System.out.println("Deleting user with ID: " + id);
 
         wishlistService.deleteUser(id);
         return "redirect:/login";
@@ -283,11 +282,7 @@ public class WishlistController {
         User loggedUser = (User) session.getAttribute("user");
 
         if(!wishlistService.isLoggedIn(session)) {
-
-
             return "redirect:/login";
-
-
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
         }
@@ -313,11 +308,7 @@ public class WishlistController {
         User loggedUser = (User) session.getAttribute("user");
 
         if(!wishlistService.isLoggedIn(session)) {
-
-
             return "redirect:/login";
-
-
         } else if(loggedUser.getRoleId() != 1) {
             return "redirect:/login";
         }
@@ -406,9 +397,11 @@ public class WishlistController {
 
     @PostMapping("/admin/update")
     public String adminUpdateUser(@ModelAttribute User updatedUser, HttpSession session){
-
+        User loggedUser = (User) session.getAttribute("user");
         if(!wishlistService.isLoggedIn(session)) {
-            return "login";
+            return "redirect:/login";
+        } else if (loggedUser.getRoleId() != 1) {
+            return "redirect:/login";
         }
 
         wishlistService.updateUser(updatedUser);
