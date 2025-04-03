@@ -621,3 +621,35 @@ h3 {
     margin-top: 160px;
     padding: 20px;
 }
+.friendlistMainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.friendlistFriendContent {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 10px;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.friend-info {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.friendlistFriendContent form {
+    flex-shrink: 0;
+    order: -1;
+}
+
+
