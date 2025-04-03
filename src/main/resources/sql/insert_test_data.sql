@@ -16,3 +16,7 @@ INSERT INTO wishlist.wishes(wishName, description, wishlistID, price, quantity) 
 INSERT INTO wishlist.wishes(wishName, description, wishlistID, price, quantity) VALUES ('ferrari', 'En bil der kører suuuuper stærkt', '1', 1000000, 2);
 
 
+INSERT INTO friends(friendOne, friendTwo, friendStatus) VALUES ("1", "3", "friends");
+INSERT INTO friends(friendOne, friendTwo, friendStatus) VALUES ("9", "1", "requested");
+INSERT INTO friends(friendOne, friendTwo, friendStatus) VALUES ("1", "2", "friends");
+INSERT INTO friends(friendOne, friendTwo, friendStatus) VALUES ("10", "1", "requested");
