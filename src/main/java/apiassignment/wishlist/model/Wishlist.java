@@ -63,4 +63,13 @@ public class Wishlist {
         return wishes.size();
     }
 
+    @Override
+    public String toString() {
+        return "Wishlist{" +
+                "wishlistId=" + wishlistId +
+                ", wishlistName='" + wishlistName + '\'' +
+                ", token='" + token + '\'' +
+                ", wishes=" + wishes +
+                '}';
+    }
 }

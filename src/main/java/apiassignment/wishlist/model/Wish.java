@@ -84,4 +84,17 @@ public class Wish {
     public void setReserved(boolean reserved) {
         isReserved = reserved;
     }
+
+    @Override
+    public String toString() {
+        return "Wish{" +
+                "wishlistId=" + wishlistId +
+                ", wishId=" + wishId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", link='" + link + '\'' +
+                ", isReserved=" + isReserved +
+                '}';
+    }
 }
