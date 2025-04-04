@@ -16,14 +16,14 @@
       <div class="navbarmiddleitems">
         <a th:href="@{/searchFriends}"><p><i class="fas fa-user-friends fa-lg"></i>FRIENDS</p></a>
         <button class="button-22">
-          <a th:href="@{/createWishList}">NEW WISHLIST</a>
+          <a th:href="@{/create/wishlist}">NEW WISHLIST</a>
         </button>
         <a th:href="@{/profile}"><p>MY WISHLISTS</p></a>
       </div>
       <div class="navbarrightitems">
         <a th:href="@{/profile/edit}"><p>SETTINGS<i class="fas fa-cog fa-lg"></i></p></a>
+        <a th:if="${session.user.roleId} == 1" th:href="@{/admin}"><p>ADMIN<i class="fa-solid fa-user-tie"></i></p></a>
         <a th:href="@{/logout}"><p>LOGOUT <i class="fa fa-sign-out fa-lg" aria-hidden="true"></i></p></a>
-
       </div>
 
     </div>
