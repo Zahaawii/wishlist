@@ -80,8 +80,8 @@ public class WishlistService {
         return wishlistRepository.registerUser(user);
     }
 
-    public void createWishList(int userID, String name) {
-        wishlistRepository.createWishList(userID, name);
+    public Wishlist createWishList(int userID, String name) {
+        return wishlistRepository.createWishList(userID, name);
     }
 
     public void addWish(Wish wish) {

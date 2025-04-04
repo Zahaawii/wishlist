@@ -10,8 +10,6 @@ import apiassignment.wishlist.rowmappers.UserRowmapper;
 import apiassignment.wishlist.rowmappers.WishRowmapper;
 import apiassignment.wishlist.rowmappers.WishlistRowmapper;
 
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,12 +17,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public class WishlistRepository {
@@ -175,7 +173,7 @@ public class WishlistRepository {
 
     }
 
-    public void createWishList(int userId, String wishListName) {
+    public Wishlist createWishList(int userId, String wishListName) {
         String sql = "INSERT INTO wishlists (UserID, wishlistName, token) VALUES (?, ?, ?)";
 
         KeyHolder keyHolder= new GeneratedKeyHolder();
@@ -190,6 +188,12 @@ public class WishlistRepository {
             return ps;
         }, keyHolder);
 
+        Number key = keyHolder.getKey();
+        if(key != null) {
+            wishlist.setWishlistId(key.intValue());
+        }
+
+        return wishlist;
     }
 
     public void addWish(Wish wish) {
@@ -501,6 +505,10 @@ public class WishlistRepository {
             return seccondFriendList;
         }
         return null;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 

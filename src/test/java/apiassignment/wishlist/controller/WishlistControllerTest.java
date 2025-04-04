@@ -35,8 +35,7 @@ public class WishlistControllerTest {
 
     @MockitoBean
     private WishlistService wishlistService;
-    @Autowired
-    private HttpSession httpSession;
+
 
     @BeforeEach
     void setUp() {
