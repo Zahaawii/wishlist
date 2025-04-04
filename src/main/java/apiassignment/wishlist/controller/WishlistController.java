@@ -106,27 +106,6 @@ public class WishlistController {
     }
 
 
-   /* @GetMapping("/profile")
-    public String profil(HttpSession session, Model model){
-
-        if(!wishlistService.isLoogedIn(session)){
-            return "login";
-        }
-
-        User user = (User) session.getAttribute("user");
-        Wishlist tempWishlist = wishlistService.getWishlistByuserId(user.getUserId());
-        model.addAttribute("user", user);
-
-        if(tempWishlist != null) {
-            model.addAttribute("wishlist", tempWishlist);
-        } else {
-            return "profileEmptyWishlist";
-        }
-
-        return "profile";
-    }*/
-
-
     @GetMapping("/logout")
     public String logout(HttpSession session){
         session.invalidate();
