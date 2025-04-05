@@ -34,7 +34,8 @@
                 <input type="text" id="name" name="name" required placeholder="Add new friends">
                 <button th:href="@{searchResultFriends}" class="button-22 blue" type="submit">Search</button>
             </form> -->
-            <form class="search-box">
+            <form th:action="@{/searchResultFriends}" th:object="${name}" th:method="get" class="search-box">
+                <label for="name"></label>
                 <input type="text" id="name" name="name" required placeholder="Add new friends...">
             </form>
             <h1>Your friends</h1>
