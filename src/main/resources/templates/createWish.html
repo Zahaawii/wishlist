@@ -2,36 +2,69 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Create Wish</title>
-  <link rel="stylesheet" th:href="@{/css/createWishList.css}">
+  <title>Login</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
 </head>
 <body>
 
-<div class="center">
+<div id="clouds">
+  <div class="cloud x1"></div>
+  <div class="cloud x2"></div>
+  <div class="cloud x3"></div>
+  <div class="cloud x4"></div>
+  <div class="cloud x5"></div>
+</div>
 
-  <div class="addFormular">
-<h1 class="heading">Create new Wish</h1>
+<div th:replace="~{fragments/navbarauth :: navbar}"></div>
 
-<form th:action="@{/wish/save}" th:object="${wish}" method="post">
 
-  <input type="hidden" th:field="*{wishlistId}" />
 
-  <label for="name">Name:</label>
-  <input type="text" id="name" name="name" th:field="*{name}" required>
+<div class="createWishWrapper">
+  <div class="loginBox">
+    <div class="arrowcontainer">
+      <a id="backbutton" onclick="history.back();">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+    </div>
 
-  <label for="description">Description:</label>
-  <input type="text" id="description" name="description" th:field="*{description}" required>
+    <h1>CREATE NEW WISH</h1>
+    <form th:action="@{/wish/save}" th:object="${wish}" method="post">
+      <input type="hidden" th:field="*{wishlistId}" />
 
-  <label for="price">Price:</label>
-  <input type="text" id="price" name="price" th:field="*{price}">
+      <div class="input-box">
+        <label for="name">Name:</label>
+        <input type="text" id="name"  name="name" placeholder="Name" th:field="*{name}" required>
+        <i class="fa-solid fa-gift"></i>
+      </div>
 
-  <label for="link">Link:</label>
-  <input type="url" id="link" name="link" th:field="*{link}">
+      <div class="input-box">
+        <label for="description">Description:</label>
+        <input type="text" id="description"  name="description" placeholder="Description" th:field="*{description}" required>
+        <i class="fa-solid fa-file"></i>
+      </div>
 
-  <button type="submit">Add Wish</button>
+      <div class="input-box">
+        <label for="price"></label>
+        <input type="password" id="price" name="price" placeholder="Price" th:field="*{price}" required>
+        <i class="fa-solid fa-dollar-sign"></i>
+      </div>
+      <div class="input-box">
+        <label for="link">Link:</label>
+        <input type="url" id="link" name="link" placeholder="Image link (optional)" th:field="*{link}">
+        <i class="fa-solid fa-image"></i>
+      </div>
+
+      <button type="submit" class="loginButton">Create</button>
+    </form>
+  </div>
+</div>
+
+
 </form>
-    <a th:href="@{/wishlist/{id}(id=${wish.wishlistId})}" class="delete-button">Cancel</a>
-</div>
-</div>
 </body>
 </html>

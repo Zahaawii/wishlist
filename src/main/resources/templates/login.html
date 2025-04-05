@@ -3,48 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" th:href="@{/css/loginpage.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
 </head>
 <body>
 
-<div class="loginBox">
-    <form action="/login" method="post">
-        <h1>Login page</h1>
-        <p th:if ="${wrongLogin}"> Wrong username or password</p>
-        <div class="input-box">
-            <label for="checkUsername">  </label>
-            <input type="text" id="checkUsername"  name="checkUsername" placeholder="username" required>
-            <i class="bx bxs-user"></i>
-        </div>
-
-        <div class="input-box">
-            <label for="checkUserpassword"></label>
-            <input type="password" name="checkUserpassword" id="checkUserpassword" placeholder="password" required>
-            <i class="bx bxs-lock-alt"></i>
-        </div>
-        <div class="remember-forgot">
-            <label>
-                <input type="checkbox" Remember me> Remember me </label>
-
-            <a href="#"> Forgot password?</a>
-        </div>
-        <button type="submit" class="btn">Login</button>
-
-        <div class="register-link">
-            <p> Don't have an account? <a href="/register">Register</a>
-            </p>
-        </div>
-        <!--<div class="icons">
-            <a href="#" class="fa fa-apple"></a>
-            <a href="https://github.com/Zahaawii" target="_blank" class="fa fa-github"></a>
-            <a href="#" class="fa fa-google"></a>
-            <a href="#" class="fa fa-reddit"></a>
-            <a href="#" class="fa fa-facebook"></a>
-        </div>-->
-    </form>
+<div class="background-video-container">
+    <video autoplay loop muted>
+        <source th:src="@{/videos/cloudsfootage2.mp4}" type="video/mp4">
+    </video>
 </div>
+<div class="loginWrapper">
+    <div class="loginBox">
+        <form action="/login" method="post">
+            <h1>LOGIN</h1>
+            <p th:if ="${wrongLogin}">Wrong username or password</p>
+            <div class="input-box">
+                <label for="checkUsername">  </label>
+                <input type="text" id="checkUsername"  name="checkUsername" placeholder="username" required>
+                <i class="bx bxs-user"></i>
+            </div>
+
+            <div class="input-box">
+                <label for="checkUserpassword"></label>
+                <input type="password" name="checkUserpassword" id="checkUserpassword" placeholder="password" required>
+                <i class="bx bxs-lock-alt"></i>
+            </div>
+            <div class="remember-forgot">
+                <label>
+                    <input type="checkbox" Remember me> Remember me </label>
+
+                <a href="#"> Forgot password?</a>
+            </div>
+            <button type="submit" class="loginButton">Login</button>
+
+            <div class="register-link">
+                <p> Don't have an account? <a href="/register">Register</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 </form>
 </body>
