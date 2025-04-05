@@ -3,23 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Create a wishlist</title>
-    <link rel="stylesheet" th:href="@{/css/createWishList.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
 </head>
 <body>
 
+<div id="clouds">
+    <div class="cloud x1"></div>
+    <div class="cloud x2"></div>
+    <div class="cloud x3"></div>
+    <div class="cloud x4"></div>
+    <div class="cloud x5"></div>
+</div>
 
-<div class ="center">
+<div th:replace="~{fragments/navbarauth :: navbar}"></div>
 
-    <div class="addFormular">
-        <h1 class="heading"> Create a new wishlist </h1>
+
+<div class="createWishWrapper">
+    <div class="loginBox">
         <form action="#" th:action="@{/create/wishlist}" th:object="${wishlist}" method="post">
+            <div class="arrowcontainer">
+                <a id="backbutton" onclick="history.back();">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
 
-            <label for="wishlistName"> Wishlist name </label>
-            <input type="text" id="wishlistName" th:field="*{wishlistName}" required><br>
-            <button type="submit"> Create wishlist </button>
-
+            <h1>CREATE WISHLIST</h1>
+            <form action="#" th:action="@{/create/wishlist}" th:object="${wishlist}" method="post">
+                <div class="input-box">
+                    <label for="wishlistName">Wishlist name</label>
+                    <input type="text" id="wishlistName" th:field="*{wishlistName}" placeholder="Name" required>
+                    <i class="fa-solid fa-list"></i>
+                </div>
+            </form>
+            <button type="submit" class="loginButton">Create</button>
         </form>
-
     </div>
 </div>
 
