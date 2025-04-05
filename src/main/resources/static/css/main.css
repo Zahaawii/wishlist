@@ -853,6 +853,7 @@ h3 {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
+    min-width: 400px;
 }
 
 .searchFriendsContainer {
