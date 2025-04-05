@@ -98,7 +98,13 @@ public class WishlistControllerTest {
     //Unit test for GET wishlist
     @Test
     void testWishlist() throws Exception {
-        mockMvc.perform(get("/wishlist/1"))
+
+        session.setAttribute("user", testUser);
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+        when(wishlistService.checkWishlistIdWithUserId(1,testUser.getUserId())).thenReturn(true);
+
+
+        mockMvc.perform(get("/wishlist/1").session(session))
                 .andExpect((status().isOk()))
                 .andExpect(view().name("wishlist"));
     }
@@ -142,6 +148,7 @@ public class WishlistControllerTest {
     void testAddWish() throws Exception {
         session.setAttribute("user", testUser);
 
+        when(wishlistService.checkWishlistIdWithUserId(1, testUser.getUserId())).thenReturn(true);
         when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
 
         mockMvc.perform(get("/wish/add/1").session(session))
@@ -152,10 +159,18 @@ public class WishlistControllerTest {
     //Unit test for GET edit wish site
     @Test
     void testEditWish() throws Exception {
+        User testUser = new User(1, "test", "test", "test", 1, null);
+        MockHttpSession session = new MockHttpSession();
         session.setAttribute("user", testUser);
+
         Wish wish = new Wish(1, 1, "test", "test", "test", true, 1);
+
         when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+        when(wishlistService.checkWishIdWithUserId(1, testUser.getUserId())).thenReturn(true);
+        when(wishlistService.checkWishIdWithUserIdWithoutFriends(1, testUser.getUserId())).thenReturn(true);
         when(wishlistService.getWishById(1)).thenReturn(wish);
+
+        session.setAttribute("user", testUser);
 
         mockMvc.perform(get("/wish/1/edit").session(session))
                 .andExpect(status().isOk())
@@ -163,15 +178,25 @@ public class WishlistControllerTest {
     }
 
     @Test
+
     void testViewWish() throws Exception {
+        User testUser = new User(1, "test", "test", "test", 1, null);
+        MockHttpSession session = new MockHttpSession();
         session.setAttribute("user", testUser);
+
         Wish wish = new Wish(1, 1, "test", "test", "test", true, 1);
+
         when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+        when(wishlistService.checkWishIdWithUserId(1, testUser.getUserId())).thenReturn(true);
+        when(wishlistService.checkWishIdWithUserIdWithoutFriends(1, testUser.getUserId())).thenReturn(true);
         when(wishlistService.getWishById(1)).thenReturn(wish);
 
         mockMvc.perform(get("/wish/view/1").session(session))
                 .andExpect(status().isOk())
-                .andExpect(view().name("wish"));
+                .andExpect(view().name("wish"))
+                .andExpect(model().attributeExists("wish"))
+                .andExpect(model().attribute("wish", wish))
+                .andExpect(model().attribute("myWishes", true));
     }
 
     @Test
@@ -213,7 +238,7 @@ public class WishlistControllerTest {
         when(wishlistService.getWishById(1)).thenReturn(wish);
         when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
 
-        mockMvc.perform(get("/shared/wish/1").session(session))
+        mockMvc.perform(get("/shared/wish/1/1").session(session))
                 .andExpect(status().isOk())
                 .andExpect(view().name("sharedWish"));
     }
@@ -286,7 +311,8 @@ public class WishlistControllerTest {
     @Test
     void testCreateWithlistWithoutLogin() throws Exception {
 
-        mockMvc.perform(post("/create/wishlist").session(session)
+        when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(false);
+        mockMvc.perform(post("/create/wishlist")
                         .param("wishlistName", "test"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login"));
@@ -327,10 +353,12 @@ public class WishlistControllerTest {
 
     @Test
     void testDeleteUser() throws Exception {
-
+        User user = new User(1, "test", "test", "test", 1, null);
         when(wishlistService.isLoggedIn(any(HttpSession.class))).thenReturn(true);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", user);
 
-        mockMvc.perform(post("/delete/1")).
+        mockMvc.perform(post("/delete/1").session(session)).
                 andExpect(status().is3xxRedirection()).
                 andExpect(redirectedUrl("/login"));
 
@@ -342,6 +370,7 @@ public class WishlistControllerTest {
         User user = new User(1, "test", "test", "test", 1, null);
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("user", user);
+        when(wishlistService.isLoggedIn(session)).thenReturn(true);
 
         mockMvc.perform(post("/wish/save").session(session))
                 .andExpect(status().is3xxRedirection())
@@ -353,20 +382,31 @@ public class WishlistControllerTest {
         User user = new User(1, "test", "test", "test", 1, null);
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("user", user);
+        when(wishlistService.isLoggedIn(session)).thenReturn(true);
+        when(wishlistService.checkWishIdWithUserId(1, user.getUserId())).thenReturn(true);
 
-        mockMvc.perform(post("/wish/update").session(session))
+        Wish wish = new Wish();
+        wish.setWishId(1);
+        wish.setWishlistId(10);
+        wish.setName("cykel");
+
+        mockMvc.perform(post("/wish/update").session(session)
+                        .param("wishId", String.valueOf(wish.getWishId()))
+                        .param("wishlistId", String.valueOf(wish.getWishlistId()))
+                        .param("wishName", wish.getName()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/wishlist/0"));
+                .andExpect(redirectedUrl("/wishlist/10"));
     }
 
     @Test
     void testDeleteWish() throws Exception {
 
+        User user = wishlistService.getUserById(1);
         when(wishlistService.getWishById(anyInt())).thenReturn(new Wish());
 
         mockMvc.perform(post("/wish/delete/1"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/wishlist/0"));
+                .andExpect(redirectedUrl("/login"));
     }
 
     @Test
