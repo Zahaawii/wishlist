@@ -57,7 +57,7 @@ public class WishlistController {
     @GetMapping("/profile")
     public String getProfile (Model model, HttpSession session) {
         if(!wishlistService.isLoggedIn(session)) {
-            return "login";
+            return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
         List<Wishlist> wishLists = wishlistService.getAllWishlistsByUserId(user.getUserId());
@@ -120,7 +120,7 @@ public class WishlistController {
     @GetMapping("/create/wishlist")
     public String createWishlist(Model model, HttpSession session) {
         if(!wishlistService.isLoggedIn(session)) {
-            return "login";
+            return "redirect:/login";
         }
 
         Wishlist wishlist = new Wishlist();
@@ -133,7 +133,7 @@ public class WishlistController {
     @PostMapping("/create/wishlist")
     public String saveWishList(@ModelAttribute Wishlist wishlist, HttpSession session) {
         if(!wishlistService.isLoggedIn(session)) {
-            return "login";
+            return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
         if(user == null) {
