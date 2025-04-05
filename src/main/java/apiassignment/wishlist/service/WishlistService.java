@@ -153,71 +153,117 @@ public class WishlistService {
         return wishlistRepository.getFriendRequestName(userId);
     }
 
-        public Wishlist getWishlistByToken (String token){
-            return wishlistRepository.getWishlistByToken(token);
-        }
-        public int getUserIdByToken (String token){
-            return wishlistRepository.getUserIdByToken(token);
-        }
-        public int getUserIdByWishlistId ( int id){
-            return wishlistRepository.getUserIdByWishlistId(id);
-        }
-        public String getUsernameByToken (String token){
-            return wishlistRepository.getUsernameByToken(token);
-        }
-        public void deleteWishlist ( int id){
-            wishlistRepository.deleteWishlist(id);
-        }
-        public void deleteAllWishesWithWishlistId ( int id){
-            wishlistRepository.deleteAllWishesWithWishlistId(id);
-        }
+    public Wishlist getWishlistByToken(String token) {
+        return wishlistRepository.getWishlistByToken(token);
+    }
 
-        public List<Friend> getFriendRequestId ( int userId){
-            return wishlistRepository.getFriendRequestId(userId);
-        }
-        public List<DTOFriend> receivedFriendRequestCombined ( int userId){
-            List<DTOFriend> combinedFriend = new ArrayList<>();
-            List<User> userInfo = wishlistRepository.getFriendRequestName(userId);
-            List<Friend> friendInfo = wishlistRepository.getFriendRequestId(userId);
-            return combineFriendAndUserLists(combinedFriend, userInfo, friendInfo);
-        }
+    public int getUserIdByToken(String token) {
+        return wishlistRepository.getUserIdByToken(token);
+    }
 
-        public List<Friend> sendFriendRequestId ( int userId){
-            return wishlistRepository.sendFriendRequestId(userId);
-        }
-        public List<User> sendFriendRequestName ( int userId){
-            return wishlistRepository.sendFriendRequestName(userId);
-        }
+    public int getUserIdByWishlistId(int id) {
+        return wishlistRepository.getUserIdByWishlistId(id);
+    }
 
-        public List<DTOFriend> sendFriendRequestCombined ( int userId){
-            List<DTOFriend> combinedFriend = new ArrayList<>();
-            List<User> userInfo = wishlistRepository.sendFriendRequestName(userId);
-            List<Friend> friendInfo = wishlistRepository.sendFriendRequestId(userId);
-            return combineFriendAndUserLists(combinedFriend, userInfo, friendInfo);
-        }
+    public String getUsernameByToken(String token) {
+        return wishlistRepository.getUsernameByToken(token);
+    }
 
+    public void deleteWishlist(int id) {
+        wishlistRepository.deleteWishlist(id);
+    }
 
-        public List<User> getFriends ( int userId){
-            return wishlistRepository.getFriendsName(userId);
-        }
+    public void deleteAllWishesWithWishlistId(int id) {
+        wishlistRepository.deleteAllWishesWithWishlistId(id);
+    }
 
-        public List<Friend> getFriendsId ( int userId){
-            return wishlistRepository.getFriendsId(userId);
-        }
+    public List<Friend> getFriendRequestId(int userId) {
+        return wishlistRepository.getFriendRequestId(userId);
+    }
 
-        public List<DTOFriend> getFriendsCombined ( int userId){
-            List<DTOFriend> combinedFriend = new ArrayList<>();
-            List<User> userInfo = wishlistRepository.getFriendsName(userId);
-            List<Friend> friendInfo = wishlistRepository.getFriendsId(userId);
-            return combineFriendAndUserLists(combinedFriend, userInfo, friendInfo);
-        }
+    public List<DTOFriend> receivedFriendRequestCombined(int userId) {
+        List<DTOFriend> combinedFriend = new ArrayList<>();
+        List<User> userInfo = wishlistRepository.getFriendRequestName(userId);
+        List<Friend> friendInfo = wishlistRepository.getFriendRequestId(userId);
+        return combineFriendAndUserLists(combinedFriend, userInfo, friendInfo);
+    }
 
-        public List<Friend> checkIfFriends ( int myId, String username){
-            return wishlistRepository.checkIfFriends(myId, username);
-        }
+    public List<Friend> sendFriendRequestId(int userId) {
+        return wishlistRepository.sendFriendRequestId(userId);
+    }
+
+    public List<User> sendFriendRequestName(int userId) {
+        return wishlistRepository.sendFriendRequestName(userId);
+    }
+
+    public List<DTOFriend> sendFriendRequestCombined(int userId) {
+        List<DTOFriend> combinedFriend = new ArrayList<>();
+        List<User> userInfo = wishlistRepository.sendFriendRequestName(userId);
+        List<Friend> friendInfo = wishlistRepository.sendFriendRequestId(userId);
+        return combineFriendAndUserLists(combinedFriend, userInfo, friendInfo);
+    }
 
 
+    public List<User> getFriends(int userId) {
+        return wishlistRepository.getFriendsName(userId);
+    }
 
-}
+    public List<Friend> getFriendsId(int userId) {
+        return wishlistRepository.getFriendsId(userId);
+    }
+
+    public List<DTOFriend> getFriendsCombined(int userId) {
+        List<DTOFriend> combinedFriend = new ArrayList<>();
+        List<User> userInfo = wishlistRepository.getFriendsName(userId);
+        List<Friend> friendInfo = wishlistRepository.getFriendsId(userId);
+        return combineFriendAndUserLists(combinedFriend, userInfo, friendInfo);
+    }
+
+    public List<Friend> checkIfFriends(int myId, String username) {
+        return wishlistRepository.checkIfFriends(myId, username);
+    }
+
+    //takes a wishId and a userId, checks if it's the same person or if it's two people that are friends.
+    public boolean checkWishIdWithUserId(int wishId, int userId) {
+        String username = getUserById(wishlistRepository.getUserIdByWishId(wishId)).getUsername();
+        if (checkIfFriends(userId, username) != null) {
+            return true;
+        }
+
+        if (wishlistRepository.checkWishIdWithUserId(wishId, userId)) {
+            return true;
+        }
+        return false;
+    }
+
+    //takes a wishlistId and a userId, checks if it's the same person or if it's two people that are friends.
+    public boolean checkWishlistIdWithUserId(int wishlistId, int userId) {
+        String username = getUserById(wishlistRepository.getUserIdByWishlistId(wishlistId)).getUsername();
+        if (checkIfFriends(userId, username) != null) {
+            return true;
+        }
+
+        if (wishlistRepository.checkWishlistIdWithUserId(wishlistId, userId)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkWishlistIdWithUserIdWithoutFriends(int wishlistId, int userId) {
+        if (wishlistRepository.checkWishlistIdWithUserId(wishlistId, userId)) {
+            return true;
+        }
+        return false;
+    }
+    public boolean checkWishIdWithUserIdWithoutFriends(int wishlistId, int userId) {
+        if (wishlistRepository.checkWishIdWithUserId(wishlistId, userId)) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+    }
 
 

@@ -249,7 +249,7 @@ public class WishlistRepository {
         if (wishlists.isEmpty()) {
             return null;
         } else {
-            return wishlists.get(0);
+            return wishlists.getFirst();
         }
     }
 
@@ -510,6 +510,31 @@ public class WishlistRepository {
     public void setDataSource(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
+
+    public int getUserIdByWishId(int wishId){
+        String sql = """
+                SELECT wishlists.* FROM wishlists
+                join wishes on wishes.wishlistID = wishlists.wishlistID
+                where wishes.wishID = ?""";
+        List<Wishlist> listOfWishlists = jdbcTemplate.query(sql, new WishlistRowmapper(), wishId);
+        if(listOfWishlists.isEmpty()){
+            return 0;
+        }
+        return listOfWishlists.getFirst().getUserId();
+    }
+
+    //Checker om wishid og userId er det samme, altså om den der tilgår et ønske har lavet den
+    public boolean checkWishIdWithUserId(int wishId, int userId){
+        return getUserIdByWishId(wishId) == userId;
+    }
+
+
+    //Checker om wishlistDd og userId er det samme, altså om den der tilgår en ønskeliste har lavet den
+    public boolean checkWishlistIdWithUserId(int wishlistId, int userId){
+        return getUserIdByWishlistId(wishlistId) == userId;
+    }
+
 
 
 

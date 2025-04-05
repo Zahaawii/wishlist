@@ -28,7 +28,7 @@
   <h3 class="yourwishlists">YOUR WISHES</h3>
 
   <div class="wishesMainContainer">
-    <a th:href="@{/wish/add/{wishlistId}(wishlistId=${wishlistId})}">
+    <a th:href="@{/wish/add/{wishlistId}(wishlistId=${wishlistId})}" th:if="${myWishes}">
       <div class="wishListContainer">
           <button class="plusbutton"></button>
       </div>

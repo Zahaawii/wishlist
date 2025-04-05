@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Wishlist {
+    private int userId;
     private int wishlistId;
     private String wishlistName;
     private String token;
@@ -18,6 +19,14 @@ public class Wishlist {
 
     }
     public Wishlist(){
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String generateToken() {
