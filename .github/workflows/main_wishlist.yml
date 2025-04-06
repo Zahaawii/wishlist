@@ -24,8 +24,12 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Build with Maven and run test
+        env: 
+          DEV_DATABASE_URL: ${{secrets.DEV_DATABASE_URL}}
+          DEV_DATABASE_USERNAME: ${{secrets.DEV_DATABASE_USERNAME}}
+          DEV_DATABASE_PASSWORD: ${{secrets.DEV_DATABASE_USERNAME}}
+        run: mvn clean install -DskipTests=false
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -48,6 +52,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: java-app
+
       
       - name: Login to Azure
         uses: azure/login@v2
