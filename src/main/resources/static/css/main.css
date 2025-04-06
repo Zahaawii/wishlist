@@ -1045,3 +1045,26 @@ h3 {
     }
 }
 
+.centerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2em;
+}
+
+.usertable {
+    border-radius: 2em;
+    border-bottom: 2px solid black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: transparent;
+    backdrop-filter: blur(10px);
+}
+
+.tableContainer {
+
+    padding: 1em;
+}
+
+
+
+

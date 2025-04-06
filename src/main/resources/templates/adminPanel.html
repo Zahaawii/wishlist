@@ -2,22 +2,38 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Create Wish</title>
-  <link rel="stylesheet" th:href="@{/css/adminpanel.css}">
+  <title>Admin panel</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
 </head>
 <body>
 
+<div id="clouds">
+  <div class="cloud x1"></div>
+  <div class="cloud x2"></div>
+  <div class="cloud x3"></div>
+  <div class="cloud x4"></div>
+  <div class="cloud x5"></div>
+</div>
 
-<h1 class="test"> Welcome,&nbsp<span th:text="${session.user.name}"> </span> </h1>
+<div th:replace="fragments/navbarauth :: navbar"></div>
 
-<div class="user">
-  <table>
+<div class="profileNameWrapper">
+  <h1 class="profileheader">Hello,&nbsp<span class="profileName" th:text="${session.user.name}"></span> <!--<span th:text="${name}"></span>--></h1>
+</div>
+
+
+<div class="centerContainer">
+
+<div class="usertable">
+  <div class="tableContainer">
+  <table class="table">
     <tr>
-      <th> User id </th>
-      <th> Username </th>
-      <th> Password</th>
-      <th> Role id</th>
-      <th> Edit panel</th>
+      <th scope="row"> User id </th>
+      <th scope="row"> Username </th>
+      <th scope="row"> Password</th>
+      <th scope="row"> Role id</th>
+      <th scope="row"> Edit panel</th>
     </tr>
     <tr th:each="i : ${getAllUsers}">
       <td th:text="${i.userId}">User id</td>
@@ -25,16 +41,20 @@
       <td th:text="${i.password}">User password</td>
       <td th:text="${i.roleId}">role id</td>
       <td>
-      <button><a th:href="@{/admin/update/{id}(id=${i.userId})}">Update user</a></button>
+      <button class="loginButton"><a th:href="@{/admin/update/{id}(id=${i.userId})}">Update user</a></button>
         <form th:action="@{/admin/delete/{id}(id=${i.userId})}" method="post">
-          <button class="button-87 delete" type="submit">Delete user</button>
+          <button class="loginButton" type="submit">Delete user</button>
         </form>
       </td>
     </tr>
   </table>
+  </div>
+  <div class="test">
+    <button class="loginButton" type="button"><a th:href="@{/admin/addusers}">Click here to add a new user</a> </button>
+  </div>
 </div>
-  <button class="addUser"><a href="admin/addusers">Click here to add a new user</a> </button>
 
+</div>
 
 
 </body>
