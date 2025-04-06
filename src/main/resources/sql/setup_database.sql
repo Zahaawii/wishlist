@@ -1,4 +1,5 @@
 CREATE DATABASE wishlist;
+USE wishlist;
 DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `roles`;
 DROP TABLE IF EXISTS `wishes`;

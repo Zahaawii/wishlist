@@ -27,7 +27,12 @@ jobs:
         java-version: '22'
         distribution: 'temurin'
         cache: maven
+
     - name: Build with Maven
+      env:
+        DEV_DATABASE_URL: ${{secrets.DEV_DATABASE_URL}}
+        DEV_DATABASE_USERNAME: ${{secrets.DEV_DATABASE_USERNAME}}
+        DEV_DATABASE_PASSWORD: ${{secrets.DEV_DATABASE_PASSWORD}}
       run: mvn -B test
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
