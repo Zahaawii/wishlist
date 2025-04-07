@@ -10,7 +10,9 @@
 
 <body>
 
-<div th:replace="~{fragments/navbarunauth :: navbarunauth}"></div>
+<div th:replace="fragments/navbarunauth :: navbarunauth"></div>
+
+
 
 <div class="background-video-container">
   <video autoplay loop muted>
@@ -19,10 +21,10 @@
 </div>
 
 
+<div class="heroWrapper">
 
 <div class="hero">
   <div class="heroseperator">
-    <h3>Get started with Wishlist</h3>
 
     <div>
       <h1>All your wishes,<br> in one place!</h1>
@@ -36,12 +38,35 @@
   </div>
   <img th:src="@{/images/wishlist.png}" alt="logo" class="logo">
 
-  <!--<div class="herorightside">
+  <div class="herorightside">
 
-  </div>-->
+  </div>
 
 
 </div>
+</div>
+
+
+<!--<div class="heroWrapper">
+  <div class="heroContainer">
+    <div class="heroContent">
+      <h3>Get started with Wishlist</h3>
+      <div>
+        <h1>All your wishes,<br> in one place!</h1>
+        <p>Wishlist makes it easy for you to save and share all <br> your wishes with friends and family</p>
+      </div>
+      <div class="registerbuttonwrap">
+        <a th:href="@{/register}">
+          <button class="registerbutton">Register now</button>
+        </a>
+      </div>
+    </div>
+    <img th:src="@{/images/wishlist.png}" alt="logo" class="logo">
+
+  </div>
+
+</div>-->
+
 
 
 
