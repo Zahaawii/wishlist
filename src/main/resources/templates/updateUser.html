@@ -2,12 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/css/updateUser.css?v=0.02}" href="/css/updateUser.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
     <title>Edit profile</title>
 </head>
 <body>
 
-<div class="center">
+<div th:replace="fragments/navbarauth :: navbar"></div>
+
+
+<div id="clouds">
+    <div class="cloud x1"></div>
+    <div class="cloud x2"></div>
+    <div class="cloud x3"></div>
+    <div class="cloud x4"></div>
+    <div class="cloud x5"></div>
+</div>
+
+<div class="loginWrapper">
+    <div class="loginBox">
+
+        <h1>UPDATE ACCOUNT</h1>
+        <p th:if ="${notFree}"> Username already taken.</p>
+        <form th:action="@{/profile/edit}" th:object="${updatedUser}" method="post">
+            <input type="hidden" id="userId" name="userId" th:value="${user.getUserId()}">
+            <input type="hidden" id="roleId" name="roleId" th:value="${user.getRoleId()}">
+
+            <div class="input-box">
+                <label for="name"></label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" th:value="${user.getName()}" required> </input>
+                <i class="fa-solid fa-address-card"></i>
+            </div>
+
+
+            <div class="input-box">
+                <label for="password"></label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" th:value="${user.getPassword()}" required> </input>
+                <i class="bx bxs-lock-alt"></i>
+            </div>
+
+
+            <button th:href="@{/profile}" type="submit" class="loginButton">Update</button>
+        </form>
+        <form th:action="@{/delete/{id}(id=${user.userId})}" method="post">
+            <button class="button-22 red" style="margin-top: 2em" type="submit">Delete account</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!--<div class="center">
 
     <div class="addFormular">
         <h1 class="heading"> Edit your profile information</h1>
@@ -35,7 +89,7 @@
 
     </div>
 
-</div>
+</div>-->
 
 </body>
 </html>

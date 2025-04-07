@@ -330,7 +330,28 @@ h3 {
     font-size: 1.5em;
     font-weight: bolder;
 }
+.heroWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
 
+.heroContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heroContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    margin: auto;
+    text-align: start;
+}
 .hero {
     display: flex;
     bottom: 0;
@@ -338,12 +359,10 @@ h3 {
     height: auto;
     background-color:rgb(194, 242, 252, 0.0);
     color: white;
-    backdrop-filter: blur(10px);
     justify-content: flex-start;
     align-items: center;
     border-radius: 1em;
-    padding: 2em;
-    padding-top: 8em;
+
 }
 
 .heroseperator {
