@@ -5,6 +5,8 @@
   <title>Admin panel</title>
   <link rel="stylesheet" th:href="@{/css/main.css}">
   <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
 <body>
 
@@ -18,16 +20,12 @@
 
 <div th:replace="fragments/navbarauth :: navbar"></div>
 
-<div class="profileNameWrapper">
-  <h1 class="profileheader">Hello,&nbsp<span class="profileName" th:text="${session.user.name}"></span> <!--<span th:text="${name}"></span>--></h1>
-</div>
 
+<div class="friendlistWrapper">
 
-<div class="centerContainer">
-
-<div class="usertable">
-  <div class="tableContainer">
-  <table class="table">
+<div class="friendlistContainer">
+  <div class="">
+  <table>
     <tr>
       <th scope="row"> User id </th>
       <th scope="row"> Username </th>
@@ -41,16 +39,18 @@
       <td th:text="${i.password}">User password</td>
       <td th:text="${i.roleId}">role id</td>
       <td>
-      <button class="loginButton"><a th:href="@{/admin/update/{id}(id=${i.userId})}">Update user</a></button>
-        <form th:action="@{/admin/delete/{id}(id=${i.userId})}" method="post">
-          <button class="loginButton" type="submit">Delete user</button>
-        </form>
+        <div class="friendbuttons">
+          <button class="button-22 blue"><a th:href="@{/admin/update/{id}(id=${i.userId})}">Update user</a></button>
+          <form th:action="@{/admin/delete/{id}(id=${i.userId})}" method="post">
+            <button class="button-22 red" type="submit">Delete user</button>
+          </form>
+        </div>
       </td>
     </tr>
   </table>
   </div>
-  <div class="test">
-    <button class="loginButton" type="button"><a th:href="@{/admin/addusers}">Click here to add a new user</a> </button>
+  <div class="friendbuttons">
+    <button class="button-22 blue" type="button"><a th:href="@{/admin/addusers}">Click here to add a new user</a> </button>
   </div>
 </div>
 
