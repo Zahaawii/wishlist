@@ -457,7 +457,7 @@ public class WishlistController {
         User friendUser = wishlistService.getUserByUsername(username);
         List<Wishlist> wishLists = wishlistService.getAllWishlistsByUserId(friendUser.getUserId());
         //Capitalize first character in name
-        String name = friendUser.getName().substring(0, 1).toUpperCase() + friendUser.getName().substring(1);
+        String name = friendUser.getName().substring(0, 1).toUpperCase() + friendUser.getName().substring(1) + "'s";
 
         String imgpath = "../static.images/wishlist.png";
 
