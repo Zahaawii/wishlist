@@ -11,10 +11,15 @@
 </head>
 <body>
 
-<div class="background-video-container">
-    <video autoplay loop muted>
-        <source th:src="@{/videos/cloudsfootage2.mp4}" type="video/mp4">
-    </video>
+<div th:replace="~{fragments/navbarauth :: navbar}"></div>
+
+
+<div id="clouds">
+    <div class="cloud x1"></div>
+    <div class="cloud x2"></div>
+    <div class="cloud x3"></div>
+    <div class="cloud x4"></div>
+    <div class="cloud x5"></div>
 </div>
 
 <div class="loginWrapper">
