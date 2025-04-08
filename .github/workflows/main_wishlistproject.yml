@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy JAR app to Azure Web App - wishlistproject
+name: Build and deploy JAR app to Azure Web App - wishlist
 
 on:
   push:
@@ -21,11 +21,15 @@ jobs:
       - name: Set up Java version
         uses: actions/setup-java@v4
         with:
-          java-version: 'java21'
+          java-version: '21'
           distribution: 'microsoft'
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Build with Maven and run test
+        env: 
+          DEV_DATABASE_URL: ${{secrets.DEV_DATABASE_URL}}
+          DEV_DATABASE_USERNAME: ${{secrets.DEV_USERNAME}}
+          DEV_DATABASE_PASSWORD: ${{secrets.DEV_PASSWORD}}
+        run: mvn clean install -DskipTests=false
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -48,6 +52,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: java-app
+
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -60,7 +65,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'wishlistproject'
+          app-name: 'wishlist'
           slot-name: 'Production'
           package: '*.jar'
           
