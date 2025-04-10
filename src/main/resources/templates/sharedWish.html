@@ -1,57 +1,58 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Wish Details</title>
-  <link rel="stylesheet" th:href="@{/css/main.css}">
-  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Wish Details</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 </head>
 <body>
 
 <div id="clouds">
-  <div class="cloud x1"></div>
-  <div class="cloud x2"></div>
-  <div class="cloud x3"></div>
-  <div class="cloud x4"></div>
-  <div class="cloud x5"></div>
+    <div class="cloud x1"></div>
+    <div class="cloud x2"></div>
+    <div class="cloud x3"></div>
+    <div class="cloud x4"></div>
+    <div class="cloud x5"></div>
 </div>
 
 <div th:if="${notLoggedIn}">
-  <div th:replace="~{fragments/navbarunauth :: navbarunauth}"></div>
+    <div th:replace="~{fragments/navbarunauth :: navbarunauth}"></div>
 </div>
 <div th:if="${!notLoggedIn}">
-  <div th:replace="~{fragments/navbarauth :: navbar}"></div>
+    <div th:replace="~{fragments/navbarauth :: navbar}"></div>
 </div>
 
 <div class="wishContainerWrapper">
-  <div class="wishContainer">
-    <div class="wishContent">
-      <a id="backbutton" onclick="history.back();">
-        <i class="fas fa-arrow-left"></i>
-      </a>
-      <div class="wishNameAndDescContainer">
-        <h1 class="wishName">
-          <span th:text="${wish.name}">Wish name</span>
-        </h1>
-        <p th:text="${wish.description}">Description</p>
-      </div>
-      <h2 th:text="${wish.getPriceRounded()}">XXX$</h2>
-      <div class="reservebuttoncontainer">
-          <div th:if="${!isReserved}">
-            <form th:href="@{/shared/wish/{token}/{id}(token=${token}, id=${wish.wishId})}" method="POST">
-              <button class="button-22 blue" type="submit">Reserve</button>
-            </form>
-          </div>
+    <div class="wishContainer">
+        <div class="wishContent">
+            <a id="backbutton" onclick="history.back();">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="wishNameAndDescContainer">
+                <h1 class="wishName">
+                    <span th:text="${wish.name}">Wish name</span>
+                </h1>
+                <p th:text="${wish.description}">Description</p>
+            </div>
+            <h2 th:text="${wish.getPriceRounded()}">XXX$</h2>
+            <div class="reservebuttoncontainer">
+                <div th:if="${!isReserved}">
+                    <form th:href="@{/shared/wish/{token}/{id}(token=${token}, id=${wish.wishId})}" method="POST">
+                        <button class="button-22 blue" type="submit">Reserve</button>
+                    </form>
+                </div>
 
-          <div class="" th:if="${isReserved}">
-            <h3>This wish has been reserved.</h3>
-          </div>
-      </div>
+                <div class="" th:if="${isReserved}">
+                    <h3>This wish has been reserved.</h3>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-  </div>
 </div>
 </body>
 </html>

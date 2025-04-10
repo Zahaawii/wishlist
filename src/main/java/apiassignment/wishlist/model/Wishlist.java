@@ -18,7 +18,8 @@ public class Wishlist {
         this.token = generateToken();
 
     }
-    public Wishlist(){
+
+    public Wishlist() {
     }
 
     public int getUserId() {
@@ -68,7 +69,7 @@ public class Wishlist {
         this.token = token;
     }
 
-    public int getAmountOfWishes () {
+    public int getAmountOfWishes() {
         return wishes.size();
     }
 

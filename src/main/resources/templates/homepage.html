@@ -1,78 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Wishlist homepage</title>
-  <link rel="stylesheet" th:href="@{/css/main.css}">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet"></head>
+    <meta charset="UTF-8">
+    <title>Wishlist homepage</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+          rel="stylesheet">
+</head>
 
 <body>
 
 <div th:replace="fragments/navbarunauth :: navbarunauth"></div>
 
 
-
 <div class="background-video-container">
-  <video autoplay loop muted>
-    <source th:src="@{/videos/cloudsfootage2.mp4}" type="video/mp4">
-  </video>
+    <video autoplay loop muted>
+        <source th:src="@{/videos/cloudsfootage2.mp4}" type="video/mp4">
+    </video>
 </div>
 
 
 <div class="heroWrapper">
 
-<div class="hero">
-  <div class="heroseperator">
+    <div class="hero">
+        <div class="heroseperator">
 
-    <div>
-      <h1>All your wishes,<br> in one place!</h1>
-      <p>Wishlist makes it easy for you to save and share all <br> your wishes with friends and family</p>
+            <div>
+                <h1>All your wishes,<br> in one place!</h1>
+                <p>Wishlist makes it easy for you to save and share all <br> your wishes with friends and family</p>
+            </div>
+            <div class="registerbuttonwrap">
+                <a th:href="@{/register}">
+                    <button class="registerbutton">Register now</button>
+                </a>
+            </div>
+            <div class="register-link">
+                <p> Already have an account? <a th:href="@{/login}">Login</a>
+                </p>
+            </div>
+        </div>
+        <img th:src="@{/images/wishlist.png}" alt="logo" class="logo">
+
+        <div class="herorightside">
+
+        </div>
+
+
     </div>
-    <div class="registerbuttonwrap">
-      <a th:href="@{/register}">
-        <button class="registerbutton">Register now</button>
-      </a>
-    </div>
-    <div class="register-link">
-      <p> Already have an account? <a th:href="@{/login}">Login</a>
-      </p>
-    </div>
-  </div>
-  <img th:src="@{/images/wishlist.png}" alt="logo" class="logo">
-
-  <div class="herorightside">
-
-  </div>
-
-
 </div>
-</div>
-
-
-<!--<div class="heroWrapper">
-  <div class="heroContainer">
-    <div class="heroContent">
-      <h3>Get started with Wishlist</h3>
-      <div>
-        <h1>All your wishes,<br> in one place!</h1>
-        <p>Wishlist makes it easy for you to save and share all <br> your wishes with friends and family</p>
-      </div>
-      <div class="registerbuttonwrap">
-        <a th:href="@{/register}">
-          <button class="registerbutton">Register now</button>
-        </a>
-      </div>
-    </div>
-    <img th:src="@{/images/wishlist.png}" alt="logo" class="logo">
-
-  </div>
-
-</div>-->
-
-
-
 
 
 </body>

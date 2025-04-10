@@ -6,12 +6,7 @@ public class DTOFriend {
     private String username;
 
 
-    public DTOFriend(int friendship, String name, String username) {
-        this.friendship = friendship;
-        this.name = name;
-        this.username = username;
-    }
-    public DTOFriend(){
+    public DTOFriend() {
     }
 
     public int getFriendship() {
@@ -38,7 +33,7 @@ public class DTOFriend {
         this.username = username;
     }
 
-    public String toString(){
+    public String toString() {
         return "\nfriendship: " + friendship + "\nname:" + name + "\nUsername: " + username;
     }
 }

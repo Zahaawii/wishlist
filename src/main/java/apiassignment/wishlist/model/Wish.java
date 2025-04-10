@@ -19,7 +19,8 @@ public class Wish {
         this.isReserved = isReserved;
         this.price = price;
     }
-    public Wish(){
+
+    public Wish() {
 
     }
 

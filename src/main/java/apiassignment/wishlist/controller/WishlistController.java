@@ -11,11 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.LinkedList;
-
 import java.util.List;
-import java.util.Map;
+
 
 @Controller
 public class WishlistController {
@@ -28,19 +25,19 @@ public class WishlistController {
 
 
     @GetMapping("")
-    public String homepage(){
+    public String homepage() {
         return "homepage";
     }
 
     @GetMapping("/register")
-    public String registerAccount(Model model){
+    public String registerAccount(Model model) {
         model.addAttribute("user", new User());
         return "register";
     }
 
     @PostMapping("/register")
-    public String checkRegister(@ModelAttribute User user, Model model){
-        if(!wishlistService.isUsernameFree(user.getUsername())){
+    public String checkRegister(@ModelAttribute User user, Model model) {
+        if (!wishlistService.isUsernameFree(user.getUsername())) {
             model.addAttribute("notFree", true);
             return "register";
         }
@@ -50,13 +47,13 @@ public class WishlistController {
 
 
     @GetMapping("login")
-    public String getLogin(){
+    public String getLogin() {
         return "login";
     }
 
     @GetMapping("/profile")
-    public String getProfile (Model model, HttpSession session) {
-        if(!wishlistService.isLoggedIn(session)) {
+    public String getProfile(Model model, HttpSession session) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
@@ -71,15 +68,15 @@ public class WishlistController {
     }
 
     @GetMapping("/wishlist/{id}")
-    public String getWishlist (@PathVariable("id") int wishlistId, Model model, HttpSession session) {
-        if(!wishlistService.isLoggedIn(session)) {
+    public String getWishlist(@PathVariable("id") int wishlistId, Model model, HttpSession session) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         User user = (User) session.getAttribute("user");
-        if(!wishlistService.checkWishlistIdWithUserId(wishlistId, user.getUserId())){
+        if (!wishlistService.checkWishlistIdWithUserId(wishlistId, user.getUserId())) {
             return "/profile";
         }
-        if(wishlistService.checkWishlistIdWithUserIdWithoutFriends(wishlistId, user.getUserId())){
+        if (wishlistService.checkWishlistIdWithUserIdWithoutFriends(wishlistId, user.getUserId())) {
             model.addAttribute("myWishes", true);
 
         }
@@ -88,7 +85,7 @@ public class WishlistController {
 
         if (wishlist != null && wishlist.getWishlistName() != null) {
             String wishlistname = wishlist.getWishlistName();
-            model.addAttribute("wishlistId",wishlistId);
+            model.addAttribute("wishlistId", wishlistId);
             model.addAttribute("wishlistname", wishlistname);
         }
         model.addAttribute("wishes", wishes);
@@ -99,9 +96,9 @@ public class WishlistController {
 
     @PostMapping("login")
     public String checkLogin(@RequestParam("checkUsername") String username, @RequestParam("checkUserpassword") String password,
-                             HttpSession session, Model model){
+                             HttpSession session, Model model) {
         User user = wishlistService.login(username, password);
-        if(user == null){
+        if (user == null) {
             model.addAttribute("wrongLogin", true);
             return "login";
         }
@@ -112,14 +109,14 @@ public class WishlistController {
 
 
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.invalidate();
         return "login";
     }
 
     @GetMapping("/create/wishlist")
     public String createWishlist(Model model, HttpSession session) {
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
 
@@ -132,26 +129,26 @@ public class WishlistController {
 
     @PostMapping("/create/wishlist")
     public String saveWishList(@ModelAttribute Wishlist wishlist, HttpSession session) {
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
-        if(user == null) {
+        if (user == null) {
             return "redirect:/login";
         }
 
-        wishlistService.createWishList(user.getUserId(), wishlist.getWishlistName() );
+        wishlistService.createWishList(user.getUserId(), wishlist.getWishlistName());
         return "redirect:/profile";
     }
 
     @PostMapping("/wishlist/delete/{id}")
     public String deleteWishlist(@PathVariable int id, HttpSession session) {
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         User user = (User) session.getAttribute("user");
         //check if it's my profile or an admin
-        if(!wishlistService.checkWishlistIdWithUserId(id, user.getUserId())){
+        if (!wishlistService.checkWishlistIdWithUserId(id, user.getUserId())) {
             return "login";
         }
         wishlistService.deleteAllWishesWithWishlistId(id);
@@ -160,8 +157,8 @@ public class WishlistController {
     }
 
     @GetMapping("/profile/edit")
-    public String editProfileSide(HttpSession session, Model model){
-        if(!wishlistService.isLoggedIn(session)) {
+    public String editProfileSide(HttpSession session, Model model) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         User user = (User) session.getAttribute("user");
@@ -172,21 +169,23 @@ public class WishlistController {
     }
 
     @PostMapping("/profile/edit")
-    public String editProfile(@ModelAttribute User updatedUser, HttpSession session){
-        if(!wishlistService.isLoggedIn(session)) {
+    public String editProfile(@ModelAttribute User updatedUser, HttpSession session) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
         wishlistService.updateUser(updatedUser);
+        session.setAttribute("user", updatedUser);
+        session.setMaxInactiveInterval(3600);
         return "redirect:/profile";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable int id, HttpSession session) {
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
-        if(user.getUserId() == id || user.getRoleId() == 1) { //tjekker om det er ens egen bruger eller man er admin
+        if (user.getUserId() == id || user.getRoleId() == 1) { //tjekker om det er ens egen bruger eller man er admin
             wishlistService.deleteUser(id);
         }
         return "redirect:/login";
@@ -194,11 +193,11 @@ public class WishlistController {
 
     @GetMapping("/wish/add/{wishlistId}")
     public String addWish(@PathVariable int wishlistId, Model model, HttpSession session) {
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
-         if(!wishlistService.checkWishlistIdWithUserId(wishlistId, user.getUserId())){
+        if (!wishlistService.checkWishlistIdWithUserId(wishlistId, user.getUserId())) {
             return "profile";
         }
         if (user == null) {
@@ -212,12 +211,12 @@ public class WishlistController {
 
     @PostMapping("wish/save")
     public String saveWish(@ModelAttribute Wish wish, HttpSession session) {
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
 
         }
         User user = (User) session.getAttribute("user");
-        if(user == null) {
+        if (user == null) {
             return "redirect:/login";
         }
         wishlistService.addWish(wish);
@@ -226,34 +225,34 @@ public class WishlistController {
 
     @GetMapping("wish/{id}/edit")
     public String editWish(Model model, @PathVariable int id, HttpSession session) {
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
         }
-        if(!wishlistService.checkWishIdWithUserId(id, user.getUserId())){
+        if (!wishlistService.checkWishIdWithUserId(id, user.getUserId())) {
             return "redirect:/profile";
         }
         Wish wish = wishlistService.getWishById(id);
         if (wish == null) {
             throw new IllegalArgumentException("Wish doesnt exits");
         }
-        model.addAttribute("wish",wish);
+        model.addAttribute("wish", wish);
         return "updateWish";
     }
 
     @PostMapping("/wish/update")
     public String updateWish(@ModelAttribute Wish wish, HttpSession session) {
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
         }
-        if(!wishlistService.checkWishIdWithUserId(wish.getWishId(), user.getUserId())){
+        if (!wishlistService.checkWishIdWithUserId(wish.getWishId(), user.getUserId())) {
             return "redirect:/profile";
         }
         wishlistService.updateWish(wish);
@@ -262,11 +261,11 @@ public class WishlistController {
 
     @PostMapping("/wish/delete/{id}")
     public String deleteWish(@PathVariable int id, HttpSession session) {
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
-        if(!wishlistService.checkWishIdWithUserId(id, user.getUserId())){
+        if (!wishlistService.checkWishIdWithUserId(id, user.getUserId())) {
             return "redirect:/profile";
         }
         Wish wish = wishlistService.getWishById(id);
@@ -276,19 +275,19 @@ public class WishlistController {
 
     @GetMapping("wish/view/{id}")
     public String viewWish(@PathVariable int id, Model model, HttpSession session) {
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
-        if(!wishlistService.checkWishIdWithUserId(id, user.getUserId())){ //Checker om sessionId matcher med wishId
+        if (!wishlistService.checkWishIdWithUserId(id, user.getUserId())) { //Checker om sessionId matcher med wishId
             return "redirect:/profile";
         }
-        if(wishlistService.checkWishIdWithUserIdWithoutFriends(id, user.getUserId())){
+        if (wishlistService.checkWishIdWithUserIdWithoutFriends(id, user.getUserId())) {
             model.addAttribute("myWishes", true);
 
         }
         Wish wish = wishlistService.getWishById(id);
-        if(wish == null) {
+        if (wish == null) {
             return "redirect:/profile";
         }
         model.addAttribute("wish", wish);
@@ -301,9 +300,9 @@ public class WishlistController {
     public String adminPanel(HttpSession session, Model model) {
         User loggedUser = (User) session.getAttribute("user");
 
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
-        } else if(loggedUser.getRoleId() != 1) {
+        } else if (loggedUser.getRoleId() != 1) {
             return "redirect:/login";
         }
 
@@ -316,10 +315,10 @@ public class WishlistController {
     public String adminPanelAddUser(HttpSession session, Model model) {
         User loggedUser = (User) session.getAttribute("user");
 
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
-          
-        } else if(loggedUser.getRoleId() != 1) {
+
+        } else if (loggedUser.getRoleId() != 1) {
             return "redirect:/login";
         }
 
@@ -329,8 +328,8 @@ public class WishlistController {
     }
 
     @PostMapping("/admin/register")
-    public String AdminCheckRegister(@ModelAttribute User user, Model model){
-        if(!wishlistService.isUsernameFree(user.getUsername())){
+    public String AdminCheckRegister(@ModelAttribute User user, Model model) {
+        if (!wishlistService.isUsernameFree(user.getUsername())) {
             model.addAttribute("notFree", true);
             return "redirect:/admin/addusers";
         }
@@ -343,10 +342,10 @@ public class WishlistController {
     public String adminDeleteUser(@PathVariable int id, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
 
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
 
-        } else if(loggedUser.getRoleId() != 1) {
+        } else if (loggedUser.getRoleId() != 1) {
             return "redirect:/login";
         }
 
@@ -355,10 +354,9 @@ public class WishlistController {
     }
 
 
-
     @GetMapping("/searchFriends")
-    public String searchFriends(HttpSession session, Model model){
-        if(!wishlistService.isLoggedIn(session)) {
+    public String searchFriends(HttpSession session, Model model) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         String name = "";
@@ -367,20 +365,20 @@ public class WishlistController {
         User user = (User) session.getAttribute("user");
 
         List<DTOFriend> listOfFriends = wishlistService.getFriendsCombined(user.getUserId());
-        List<DTOFriend>listOfFriendRequest = wishlistService.receivedFriendRequestCombined(user.getUserId());
-        List<DTOFriend>listOfSendFriendRequests = wishlistService.sendFriendRequestCombined(user.getUserId());
+        List<DTOFriend> listOfFriendRequest = wishlistService.receivedFriendRequestCombined(user.getUserId());
+        List<DTOFriend> listOfSendFriendRequests = wishlistService.sendFriendRequestCombined(user.getUserId());
 
-        if(listOfFriends != null){
+        if (listOfFriends != null) {
             model.addAttribute("friends", listOfFriends);
         } else {
             model.addAttribute("noFriends", true);
         }
-        if(listOfFriendRequest != null){
+        if (listOfFriendRequest != null) {
             model.addAttribute("friendRequests", listOfFriendRequest);
         } else {
             model.addAttribute("noFriendRequest", true);
         }
-        if(listOfSendFriendRequests != null){
+        if (listOfSendFriendRequests != null) {
             model.addAttribute("sendRequests", listOfSendFriendRequests);
         } else {
             model.addAttribute("noSendRequests", true);
@@ -390,14 +388,13 @@ public class WishlistController {
     }
 
 
-
     @GetMapping("/searchResultFriends")
-    public String searchFriendsResult(HttpSession session, Model model, String name){
-        if(!wishlistService.isLoggedIn(session)) {
+    public String searchFriendsResult(HttpSession session, Model model, String name) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         User user = (User) session.getAttribute("user");
-        if(wishlistService.searchFriends(name, user.getUserId()) == null){
+        if (wishlistService.searchFriends(name, user.getUserId()) == null) {
             model.addAttribute("noPersonFound", true);
             return "searchResultFriends";
         }
@@ -408,8 +405,8 @@ public class WishlistController {
 
 
     @PostMapping("/add/friend/{username}")
-    public String addFriend(@PathVariable String username, HttpSession session){
-        if(!wishlistService.isLoggedIn(session)) {
+    public String addFriend(@PathVariable String username, HttpSession session) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         User user = (User) session.getAttribute("user");
@@ -425,8 +422,8 @@ public class WishlistController {
 
 
     @PostMapping("/accept/friend/{friendshipId}")
-    public String acceptFriendRequest(@PathVariable int friendshipId, HttpSession session){
-        if(!wishlistService.isLoggedIn(session)) {
+    public String acceptFriendRequest(@PathVariable int friendshipId, HttpSession session) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         String status = "friends";
@@ -436,8 +433,8 @@ public class WishlistController {
 
 
     @PostMapping("/remove/friend/{friendshipId}")
-    public String removeFriend(@PathVariable int friendshipId, HttpSession session){
-        if(!wishlistService.isLoggedIn(session)) {
+    public String removeFriend(@PathVariable int friendshipId, HttpSession session) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         wishlistService.removeFriend(friendshipId);
@@ -445,12 +442,12 @@ public class WishlistController {
     }
 
     @GetMapping("/profile/friends/{username}")
-    public String myFriendsProfile(@PathVariable String username, HttpSession session, Model model){
-        if(!wishlistService.isLoggedIn(session)) {
+    public String myFriendsProfile(@PathVariable String username, HttpSession session, Model model) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "login";
         }
         User user = (User) session.getAttribute("user");
-        if(wishlistService.checkIfFriends(user.getUserId(), username) == null){
+        if (wishlistService.checkIfFriends(user.getUserId(), username) == null) {
             model.addAttribute("You are not friends", true);
             return "homepage";
         }
@@ -470,30 +467,27 @@ public class WishlistController {
     }
 
 
-
-
-
     @GetMapping("/share/{token}")
     public String shareWishlist(@PathVariable String token, Model model, HttpSession session) {
 
         User loggedUser = (User) session.getAttribute("user");
         boolean notLoggedIn;
 
-        if(loggedUser == null || loggedUser.getUserId() != wishlistService.getUserIdByToken(token)) {
+        if (loggedUser == null || loggedUser.getUserId() != wishlistService.getUserIdByToken(token)) {
             Wishlist wishlist = wishlistService.getWishlistByToken(token);
             List<Wish> wishes = wishlistService.getAllWishesFromWishlistId(wishlist.getWishlistId());
             model.addAttribute("wishlist", wishlist);
             model.addAttribute("wishlistname", wishlist.getWishlistName());
             model.addAttribute("wishlistId", wishlist.getWishlistId());
             model.addAttribute("wishes", wishes);
-            model.addAttribute("userName",wishlistService.getUsernameByToken(token));
+            model.addAttribute("userName", wishlistService.getUsernameByToken(token));
 
-            if(loggedUser == null) {
+            if (loggedUser == null) {
                 notLoggedIn = true;
             } else {
                 notLoggedIn = false;
             }
-            model.addAttribute("notLoggedIn",notLoggedIn);
+            model.addAttribute("notLoggedIn", notLoggedIn);
             return "sharedWishlist";
         } else {
             return "ownWishlist";
@@ -505,11 +499,11 @@ public class WishlistController {
         User loggedUser = (User) session.getAttribute("user");
         boolean notLoggedIn = false;
 
-        if(loggedUser == null) {
+        if (loggedUser == null) {
             notLoggedIn = true;
         }
         model.addAttribute("token", token);
-        model.addAttribute("notLoggedIn",notLoggedIn);
+        model.addAttribute("notLoggedIn", notLoggedIn);
         Wish wish = wishlistService.getWishById(id);
         model.addAttribute("wish", wish);
         model.addAttribute("isReserved", wishlistService.isWishReservedById(id));
@@ -517,12 +511,11 @@ public class WishlistController {
     }
 
 
-
     @PostMapping("/shared/wish/{token}/{id}")
-    public String updateIsReserved (@PathVariable int id, @PathVariable String token, HttpSession session) {
+    public String updateIsReserved(@PathVariable int id, @PathVariable String token, HttpSession session) {
         if (wishlistService.isLoggedIn(session)) {
             wishlistService.updateIsReservedByWishId(id);
-            return "redirect:/shared/wish/" + token +"/" + id;
+            return "redirect:/shared/wish/" + token + "/" + id;
         } else {
             return "redirect:/login";
         }
@@ -532,7 +525,7 @@ public class WishlistController {
 
     @GetMapping("/admin/update/{id}")
     public String adminUpdateUser(@PathVariable int id, HttpSession session, Model model) {
-        if(!wishlistService.isLoggedIn(session)) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
         User loggedUser = (User) session.getAttribute("user");
@@ -546,8 +539,8 @@ public class WishlistController {
     }
 
     @PostMapping("/admin/update")
-    public String adminUpdateUser(@ModelAttribute User updatedUser, HttpSession session){
-        if(!wishlistService.isLoggedIn(session)) {
+    public String adminUpdateUser(@ModelAttribute User updatedUser, HttpSession session) {
+        if (!wishlistService.isLoggedIn(session)) {
             return "redirect:/login";
         }
         User loggedUser = (User) session.getAttribute("user");
@@ -558,7 +551,6 @@ public class WishlistController {
 
         return "redirect:/admin";
     }
-
 
 
 }

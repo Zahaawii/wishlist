@@ -21,15 +21,15 @@
     <div class="loginBox">
         <form th:action="@{/register}" th:object="${user}" method="post">
             <h1>REGISTER</h1>
-            <p th:if ="${notFree}"> Username already taken.</p>
+            <p th:if="${notFree}"> Username already taken.</p>
             <div class="input-box">
-                <label for="name">  </label>
-                <input type="text" id="name"  name="name" placeholder="first name" required>
+                <label for="name"> </label>
+                <input type="text" id="name" name="name" placeholder="first name" required>
                 <i class="fa-solid fa-address-card"></i>
             </div>
             <div class="input-box">
                 <label for="username"></label>
-                <input type="text" id="username"  name="username" placeholder="username" required>
+                <input type="text" id="username" name="username" placeholder="username" required>
                 <i class="bx bxs-user"></i>
             </div>
 

@@ -30,90 +30,90 @@ public class WishlistRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    public WishlistRepository(JdbcTemplate jdbcTemplate){
+    public WishlistRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
 
-    public List<User>getAllUsers(){
+    public List<User> getAllUsers() {
         String sql = "SELECT * FROM users";
         return jdbcTemplate.query(sql, new UserRowmapper());
     }
 
     //Man søger efter et navn, og så kommer der en liste op af brugere, der indeholder det navn
     // hvis man ikke allerede har en relation til dem
-    public List<User>searchFriends(String name, int id){
+    public List<User> searchFriends(String name, int id) {
         List<User> allUsers = getAllUsers();
         List<User> usersWithSpecifikName = new ArrayList<>();
-        for(User i: allUsers) {
+        for (User i : allUsers) {
             if (i.getName().toLowerCase().contains(name.toLowerCase())) {
-                if(i.getUserId() != id) {
-                    if(isThereAlreadyARelation(id, i.getUserId())){
+                if (i.getUserId() != id) {
+                    if (isThereAlreadyARelation(id, i.getUserId())) {
                         //tjekker om der allerede er en relation, fx ven eller venanmodning
                         usersWithSpecifikName.add(i);
                     }
                 }
             }
         }
-        if(usersWithSpecifikName.isEmpty()){
+        if (usersWithSpecifikName.isEmpty()) {
             return null;
         }
         return usersWithSpecifikName;
     }
 
     //tjekker om der allerede er en relation, fx ven eller venanmodning
-    public boolean isThereAlreadyARelation(int userId, int friendId){
+    public boolean isThereAlreadyARelation(int userId, int friendId) {
         String sql = "SELECT * FROM friends WHERE friendOne = ? and friendTwo = ?";
         List<Friend> friendList = jdbcTemplate.query(sql, new FriendRowmapper(), userId, friendId);
-        if(!friendList.isEmpty()){
+        if (!friendList.isEmpty()) {
             return false;
         }
         String sqlSecond = "SELECT * FROM friends WHERE friendTwo = ? and friendOne = ?";
         List<Friend> friendListSecond = jdbcTemplate.query(sqlSecond, new FriendRowmapper(), userId, friendId);
-        if(!friendListSecond.isEmpty()){
+        if (!friendListSecond.isEmpty()) {
             return false;
         }
         return true;
     }
 
 
-    public User getUserByUsername(String username){
-        String sql = "SELECT * FROM users WHERE username = ?";
-        List<User>temp = jdbcTemplate.query(sql, new UserRowmapper(), username);
-        if(temp.isEmpty()){
-            return null;
-        }
-        return temp.getFirst();
-    }
-
-    public User getUserById(int userId){
-        String sql = "SELECT * FROM users WHERE userID = ?";
-        List<User>temp = jdbcTemplate.query(sql, new UserRowmapper(), userId);
-        if(temp.isEmpty()){
-            return null;
-        }
-        return temp.getFirst();
-    }
-
-
-    public User login(String username, String password){
+    public User getUserByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
         List<User> temp = jdbcTemplate.query(sql, new UserRowmapper(), username);
-        if(temp.isEmpty()){
+        if (temp.isEmpty()) {
+            return null;
+        }
+        return temp.getFirst();
+    }
+
+    public User getUserById(int userId) {
+        String sql = "SELECT * FROM users WHERE userID = ?";
+        List<User> temp = jdbcTemplate.query(sql, new UserRowmapper(), userId);
+        if (temp.isEmpty()) {
+            return null;
+        }
+        return temp.getFirst();
+    }
+
+
+    public User login(String username, String password) {
+        String sql = "SELECT * FROM users WHERE username = ?";
+        List<User> temp = jdbcTemplate.query(sql, new UserRowmapper(), username);
+        if (temp.isEmpty()) {
             return null;
         }
         User user = temp.getFirst();
-        if(!user.getPassword().equals(password)){
+        if (!user.getPassword().equals(password)) {
             return null;
         }
         return user;
     }
 
-    public Wishlist getAllWishesByUserId(int userId ){
+    public Wishlist getAllWishesByUserId(int userId) {
 
-        String sql= "SELECT wishes.* FROM wishes join wishlists on wishes.wishlistID = wishlists.wishlistID where wishlists.userID = ?";
-        List<Wish>listOfWishes = jdbcTemplate.query(sql, new WishRowmapper(), userId);
-        if(listOfWishes.isEmpty()){
+        String sql = "SELECT wishes.* FROM wishes join wishlists on wishes.wishlistID = wishlists.wishlistID where wishlists.userID = ?";
+        List<Wish> listOfWishes = jdbcTemplate.query(sql, new WishRowmapper(), userId);
+        if (listOfWishes.isEmpty()) {
             return null;
         }
         int wishlistId = listOfWishes.getFirst().getWishlistId();
@@ -140,16 +140,16 @@ public class WishlistRepository {
     }
 
 
-    public boolean isUsernameFree(String username){
+    public boolean isUsernameFree(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
         List<User> users = jdbcTemplate.query(sql, new UserRowmapper(), username);
-        if(users.isEmpty()){
+        if (users.isEmpty()) {
             return true;
         }
         return false;
     }
 
-    public User registerUser(User user){
+    public User registerUser(User user) {
         String sql = "INSERT INTO users (name, username, password, roleID) VALUES(?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -163,9 +163,9 @@ public class WishlistRepository {
             return ps;
         }, keyHolder);
 
-        int userId =keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
+        int userId = keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
 
-        if(userId != -1){
+        if (userId != -1) {
             user.setUserId(userId);
         }
 
@@ -176,7 +176,7 @@ public class WishlistRepository {
     public Wishlist createWishList(int userId, String wishListName) {
         String sql = "INSERT INTO wishlists (UserID, wishlistName, token) VALUES (?, ?, ?)";
 
-        KeyHolder keyHolder= new GeneratedKeyHolder();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
         Wishlist wishlist = new Wishlist(userId, wishListName);
 
@@ -184,12 +184,12 @@ public class WishlistRepository {
             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setInt(1, userId);
             ps.setString(2, wishListName);
-            ps.setString(3,wishlist.getToken());
+            ps.setString(3, wishlist.getToken());
             return ps;
         }, keyHolder);
 
         Number key = keyHolder.getKey();
-        if(key != null) {
+        if (key != null) {
             wishlist.setWishlistId(key.intValue());
         }
 
@@ -224,11 +224,11 @@ public class WishlistRepository {
     public void deleteUser(int id) {
         String sql = "DELETE FROM USERS WHERE USERID = ?";
         jdbcTemplate.update(sql, id);
-        if(getAllWishesByUserId(id) != null) {
+        if (getAllWishesByUserId(id) != null) {
             String deleteSQL = "DELETE wishes.* FROM wishes join wishlists on wishes.wishlistID = wishlists.wishlistID where wishlists.userID = ?";
             jdbcTemplate.update(deleteSQL, id);
         }
-        if(getAllWishListFromUserID(id) != null) {
+        if (getAllWishListFromUserID(id) != null) {
             String deleteSQLList = "DELETE FROM wishlist.wishlists WHERE userID = ?";
             jdbcTemplate.update(deleteSQLList, id);
         }
@@ -237,15 +237,15 @@ public class WishlistRepository {
     public List<Wishlist> getAllWishListFromUserID(int id) {
         String sql = "SELECT * FROM wishlists WHERE userID = ?";
         List<Wishlist> getWishList = jdbcTemplate.query(sql, new WishlistRowmapper(), id);
-            if(getWishList.isEmpty()) {
-                return null;
-            }
-        return  getWishList;
+        if (getWishList.isEmpty()) {
+            return null;
+        }
+        return getWishList;
     }
 
     public Wishlist getWishlistByID(int id) {
         String sql = "SELECT * FROM wishlists WHERE wishlistID = ?";
-        List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(),id);
+        List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(), id);
         if (wishlists.isEmpty()) {
             return null;
         } else {
@@ -261,13 +261,13 @@ public class WishlistRepository {
 
     }
 
-    public boolean isWishReservedById (int id) {
+    public boolean isWishReservedById(int id) {
         String sql = "SELECT * FROM wishes WHERE wishID = ?";
         Wish wish = jdbcTemplate.query(sql, new WishRowmapper(), id).get(0);
         return wish.isReserved();
     }
 
-    public void updateIsReservedByWishId (int wishId) {
+    public void updateIsReservedByWishId(int wishId) {
         String sql = "UPDATE wishes SET isReserved = ? WHERE wishID = ?";
         jdbcTemplate.update(sql, 1, wishId);
     }
@@ -277,35 +277,27 @@ public class WishlistRepository {
         return jdbcTemplate.query(sql, new WishRowmapper(), id);
     }
 
-    public String getWishlistTokenByWishId (int id) {
-        String sql = "SELECT * FROM wishlists where wishlistID = ?";
-        Wishlist wishlist = jdbcTemplate.query(sql, new WishlistRowmapper(), id).get(0);
-
-        return wishlist.getToken();
-
-    }
-
     public void updateWish(Wish wish) {
         String sql = "UPDATE wishes SET wishName = ?, description = ?, price = ?, link = ? WHERE wishID = ?";
-        jdbcTemplate.update(sql,wish.getName(),wish.getDescription(),wish.getPrice(),wish.getLink(),wish.getWishId());
+        jdbcTemplate.update(sql, wish.getName(), wish.getDescription(), wish.getPrice(), wish.getLink(), wish.getWishId());
     }
 
     public void deleteWish(int id) {
         String sql = "DELETE FROM wishes WHERE wishID = ?";
-        jdbcTemplate.update(sql,id);
+        jdbcTemplate.update(sql, id);
     }
 
 
-    public User updateUser(User user){
+    public User updateUser(User user) {
         String sql = "UPDATE users SET name = ?, username = ?, password = ?, roleID = ? WHERE userID = ?";
         jdbcTemplate.update(sql, user.getName(), user.getUsername(), user.getPassword(), user.getRoleId(), user.getUserId());
         return user;
     }
 
 
-    public User adminRegisterUser(User user){
+    public User adminRegisterUser(User user) {
 
-        if(user == null) {
+        if (user == null) {
             return null;
         }
 
@@ -329,9 +321,9 @@ public class WishlistRepository {
 
     public Wishlist getWishlistByToken(String token) {
         String sql = "SELECT * FROM wishlists WHERE token = ?";
-        List<Wishlist> wishlists = jdbcTemplate.query(sql,new WishlistRowmapper(),token);
+        List<Wishlist> wishlists = jdbcTemplate.query(sql, new WishlistRowmapper(), token);
 
-        if(wishlists.isEmpty()) {
+        if (wishlists.isEmpty()) {
             return null;
         } else {
             return wishlists.getFirst();
@@ -341,7 +333,7 @@ public class WishlistRepository {
     public int getUserIdByToken(String token) {
         String sql = "SELECT userID FROM wishlists WHERE token = ?";
         try {
-            return jdbcTemplate.queryForObject(sql,Integer.class,token);
+            return jdbcTemplate.queryForObject(sql, Integer.class, token);
         } catch (EmptyResultDataAccessException e) {
             return -1;
         }
@@ -350,7 +342,7 @@ public class WishlistRepository {
     public int getUserIdByWishlistId(int id) {
         String sql = "SELECT userID FROM wishlists WHERE wishlistID = ?";
         try {
-            return jdbcTemplate.queryForObject(sql,Integer.class,id);
+            return jdbcTemplate.queryForObject(sql, Integer.class, id);
         } catch (EmptyResultDataAccessException e) {
             return -1;
         }
@@ -358,9 +350,9 @@ public class WishlistRepository {
 
     public String getUsernameByToken(String token) {
         String sql = "SELECT users.* FROM users JOIN wishlists ON users.userID = wishlists.userID WHERE wishlists.token = ?";
-        List<User> usernames = jdbcTemplate.query(sql,new UserRowmapper(),token);
+        List<User> usernames = jdbcTemplate.query(sql, new UserRowmapper(), token);
 
-        if(usernames.isEmpty()) {
+        if (usernames.isEmpty()) {
             return null;
         } else {
             return usernames.getFirst().getName();
@@ -369,139 +361,139 @@ public class WishlistRepository {
 
     public void deleteWishlist(int id) {
         String sql = "DELETE FROM wishlists WHERE wishlistID = ?";
-        jdbcTemplate.update(sql,id);
+        jdbcTemplate.update(sql, id);
     }
 
     public void deleteAllWishesWithWishlistId(int id) {
         String sql = "DELETE FROM wishes WHERE wishlistID = ?";
-        jdbcTemplate.update(sql,id);
+        jdbcTemplate.update(sql, id);
     }
 
 
-    public void addFriend(int friendOneId, int friendTwoId, String status){
+    public void addFriend(int friendOneId, int friendTwoId, String status) {
         String sql = "INSERT INTO friends (friendOne, FriendTwo, friendStatus) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, friendOneId, friendTwoId, status);
     }
 
-    public void acceptFriend(int friendshipId, String status){
+    public void acceptFriend(int friendshipId, String status) {
         String sql = "UPDATE friends SET friendStatus = ? WHERE friendshipId = ?";
         jdbcTemplate.update(sql, status, friendshipId);
     }
 
-    public void removeFriend(int friendshipId){
-        String sql ="DELETE FROM friends WHERE friendshipId = ?";
+    public void removeFriend(int friendshipId) {
+        String sql = "DELETE FROM friends WHERE friendshipId = ?";
         jdbcTemplate.update(sql, friendshipId);
     }
 
 
-    public List<Friend> getFriendRequestId(int userId){
+    public List<Friend> getFriendRequestId(int userId) {
         String sql = "SELECT * FROM friends WHERE friendTwo = ? and friendStatus = ?";
-        List<Friend>friendList = jdbcTemplate.query(sql, new FriendRowmapper(), userId, "requested");
-        if(friendList.isEmpty()){
+        List<Friend> friendList = jdbcTemplate.query(sql, new FriendRowmapper(), userId, "requested");
+        if (friendList.isEmpty()) {
             return null;
         }
         return friendList;
     }
 
-    public List<User> getFriendRequestName(int userId){
+    public List<User> getFriendRequestName(int userId) {
         List<User> friendRequest = new ArrayList<>();
-        List<Friend> friendListId= getFriendRequestId(userId);
-        if(friendListId == null){
+        List<Friend> friendListId = getFriendRequestId(userId);
+        if (friendListId == null) {
             return null;
         }
         List<Integer> ids = new ArrayList<>();
-        for(Friend i: friendListId){
+        for (Friend i : friendListId) {
             ids.add(i.getFriendOne());
         }
-        for(Integer nums: ids){
+        for (Integer nums : ids) {
             friendRequest.add(getUserById(nums));
         }
         return friendRequest;
 
     }
 
-    public List<Friend>sendFriendRequestId(int userId){
-        String sql ="SELECT * FROM friends WHERE friendOne = ? and friendStatus = ?";
-        List<Friend>friendList = jdbcTemplate.query(sql, new FriendRowmapper(), userId, "requested");
-        if(friendList.isEmpty()){
+    public List<Friend> sendFriendRequestId(int userId) {
+        String sql = "SELECT * FROM friends WHERE friendOne = ? and friendStatus = ?";
+        List<Friend> friendList = jdbcTemplate.query(sql, new FriendRowmapper(), userId, "requested");
+        if (friendList.isEmpty()) {
             return null;
         }
         return friendList;
     }
 
-    public List<User>sendFriendRequestName(int userId){
+    public List<User> sendFriendRequestName(int userId) {
         List<User> friendRequest = new ArrayList<>();
-        List<Friend> friendListId= sendFriendRequestId(userId);
-        if(friendListId == null){
+        List<Friend> friendListId = sendFriendRequestId(userId);
+        if (friendListId == null) {
             return null;
         }
         List<Integer> ids = new ArrayList<>();
-        for(Friend i: friendListId){
+        for (Friend i : friendListId) {
             ids.add(i.getFriendTwo());
         }
-        for(Integer nums: ids){
+        for (Integer nums : ids) {
             friendRequest.add(getUserById(nums));
         }
         return friendRequest;
     }
 
 
-    public List<Friend> getFriendsId(int userId){
+    public List<Friend> getFriendsId(int userId) {
         String sql = "SELECT * FROM friends WHERE friendOne = ? and friendStatus = ?";
-        List<Friend>friendList = jdbcTemplate.query(sql, new FriendRowmapper(), userId, "friends");
+        List<Friend> friendList = jdbcTemplate.query(sql, new FriendRowmapper(), userId, "friends");
         String sqlSecondColumn = "SELECT * FROM friends WHERE friendTwo = ? and friendStatus = ?";
-        List<Friend>secondFriendList = jdbcTemplate.query(sqlSecondColumn, new FriendRowmapper(), userId, "friends");
+        List<Friend> secondFriendList = jdbcTemplate.query(sqlSecondColumn, new FriendRowmapper(), userId, "friends");
 
-        if(!friendList.isEmpty() && !secondFriendList.isEmpty() ){
+        if (!friendList.isEmpty() && !secondFriendList.isEmpty()) {
             friendList.addAll(secondFriendList);
             return friendList;
         }
-        if(!friendList.isEmpty()){
+        if (!friendList.isEmpty()) {
             return friendList;
         }
-        if(!secondFriendList.isEmpty()){
+        if (!secondFriendList.isEmpty()) {
             return secondFriendList;
         }
         return null;
     }
 
-    public List<User>getFriendsName(int userId){
-        List<User>friends = new ArrayList<>();
+    public List<User> getFriendsName(int userId) {
+        List<User> friends = new ArrayList<>();
         List<Integer> ids = new ArrayList<>();
 
         List<Friend> friendsId = getFriendsId(userId);
-        if(friendsId == null){
+        if (friendsId == null) {
             return null;
         }
 
-        for(Friend i: friendsId){
-            if(i.getFriendOne() != userId){
+        for (Friend i : friendsId) {
+            if (i.getFriendOne() != userId) {
                 ids.add(i.getFriendOne());
-            } else if(i.getFriendTwo() != userId){
+            } else if (i.getFriendTwo() != userId) {
                 ids.add(i.getFriendTwo());
             }
         }
-        for(Integer nums: ids){
+        for (Integer nums : ids) {
             friends.add(getUserById(nums));
         }
 
         return friends;
     }
 
-    public List<Friend>checkIfFriends(int myId, String username){
+    public List<Friend> checkIfFriends(int myId, String username) {
         int friendsId = getUserByUsername(username).getUserId(); //Vennen hvis profil vi vil se, her modtager vi deres username
         //Når vi har deres username, så kan vi finde deres id
         //vi kan ved hjælp af vores id og vennensId, tjekke om vi er venner.
         String friendStatus = "friends";
         String sql = "SELECT * FROM friends WHERE friendOne = ? and friendTwo =? and friendStatus =?";
-        List<Friend> firstFriendList= jdbcTemplate.query(sql, new FriendRowmapper(), myId, friendsId, friendStatus);
-        if(!firstFriendList.isEmpty()){
+        List<Friend> firstFriendList = jdbcTemplate.query(sql, new FriendRowmapper(), myId, friendsId, friendStatus);
+        if (!firstFriendList.isEmpty()) {
             return firstFriendList;
         }
         //vi skal køre metoden to forskellige gange, da vores navn fx kan være i friendOne eller friendTwo, alt efter hvem der sendte venandmodningen
         String sqlSecondCombination = "SELECT * FROM friends WHERE friendTwo = ? and friendOne = ? and friendStatus = ?";
         List<Friend> seccondFriendList = jdbcTemplate.query(sqlSecondCombination, new FriendRowmapper(), myId, friendsId, friendStatus);
-        if(!seccondFriendList.isEmpty()){
+        if (!seccondFriendList.isEmpty()) {
             return seccondFriendList;
         }
         return null;
@@ -512,33 +504,28 @@ public class WishlistRepository {
     }
 
 
-    public int getUserIdByWishId(int wishId){
+    public int getUserIdByWishId(int wishId) {
         String sql = """
                 SELECT wishlists.* FROM wishlists
                 join wishes on wishes.wishlistID = wishlists.wishlistID
                 where wishes.wishID = ?""";
         List<Wishlist> listOfWishlists = jdbcTemplate.query(sql, new WishlistRowmapper(), wishId);
-        if(listOfWishlists.isEmpty()){
+        if (listOfWishlists.isEmpty()) {
             return 0;
         }
         return listOfWishlists.getFirst().getUserId();
     }
 
     //Checker om wishid og userId er det samme, altså om den der tilgår et ønske har lavet den
-    public boolean checkWishIdWithUserId(int wishId, int userId){
+    public boolean checkWishIdWithUserId(int wishId, int userId) {
         return getUserIdByWishId(wishId) == userId;
     }
 
 
     //Checker om wishlistDd og userId er det samme, altså om den der tilgår en ønskeliste har lavet den
-    public boolean checkWishlistIdWithUserId(int wishlistId, int userId){
+    public boolean checkWishlistIdWithUserId(int wishlistId, int userId) {
         return getUserIdByWishlistId(wishlistId) == userId;
     }
-
-
-
-
-
 
 
 }

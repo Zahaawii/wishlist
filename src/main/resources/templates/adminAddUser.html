@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin register account</title>
-  <!--<link rel="stylesheet" th:href="@{/css/registeraccount.css}">-->
-  <link rel="stylesheet" th:href="@{/css/main.css}">
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <title>Admin register account</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
 
 </head>
 <body>
@@ -17,51 +16,49 @@
 
 
 <div id="clouds">
-  <div class="cloud x1"></div>
-  <div class="cloud x2"></div>
-  <div class="cloud x3"></div>
-  <div class="cloud x4"></div>
-  <div class="cloud x5"></div>
+    <div class="cloud x1"></div>
+    <div class="cloud x2"></div>
+    <div class="cloud x3"></div>
+    <div class="cloud x4"></div>
+    <div class="cloud x5"></div>
 </div>
 
 
 <div class="loginWrapper">
-  <div class="loginBox">
-  <h1>CREATE ACCOUNT</h1>
-      <p th:if ="${notFree}"> Username already taken.</p>
-      <form th:action="@{/admin/register}" th:object="${user}" method="post">
+    <div class="loginBox">
+        <h1>CREATE ACCOUNT</h1>
+        <p th:if="${notFree}"> Username already taken.</p>
+        <form th:action="@{/admin/register}" th:object="${user}" method="post">
 
-        <div class="input-box">
-          <label for="name">  </label>
-          <input type="text" id="name"  name="name" placeholder="first name" required>
-          <i class="fa-solid fa-address-card"></i>
-        </div>
-        <div class="input-box">
-          <label for="username"></label>
-          <input type="text" id="username"  name="username" placeholder="username" required>
-          <i class="bx bxs-user"></i>
-        </div>
+            <div class="input-box">
+                <label for="name"> </label>
+                <input type="text" id="name" name="name" placeholder="first name" required>
+                <i class="fa-solid fa-address-card"></i>
+            </div>
+            <div class="input-box">
+                <label for="username"></label>
+                <input type="text" id="username" name="username" placeholder="username" required>
+                <i class="bx bxs-user"></i>
+            </div>
 
-        <div class="input-box">
-          <label for="password"></label>
-          <input type="password" name="password" id="password" placeholder="password" required>
-          <i class="bx bxs-lock-alt"></i>
-        </div>
+            <div class="input-box">
+                <label for="password"></label>
+                <input type="password" name="password" id="password" placeholder="password" required>
+                <i class="bx bxs-lock-alt"></i>
+            </div>
 
-        <div class="input-box">
-          <label for="roleId"></label>
-          <input type="number" name="roleId" id="roleId" placeholder="role ID" required>
-          <i class="fa-solid fa-input-numeric"></i>
-        </div>
+            <div class="input-box">
+                <label for="roleId"></label>
+                <input type="number" name="roleId" id="roleId" placeholder="role ID" required>
+                <i class="fa-solid fa-input-numeric"></i>
+            </div>
 
-        <button th:href="@{/login}" type="submit" class="loginButton">Create</button>
+            <button th:href="@{/login}" type="submit" class="loginButton">Create</button>
 
 
-
-    </form>
-  </div>
+        </form>
+    </div>
 </div>
-
 
 
 </body>

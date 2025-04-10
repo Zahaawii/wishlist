@@ -26,21 +26,25 @@
     <div class="loginBox">
 
         <h1>UPDATE ACCOUNT</h1>
-        <p th:if ="${notFree}"> Username already taken.</p>
+        <p th:if="${notFree}"> Username already taken.</p>
         <form th:action="@{/profile/edit}" th:object="${updatedUser}" method="post">
             <input type="hidden" id="userId" name="userId" th:value="${user.getUserId()}">
             <input type="hidden" id="roleId" name="roleId" th:value="${user.getRoleId()}">
+            <input type="hidden" id="username" name="username" th:value="${user.getUsername()}">
+
 
             <div class="input-box">
                 <label for="name"></label>
-                <input type="text" id="name" name="name" placeholder="Enter your name" th:value="${user.getName()}" required> </input>
+                <input type="text" id="name" name="name" placeholder="Enter your name" th:value="${user.getName()}"
+                       required> </input>
                 <i class="fa-solid fa-address-card"></i>
             </div>
 
 
             <div class="input-box">
                 <label for="password"></label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" th:value="${user.getPassword()}" required> </input>
+                <input type="password" id="password" name="password" placeholder="Enter your password"
+                       th:value="${user.getPassword()}" required> </input>
                 <i class="bx bxs-lock-alt"></i>
             </div>
 
@@ -53,43 +57,6 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-<!--<div class="center">
-
-    <div class="addFormular">
-        <h1 class="heading"> Edit your profile information</h1>
-        <form action="/profile/edit" th:object="${updatedUser}" method="post">
-
-                <label for="name">name:</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name" th:value="${user.getName()}" required> </input>
-
-                <label for="username">username:</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" th:value="${user.getUsername()}" readonly> </input>
-
-                <label for="password">password:</label>
-                <input type="text" id="password" name="password" placeholder="Enter your password" th:value="${user.getPassword()}" required> </input>
-
-                <input type="hidden" id="userId" name="userId" th:value="${user.getUserId()}">
-
-                <input type="hidden" id="roleId" name="roleId" th:value="${user.getRoleId()}">
-
-            <button type="submit">Update information</button>
-            <button type="button"><a class="button-link" href="/profile">Go back to profile</a></button>
-        </form>
-        <form th:action="@{/delete/{id}(id=${user.userId})}" method="post">
-            <button class="button-87 delete" type="submit">Delete account</button>
-        </form>
-
-    </div>
-
-</div>-->
 
 </body>
 </html>

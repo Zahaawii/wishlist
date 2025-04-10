@@ -60,10 +60,6 @@ public class WishlistService {
         wishlistRepository.updateIsReservedByWishId(wishId);
     }
 
-    public String getWishlistTokenByWishId(int id) {
-        return wishlistRepository.getWishlistTokenByWishId(id);
-    }
-
     public User getUserByUsername(String username) {
         return wishlistRepository.getUserByUsername(username);
     }
@@ -177,10 +173,6 @@ public class WishlistService {
         wishlistRepository.deleteAllWishesWithWishlistId(id);
     }
 
-    public List<Friend> getFriendRequestId(int userId) {
-        return wishlistRepository.getFriendRequestId(userId);
-    }
-
     public List<DTOFriend> receivedFriendRequestCombined(int userId) {
         List<DTOFriend> combinedFriend = new ArrayList<>();
         List<User> userInfo = wishlistRepository.getFriendRequestName(userId);
@@ -188,13 +180,6 @@ public class WishlistService {
         return combineFriendAndUserLists(combinedFriend, userInfo, friendInfo);
     }
 
-    public List<Friend> sendFriendRequestId(int userId) {
-        return wishlistRepository.sendFriendRequestId(userId);
-    }
-
-    public List<User> sendFriendRequestName(int userId) {
-        return wishlistRepository.sendFriendRequestName(userId);
-    }
 
     public List<DTOFriend> sendFriendRequestCombined(int userId) {
         List<DTOFriend> combinedFriend = new ArrayList<>();
@@ -203,14 +188,6 @@ public class WishlistService {
         return combineFriendAndUserLists(combinedFriend, userInfo, friendInfo);
     }
 
-
-    public List<User> getFriends(int userId) {
-        return wishlistRepository.getFriendsName(userId);
-    }
-
-    public List<Friend> getFriendsId(int userId) {
-        return wishlistRepository.getFriendsId(userId);
-    }
 
     public List<DTOFriend> getFriendsCombined(int userId) {
         List<DTOFriend> combinedFriend = new ArrayList<>();
@@ -255,6 +232,7 @@ public class WishlistService {
         }
         return false;
     }
+
     public boolean checkWishIdWithUserIdWithoutFriends(int wishlistId, int userId) {
         if (wishlistRepository.checkWishIdWithUserId(wishlistId, userId)) {
             return true;
@@ -263,7 +241,6 @@ public class WishlistService {
     }
 
 
-
-    }
+}
 
 

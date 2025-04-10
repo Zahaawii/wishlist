@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 
-
-
 </head>
 <body>
 
@@ -22,8 +20,6 @@
 </div>
 
 <div th:replace="~{fragments/navbarauth :: navbar}"></div>
-
-
 
 
 <div class="wishContainerWrapper">
@@ -41,8 +37,9 @@
                 <p th:text="${wish.description}">Description</p>
             </div>
             <h2 th:text="${wish.getPriceRounded()}">XXX$</h2>
-            <div class="wishButtonsContainer"  th:if="${myWishes}">
-                <form th:action="@{/wish/delete/{id}(id=${wish.wishId})}" method="post" onsubmit="return confirm('Are you sure you want to delete this wish?')">
+            <div class="wishButtonsContainer" th:if="${myWishes}">
+                <form th:action="@{/wish/delete/{id}(id=${wish.wishId})}" method="post"
+                      onsubmit="return confirm('Are you sure you want to delete this wish?')">
                     <button class="button-22 red" type="submit"><i class="fa-solid fa-trash"></i></button>
                 </form>
                 <a th:href="@{/wish/{id}/edit(id=${wish.wishId})}">
@@ -54,28 +51,6 @@
     </div>
 </div>
 
-
-
-<!--<div class="Mainmaincontainer">
-    <div class="wishesMainContainer">
-        <div class="wishListContainer" style="flex-direction: column; padding: 1em; text-align: center;">
-            <p><strong>Description:</strong> <span th:text="${wish.description}"></span></p>
-            <p><strong>Price:</strong> <span th:text="${wish.price}">0</span> kr</p>
-            <p><strong>Quantity:</strong> <span th:text="${wish.quantity}">1</span></p>
-            <p><strong>Link:</strong> <a th:href="${wish.link}" target="_blank" th:text="${wish.link}">Visit</a></p>
-        </div>
-        <div>
-            <a th:href="@{/wish/{id}/edit(id=${wish.wishId})}">
-                <button class="button-22">Edit</button>
-            </a>
-            <form th:action="@{/wish/delete/{id}(id=${wish.wishId})}" method="post" onsubmit="return confirm('Er du sikker på du vil slette dette ønske?')">
-                <button class="button-22" type="submit">Delete</button>
-            </form>
-
-        </div>
-
-    </div>
-</div>-->
 
 </body>
 </html>

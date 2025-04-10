@@ -14,7 +14,7 @@ public class Friend {
         this.friendStatus = friendStatus;
     }
 
-    public Friend(){
+    public Friend() {
 
     }
 

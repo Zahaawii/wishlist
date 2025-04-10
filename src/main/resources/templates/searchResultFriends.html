@@ -7,70 +7,31 @@
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body >
+<body>
 <div th:replace="fragments/navbarauth :: navbar"></div>
 
 
+<div class="friendlistWrapper">
+    <div class="friendlistContainer">
+        <h2 th:if="${noPersonFound}">There was no user with this name</h2>
+        <h3 th:if="${noPersonFound}">Maybe they are already your friend or a request have been sent?</h3>
 
-        <div class="friendlistWrapper">
-            <div class="friendlistContainer">
-                <h2 th:if="${noPersonFound}">There was no user with this name</h2>
-                <h3 th:if="${noPersonFound}">Maybe they are already your friend or a request have been sent?</h3>
 
+        <div th:each="user : ${searchResult}" class="friendlistFriendContent">
+            <div class="friendinformation">
+                <h2 th:text="${user.getName()}" class="friend-name"></h2>
+                <h3 th:text="${user.getUsername()}" class="friend-username"></h3>
+            </div>
 
-                <div  th:each="user : ${searchResult}" class="friendlistFriendContent">
-                    <div class="friendinformation">
-                        <!-- <h1 th:if="${noFriends}">You don't have any friends</h1> -->
-                        <h2 th:text="${user.getName()}" class="friend-name"></h2>
-                        <h3 th:text="${user.getUsername()}" class="friend-username" ></h3>
-                    </div>
+            <div class="friendbuttons">
+                <form th:action="@{'add/friend/' + ${user.getUsername()}}" th:method="post">
+                    <button th:type="submit" class="button-22 blue">Add friend</button>
+                </form>
 
-                    <div class="friendbuttons">
-                        <form th:action="@{'add/friend/' + ${user.getUsername()}}" th:method="post">
-                            <button th:type="submit" class="button-22 blue">Add friend</button>
-                        </form>
-
-                    </div>
-                </div>
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--<div class="searchResult">
-    <h2 th:if="${noPersonFound}">There was no user with this name</h2>
-    <h3 th:if="${noPersonFound}">Maybe they are already your friend or a request have been sent?</h3>
-    <div th:if="${found}">
-    <table th:border="1">
-        <thead>
-            <tr>
-                <td>Name:</td>
-                <td>username:</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="users : ${searchResult}">
-                <td th:text="${users.getName()}"></td>
-                <td th:text="${users.getUsername()}"></td>
-
-                <td><form th:action="@{'add/friend/' + ${users.getUsername()}}" th:method="post">
-                    <button th:type="submit">Add friend</button>
-                </form></td>
-
-            </tr>
-
-        </tbody>
-    </table>
     </div>
-    </div>-->
+</div>
+
 </body>
 </html>
